@@ -1,23 +1,36 @@
+import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import IntroScreen from './screens/IntroScreen';
+import LoginScreen from './screens/LoginScreen';
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
+  const [showRealApp, setShowRealApp] = useState(false)
+  const [logged, setLogged] = useState(false)
+
+  if (showRealApp) {
+    if (!logged) {
+      return (
+        <LoginScreen />
+      )
+    }
+
     return (
-      <SafeAreaProvider>
-        <IntroScreen/>
-        <StatusBar />
-      </SafeAreaProvider>
-    );
+      <Navigation colorScheme={colorScheme}/>
+    )
   }
+  else return (
+    <SafeAreaProvider>
+      <IntroScreen _onDone={() => {
+        setShowRealApp(true)
+      }}/>
+      <StatusBar />
+    </SafeAreaProvider>
+  );
 }
+

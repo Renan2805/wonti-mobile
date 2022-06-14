@@ -3,6 +3,10 @@ import { Image, StyleSheet, ImageSourcePropType } from 'react-native'
 import { View, Text } from '../components/Themed';
 import AppIntroSlider from 'react-native-app-intro-slider';
 
+// Fonts
+import { useFonts } from 'expo-font';
+import { Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import { WorkSans_300Light, WorkSans_400Regular } from '@expo-google-fonts/work-sans';
 interface Slide {
 	key: string,
 	title: string,
@@ -16,7 +20,7 @@ const SLIDES:Array<Slide> = [
 		key: 'one',
 		title: 'Cadastre-se',
 		text: 'Crie sua conta e tenha acesso a milhares de vagas de emprego na área de T.I.',
-		image: require('../assets/images/svg-slide1.png'),
+		image: require('../assets/images/svg-slide1.svg'),
 		backgroundColor: '#FFFFFF'
 	},
 	{
@@ -28,7 +32,17 @@ const SLIDES:Array<Slide> = [
 	}
 ]
 
-export default function IntroScreen() {
+interface PropTypes {
+  readonly _onDone: () => void
+}
+
+export default function IntroScreen({ _onDone }: PropTypes) {
+
+  const [fontsLoaded] = useFonts({
+    Montserrat_700Bold,
+    WorkSans_300Light,
+    WorkSans_400Regular
+  })
 
 	type SlideTypes = {
 		item: Slide
@@ -40,10 +54,9 @@ export default function IntroScreen() {
 				<Image 
 					source={item.image}
 					style={styles.image}
-				>
-				</Image>
-				<Text style={styles.title}>{item.title}</Text>
-				<Text style={styles.text}>{item.text}</Text>
+				/>
+				<Text style={[styles.title, { fontFamily: 'Montserrat_700Bold' }]}>{item.title}</Text>
+				<Text style={[styles.text, { fontFamily: 'WorkSans_300Light'}]}>{item.text}</Text>
 			</View>
 		)
 	}
@@ -51,16 +64,33 @@ export default function IntroScreen() {
 	const _renderNextButton = () => {
 		return (
 			<View style={styles.nextButton}>
-				<Text style={styles.buttonText}>{'Próximo'}</Text>
+				<Text style={[styles.buttonText, {fontFamily: 'WorkSans_400Regular'}]}>{'Próximo'}</Text>
 			</View>
 		)
 	}
 
-	return (
+  const _renderDoneButton = () => {
+    return (
+      <View style={styles.nextButton}>
+        <Text style={[styles.buttonText, {fontFamily: 'WorkSans_400Regular', textAlign: 'center'}]}>{'Iniciar'}</Text>
+
+      </View>
+    )
+  }
+
+  if(!fontsLoaded) return (
+    <Text>Loading...</Text>
+  )
+  else return (
 		<AppIntroSlider 
 			data={SLIDES}
 			renderItem={_renderItems}
 			renderNextButton={_renderNextButton}
+      renderDoneButton={_renderDoneButton}
+      bottomButton={true}
+      dotStyle={{backgroundColor: '#FFCDDD'}}
+      activeDotStyle={{backgroundColor: '#FF0356'}}
+      onDone={_onDone}
 		/>
 	)
 }
@@ -69,17 +99,36 @@ const styles = StyleSheet.create({
 	slide: {
 		height: '100vh',
 		backgroundColor: '#fff',
-		padding: 20
+		padding: 20,
 	},
 	title: {
-		color: '#CA0747'
+		color: '#CA0747',
+    fontSize: 26,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 20
 	},
 	text: {
-		color: 'black'
+		color: 'black',
+    fontSize: 25,
+    fontWeight: '100',
+    textAlign: 'center'
 	},
 	image: {
-		height: '200px',
-		width: '200px'
+    aspectRatio: 1 / 1,
+		width: '80%',
+    marginHorizontal: 'auto'
 	},
-	buttonText: {} 
+	buttonText: {
+    fontSize: 24
+  } ,
+  nextButton: {
+    borderRadius: 30,
+    paddingVertical: '15px',
+    paddingHorizontal: '52px',
+    width: '200px',
+    marginHorizontal: 'auto',
+    marginBottom: 50,
+    marginTop: 35
+  }
 })
