@@ -5,10 +5,7 @@ import SvgUri from 'react-native-svg-uri'
 export default function LoginScreen() {
   return (
     <KeyboardAvoidingView>
-      <SvgUri 
-        source={require('../assets/images/login.svg')}
-        width={'100%'}
-      />
+      
     </KeyboardAvoidingView>
   )
 }

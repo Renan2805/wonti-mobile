@@ -25,11 +25,25 @@ const SLIDES:Array<Slide> = [
 	},
 	{
 		key: 'two',
-		title: 'Cadastre-se',
-		text: 'Crie sua conta e tenha acesso a milhares de vagas de emprego na área de T.I.',
-		image: require('../assets/images/svg-slide1.png'),
+		title: 'Entre na sua conta',
+		text: 'Após a criação de sua conta, faça login e confirme suas informações.',
+		image: require('../assets/images/svg-slide2.svg'),
 		backgroundColor: '#FFFFFF'
-	}
+	},
+  {
+    key: 'three',
+    title: 'Responda as perguntas',
+    text: 'Depois de realizar o login, responda o questionário sobre T.I.',
+    image: require('../assets/images/svg-slide3.svg'),
+    backgroundColor: '#FFFFFF'
+  },
+  {
+    key: 'four',
+    title: 'Pronto',
+    text: 'Após responder ao questionário sobre T.I, você já pode ter acesso às vagas.',
+    image: require('../assets/images/svg-slide4.svg'),
+    backgroundColor: '#FFFFFF'
+  }
 ]
 
 interface PropTypes {
@@ -91,6 +105,8 @@ export default function IntroScreen({ _onDone }: PropTypes) {
       dotStyle={{backgroundColor: '#FFCDDD'}}
       activeDotStyle={{backgroundColor: '#FF0356'}}
       onDone={_onDone}
+      onSlideChange={(index) => goToSlide(index)}
+      
 		/>
 	)
 }
@@ -99,7 +115,8 @@ const styles = StyleSheet.create({
 	slide: {
 		height: '100vh',
 		backgroundColor: '#fff',
-		padding: 20,
+		paddingVertical: 30,
+    paddingHorizontal: 20
 	},
 	title: {
 		color: '#CA0747',

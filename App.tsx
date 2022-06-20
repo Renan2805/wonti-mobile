@@ -6,6 +6,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import IntroScreen from './screens/IntroScreen';
 import LoginScreen from './screens/LoginScreen';
+import InicialScreen from './screens/InicialScreen';
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -21,7 +22,7 @@ export default function App() {
     }
 
     return (
-      <Navigation colorScheme={colorScheme}/>
+      <InicialScreen/>
     )
   }
   else return (
