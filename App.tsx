@@ -12,7 +12,7 @@ export default function App() {
   const colorScheme = useColorScheme();
 
   const [showRealApp, setShowRealApp] = useState(false)
-  const [logged, setLogged] = useState(false)
+  const [logged, setLogged] = useState(true)
 
   if (showRealApp) {
     if (!logged) {
@@ -27,9 +27,11 @@ export default function App() {
   }
   else return (
     <SafeAreaProvider>
-      <IntroScreen _onDone={() => {
-        setShowRealApp(true)
-      }}/>
+      <IntroScreen 
+        _onDone={() => {
+          setShowRealApp(true)
+        }}
+      />
       <StatusBar />
     </SafeAreaProvider>
   );

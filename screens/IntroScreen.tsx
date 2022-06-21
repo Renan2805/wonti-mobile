@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, ImageSourcePropType } from 'react-native'
 import { View, Text } from '../components/Themed';
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -101,12 +101,11 @@ export default function IntroScreen({ _onDone }: PropTypes) {
 			renderItem={_renderItems}
 			renderNextButton={_renderNextButton}
       renderDoneButton={_renderDoneButton}
+      onDone={_onDone}
       bottomButton={true}
       dotStyle={{backgroundColor: '#FFCDDD'}}
       activeDotStyle={{backgroundColor: '#FF0356'}}
-      onDone={_onDone}
-      onSlideChange={(index) => goToSlide(index)}
-      
+      scrollEnabled={false}
 		/>
 	)
 }
@@ -115,7 +114,8 @@ const styles = StyleSheet.create({
 	slide: {
 		height: '100vh',
 		backgroundColor: '#fff',
-		paddingVertical: 30,
+		paddingTop: 40,
+    paddingBottom: 30,
     paddingHorizontal: 20
 	},
 	title: {
@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
     width: '200px',
     marginHorizontal: 'auto',
     marginBottom: 50,
-    marginTop: 35
+    marginTop: 30
   }
 })
