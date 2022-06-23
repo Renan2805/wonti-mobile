@@ -11,17 +11,15 @@ import InicialScreen from './screens/InicialScreen';
 export default function App() {
   const colorScheme = useColorScheme();
 
-  const [showRealApp, setShowRealApp] = useState(false)
-  const [logged, setLogged] = useState(true)
+  const [showRealApp, setShowRealApp] = useState(true)
+  const [logged, setLogged] = useState(false)
 
   if (showRealApp) {
     if (!logged) {
       return (
         <LoginScreen />
       )
-    }
-
-    return (
+    } else return (
       <InicialScreen/>
     )
   }
