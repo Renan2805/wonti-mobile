@@ -2,17 +2,8 @@ import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
 import Header from "../Header"
 import NextButton from "../NextButton"
-import { useFonts } from "expo-font"
-import { WorkSans_300Light } from "@expo-google-fonts/work-sans"
-import { Montserrat_700Bold } from "@expo-google-fonts/montserrat"
-
 
 const SignIn_5 = () => {
-
-  useFonts({
-    WorkSans_300Light,
-    Montserrat_700Bold
-  })
 
   return (
     <View style={{height: '100%'}}>
@@ -62,7 +53,7 @@ const SignIn_5 = () => {
           </View>
         </View>
         <View style={{width: '90%'}}>
-          <NextButton />
+          <NextButton _onPress={() => {}}/>
         </View>
         <Footer />
       </View>

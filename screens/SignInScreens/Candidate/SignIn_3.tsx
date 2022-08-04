@@ -2,18 +2,11 @@ import React, { useState } from 'react'
 import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import DatePicker from 'react-native-date-picker'
 import { IoIosArrowDown } from 'react-icons/io'
-import { useFonts } from 'expo-font'
-import { WorkSans_300Light } from '@expo-google-fonts/work-sans'
-import { Montserrat_700Bold } from '@expo-google-fonts/montserrat'
 import Header from '../Header'
 import NextButton from '../NextButton'
 import Footer from '../Footer'
 
 const SignIn_3 = () => {
-  useFonts({
-    Montserrat_700Bold,
-    WorkSans_300Light
-  })
 
   const getCurrentDate=()=>{
 
@@ -93,7 +86,7 @@ const SignIn_3 = () => {
           />
         </View>
         <View style={{width: '90%'}}>
-          <NextButton />
+          <NextButton _onPress={() => {}}/>
         </View>
         <Footer />
       </View>

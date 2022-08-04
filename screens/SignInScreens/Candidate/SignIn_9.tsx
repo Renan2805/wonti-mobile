@@ -2,19 +2,9 @@ import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
 import Header from "../Header"
 import NextButton from "../NextButton"
-import { useFonts } from "expo-font"
-import { WorkSans_300Light, WorkSans_600SemiBold } from "@expo-google-fonts/work-sans"
-import { Montserrat_400Regular, Montserrat_700Bold } from "@expo-google-fonts/montserrat"
 
 
 const SignIn_9 = () => {
-
-  useFonts({
-    WorkSans_300Light,
-    WorkSans_600SemiBold,
-    Montserrat_400Regular,
-    Montserrat_700Bold
-  })
 
   return (
     <View style={{height: '100%'}}>

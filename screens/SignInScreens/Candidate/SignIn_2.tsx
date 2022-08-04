@@ -2,15 +2,9 @@ import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
 import Header from "../Header"
 import NextButton from "../NextButton"
-import { useFonts } from "expo-font"
-import { WorkSans_300Light } from "@expo-google-fonts/work-sans"
 
 
 const SignIn_2 = () => {
-
-  useFonts({
-    WorkSans_300Light
-  })
 
   return (
     <View style={{height: '100%'}}>

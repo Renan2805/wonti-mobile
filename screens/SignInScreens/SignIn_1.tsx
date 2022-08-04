@@ -57,7 +57,7 @@ const SignIn_1 = ({ isUser }:SignIn_1Props) => {
             iconStyle={{ borderRadius: 6}}
             useNativeDriver={false}
           />
-          <NextButton />
+          <NextButton _onPress={() => {}}/>
         </View>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center', height: '10%', marginVertical: '5%'}}>

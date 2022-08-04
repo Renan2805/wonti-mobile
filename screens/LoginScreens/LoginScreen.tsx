@@ -1,20 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { View, KeyboardAvoidingView, Text, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import { useFonts } from 'expo-font';
-import { Montserrat_600SemiBold, Montserrat_800ExtraBold, } from '@expo-google-fonts/montserrat';
-import { WorkSans_300Light, WorkSans_400Regular, WorkSans_500Medium, WorkSans_600SemiBold } from '@expo-google-fonts/work-sans'
+import * as Icons from 'react-native-vector-icons'
 
-import { BsArrowLeftShort } from 'react-icons/bs'
+import { FaArrowLeft } from 'react-icons/fa'
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
 
-export default function LoginScreen() {
-  const fontsLoaded = useFonts({
-    Montserrat_600SemiBold,
-    Montserrat_800ExtraBold,
-    WorkSans_300Light,
-    WorkSans_400Regular,
-    WorkSans_500Medium,
-    WorkSans_600SemiBold
-  })
+type Props = NativeStackScreenProps<RootStackParamList>
+
+function LoginScreen({navigation}: Props) {
   
   const [active, setActive] = useState(true)
 
@@ -22,16 +16,16 @@ export default function LoginScreen() {
     <View style={styles.container}>
       <View style={[styles.header, {paddingVertical: 0, margin: 0}]}>
         <TouchableOpacity>
-          <BsArrowLeftShort size={45}/>
+          <FaArrowLeft size={45}/>
         </TouchableOpacity>
         <Image 
-          source={require('../assets/images/logoWonti.png')}
+          source={require('../../assets/images/logoWonti.png')}
           style={styles.logo}
         />
       </View>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../assets/images/login-screen.png')}
+          source={require('../../assets/images/login-screen.png')}
           style={styles.image}
         />
       </View>
@@ -73,6 +67,8 @@ export default function LoginScreen() {
     </View>
   )
 }
+
+export default LoginScreen
 
 interface SpacerProps {
   height: number
@@ -128,7 +124,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     borderRadius: 25,
     backgroundColor: 'white',
-    borderColor: 'rgba(255, 3, 86, 0.15)',
+    borderColor: '#ff035626',
     borderWidth: 1
   },
   input: {
@@ -147,7 +143,7 @@ const styles = StyleSheet.create({
   ceText: {
     fontFamily: 'Montserrat_600SemiBold',
     color: '#FF0F5E',
-    width: '11ch',
+    width: 88,
     textAlign: 'center',
     fontSize: 16
   },
@@ -156,7 +152,7 @@ const styles = StyleSheet.create({
     color: '#CA0747',
     borderBottomColor: '#CA0747',
     borderBottomWidth: 2,
-    width: '11ch',
+    width: 120,
     textAlign: 'center',
     fontSize: 16
   },

@@ -52,7 +52,7 @@ const SignIn_6 = () => {
           
         </View>
         <View style={{width: '90%'}}>
-          <NextButton />
+          <NextButton _onPress={() => {}}/>
         </View>
         <Footer />
       </View>
