@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, ImageSourcePropType } from 'react-native'
 import { View, Text } from '../../components/Themed';
 import AppIntroSlider from 'react-native-app-intro-slider';
+import { RootStackParamList } from '../../types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 interface Slide {
 	key: string,
 	title: string,
@@ -41,11 +43,9 @@ const SLIDES:Array<Slide> = [
   }
 ]
 
-interface PropTypes {
-  readonly _onDone: () => void
-}
+type Props = NativeStackScreenProps<RootStackParamList>
 
-export default function IntroScreen({ _onDone }: PropTypes) {
+export default function IntroScreen({navigation}: Props) {
 
 	type SlideTypes = {
 		item: Slide
@@ -91,7 +91,7 @@ export default function IntroScreen({ _onDone }: PropTypes) {
 			renderItem={_renderItems}
 			renderNextButton={_renderNextButton}
       renderDoneButton={_renderDoneButton}
-      onDone={_onDone}
+      onDone={() => navigation.navigate('LoginScreen')}
       bottomButton={true}
       dotStyle={{backgroundColor: '#FFCDDD'}}
       activeDotStyle={{backgroundColor: '#FF0356'}}

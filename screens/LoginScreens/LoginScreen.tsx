@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { View, KeyboardAvoidingView, Text, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import * as Icons from 'react-native-vector-icons'
+import { FontAwesome } from '@expo/vector-icons';
 
-import { FaArrowLeft } from 'react-icons/fa'
+import { WorkSans_300Light, useFonts } from '@expo-google-fonts/work-sans';
+
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 
@@ -10,13 +11,17 @@ type Props = NativeStackScreenProps<RootStackParamList>
 
 function LoginScreen({navigation}: Props) {
   
+  useFonts({
+    WorkSans_300Light
+  })
+
   const [active, setActive] = useState(true)
 
   return (
     <View style={styles.container}>
       <View style={[styles.header, {paddingVertical: 0, margin: 0}]}>
-        <TouchableOpacity>
-          <FaArrowLeft size={45}/>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <FontAwesome name={'arrow-left'} size={45}/>
         </TouchableOpacity>
         <Image 
           source={require('../../assets/images/logoWonti.png')}
@@ -106,8 +111,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   image: {
-    aspectRatio: 1 / 1,
-    width: '60%'
+    maxWidth: '60%',
+    maxHeight: '100%'
   },
   pinkContainer: {
     width: '100%',
@@ -131,7 +136,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderWidth: 1,
     borderColor: '#848484',
-    borderRadius: 25,
+    borderRadius: 30,
     padding: 15,
     fontFamily: 'WorkSans_300Light,'
   },

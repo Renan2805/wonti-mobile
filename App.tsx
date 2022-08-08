@@ -85,7 +85,7 @@ export default function App() {
         headerShown: false
       }}>
         <Stack.Screen name={'First'} component={FirstScreen} />
-        <Stack.Screen name={"Intro"} component={IntroScreen} />
+        <Stack.Screen name={'Intro'} component={IntroScreen} />
         <Stack.Screen name={'LoginScreen'} component={LoginScreen}/>     
       </Stack.Navigator>
     </NavigationContainer>
