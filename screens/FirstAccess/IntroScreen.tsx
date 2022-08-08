@@ -119,15 +119,16 @@ const styles = StyleSheet.create({
 		color: 'black',
     fontSize: 25,
     textAlign: 'center',
-    maxWidth: '80%'
+    maxWidth: '90%'
 	},
 	image: {
-    height: 300,
-		width: 300,
+    height: 200,
+		width: 200,
 	},
 	buttonText: {
     fontSize: 24,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white'
   },
   buttonWrapper: {
     width: '100%',
@@ -142,6 +143,7 @@ const styles = StyleSheet.create({
     width: '60%',
     marginHorizontal: 'auto',
     marginBottom: 50,
-    marginTop: 30
+    marginTop: 20,
+    backgroundColor: 'black'
   }
 })

@@ -1,21 +1,18 @@
 import { useState } from 'react'
 import { View, KeyboardAvoidingView, Text, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
-
-import { WorkSans_300Light, useFonts } from '@expo-google-fonts/work-sans';
-
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
+import { isLoaded } from 'expo-font';
 
 type Props = NativeStackScreenProps<RootStackParamList>
 
 function LoginScreen({navigation}: Props) {
-  
-  useFonts({
-    WorkSans_300Light
-  })
 
   const [active, setActive] = useState(true)
+
+  
+  console.log(isLoaded('WorkSans_300Light'));
 
   return (
     <View style={styles.container}>
@@ -138,7 +135,6 @@ const styles = StyleSheet.create({
     borderColor: '#848484',
     borderRadius: 30,
     padding: 15,
-    fontFamily: 'WorkSans_300Light,'
   },
   ce: {
     flex: 1,
@@ -146,14 +142,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   ceText: {
-    fontFamily: 'Montserrat_600SemiBold',
+    fontFamily: 'monospace',
     color: '#FF0F5E',
     width: 88,
     textAlign: 'center',
     fontSize: 16
   },
   ceTextActive: {
-    fontFamily: 'Montserrat_800ExtraBold',
+    fontFamily: 'monospace',
     color: '#CA0747',
     borderBottomColor: '#CA0747',
     borderBottomWidth: 2,

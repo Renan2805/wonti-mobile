@@ -41,10 +41,7 @@ import {
 
 export default function App() {
 
-  const [fontsLoaded, setFontsLoaded] = useState(false)
-
-  const loadFonts = async () => {
-    await Font.loadAsync({
+  const [fontsLoaded] = Font.useFonts({
       Montserrat_100Thin,
       Montserrat_200ExtraLight,
       Montserrat_300Light,
@@ -64,12 +61,35 @@ export default function App() {
       WorkSans_700Bold,
       WorkSans_800ExtraBold,
       WorkSans_900Black
-    })
+  })
 
-    setFontsLoaded(true)
-  }
+  // const loadFonts = async () => {
+  //   await Font.loadAsync({
+  //     Montserrat_100Thin,
+  //     Montserrat_200ExtraLight,
+  //     Montserrat_300Light,
+  //     Montserrat_400Regular,
+  //     Montserrat_500Medium,
+  //     Montserrat_600SemiBold,
+  //     Montserrat_700Bold,
+  //     Montserrat_800ExtraBold,
+  //     Montserrat_900Black,
+  
+  //     WorkSans_100Thin,
+  //     WorkSans_200ExtraLight,
+  //     WorkSans_300Light,
+  //     WorkSans_400Regular,
+  //     WorkSans_500Medium,
+  //     WorkSans_600SemiBold,
+  //     WorkSans_700Bold,
+  //     WorkSans_800ExtraBold,
+  //     WorkSans_900Black
+  //   })
 
-  loadFonts()
+  //   setFontsLoaded(true)
+  // }
+
+  // loadFonts()
 
   const colorScheme = useColorScheme();
 
