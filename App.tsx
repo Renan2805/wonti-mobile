@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -38,6 +38,7 @@ import {
   WorkSans_800ExtraBold,
   WorkSans_900Black
 } from '@expo-google-fonts/work-sans'
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
 
@@ -108,6 +109,7 @@ export default function App() {
         <Stack.Screen name={'Intro'} component={IntroScreen} />
         <Stack.Screen name={'LoginScreen'} component={LoginScreen}/>     
       </Stack.Navigator>
+      <StatusBar style="dark" translucent={true}/>
     </NavigationContainer>
   )
   else return (

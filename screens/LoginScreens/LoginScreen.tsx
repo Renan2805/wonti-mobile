@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { View, KeyboardAvoidingView, Text, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
+import { AntDesign } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 import { isLoaded } from 'expo-font';
@@ -9,16 +10,22 @@ type Props = NativeStackScreenProps<RootStackParamList>
 
 function LoginScreen({navigation}: Props) {
 
-  const [active, setActive] = useState(true)
+  const [active, setActive]     = useState(true)
 
-  
-  console.log(isLoaded('WorkSans_300Light'));
+  const [user, setUser]         = useState("")
+  const [password, setPassword] = useState("")
+
+  const doLogin = () => {
+    alert(user)
+    alert(password)
+  }
 
   return (
     <View style={styles.container}>
+      
       <View style={[styles.header, {paddingVertical: 0, margin: 0}]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FontAwesome name={'arrow-left'} size={45}/>
+        <AntDesign name="arrowleft" size={45} color="black" />
         </TouchableOpacity>
         <Image 
           source={require('../../assets/images/logoWonti.png')}
@@ -45,12 +52,11 @@ function LoginScreen({navigation}: Props) {
               </Text>
             </TouchableOpacity>
           </View>
-          <Spacer height={40}/>
-          <TextInput placeholder={active ? 'CPF' : 'CNPJ' } style={styles.input}/>
+          <TextInput placeholder={active ? 'CPF' : 'CNPJ' } style={styles.input} onChangeText={(text) => setUser(text)}/>
           <Spacer height={10}/>
-          <TextInput placeholder='Senha' style={styles.input}/>
-          <Text style={{textAlign: 'right', fontFamily: 'WorkSans_400Regular', fontSize: 15}}>Esqueceu a senha?</Text>
-          <TouchableOpacity style={styles.loginButton}>
+          <TextInput placeholder='Senha' style={styles.input} onChangeText={(text) => setPassword(text)}/>
+          <Text style={{textAlign: 'right', fontFamily: 'WorkSans_400Regular', fontSize: 15, marginBottom: 10}}>Esqueceu a senha?</Text>
+          <TouchableOpacity style={styles.loginButton} onPress={() => doLogin}>
             <Text
               style={{
                 color: '#FFF',
@@ -87,7 +93,8 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     Height: '100%',
-    flex: 1
+    flex: 1,
+    backgroundColor: 'white'
   },
   header: {
     width: '100%',
@@ -104,16 +111,16 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: '30%',
-    alignItems: 'center'
+    height: '37%',
+    alignItems: 'center',
   },
   image: {
-    maxWidth: '60%',
-    maxHeight: '100%'
+    height: '100%',
+    width: '60%'
   },
   pinkContainer: {
     width: '100%',
-    height: '60%',
+    height: '55%',
     backgroundColor: '#FFEEF5',
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
@@ -139,17 +146,20 @@ const styles = StyleSheet.create({
   ce: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-around',
+    paddingBottom: 5,
+    marginBottom: 5,
+    minHeight: '11%'
   },
   ceText: {
-    fontFamily: 'monospace',
+    fontFamily: 'Montserrat_600SemiBold',
     color: '#FF0F5E',
-    width: 88,
+    width: 120,
     textAlign: 'center',
-    fontSize: 16
+    fontSize: 16,
   },
   ceTextActive: {
-    fontFamily: 'monospace',
+    fontFamily: 'Montserrat_800ExtraBold',
     color: '#CA0747',
     borderBottomColor: '#CA0747',
     borderBottomWidth: 2,
@@ -160,9 +170,9 @@ const styles = StyleSheet.create({
   loginButton: {
     width: '100%',
     backgroundColor: 'black',
-    borderRadius: 30,
+    borderRadius: 40,
     paddingVertical: 15,
     position: 'relative',
-    bottom: '-10%'
+    bottom: '3%'
   }
 })
