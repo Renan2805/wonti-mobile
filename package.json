@@ -17,6 +17,7 @@
     "@expo-google-fonts/inter": "^0.2.2",
     "@expo-google-fonts/montserrat": "^0.2.2",
     "@expo-google-fonts/numans": "^0.2.2",
+    "@expo-google-fonts/poppins": "^0.2.2",
     "@expo-google-fonts/work-sans": "^0.2.2",
     "@expo/vector-icons": "^13.0.0",
     "@react-native-picker/picker": "2.4.0",

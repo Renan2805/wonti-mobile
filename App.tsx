@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -9,8 +9,6 @@ import IntroScreen from './screens/FirstAccess/IntroScreen';
 import FirstScreen from './screens/FirstAccess/FirstScreen';
 
 import LoginScreen from './screens/LoginScreens/LoginScreen';
-import Welcome from './screens/SignInScreens/Welcome';
-import SignIn_2 from './screens/SignInScreens/Hirer/SignIn_2';
 
 // Fonts
 import * as Font from 'expo-font';
@@ -37,8 +35,20 @@ import {
   WorkSans_800ExtraBold,
   WorkSans_900Black
 } from '@expo-google-fonts/work-sans'
+
+import { 
+  Poppins_100Thin,
+  Poppins_200ExtraLight,
+  Poppins_300Light,
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+  Poppins_800ExtraBold,
+  Poppins_900Black,
+} from '@expo-google-fonts/poppins'
+
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RootTabParamList, RootTabScreenProps } from './types';
 import HomeScreen from './screens/HomeScreen';
@@ -68,42 +78,21 @@ export default function App() {
       WorkSans_600SemiBold,
       WorkSans_700Bold,
       WorkSans_800ExtraBold,
-      WorkSans_900Black
+      WorkSans_900Black,
+
+      Poppins_100Thin,
+      Poppins_200ExtraLight,
+      Poppins_300Light,
+      Poppins_400Regular,
+      Poppins_500Medium,
+      Poppins_600SemiBold,
+      Poppins_700Bold,
+      Poppins_800ExtraBold,
+      Poppins_900Black,
   })
-
-  // const loadFonts = async () => {
-  //   await Font.loadAsync({
-  //     Montserrat_100Thin,
-  //     Montserrat_200ExtraLight,
-  //     Montserrat_300Light,
-  //     Montserrat_400Regular,
-  //     Montserrat_500Medium,
-  //     Montserrat_600SemiBold,
-  //     Montserrat_700Bold,
-  //     Montserrat_800ExtraBold,
-  //     Montserrat_900Black,
-  
-  //     WorkSans_100Thin,
-  //     WorkSans_200ExtraLight,
-  //     WorkSans_300Light,
-  //     WorkSans_400Regular,
-  //     WorkSans_500Medium,
-  //     WorkSans_600SemiBold,
-  //     WorkSans_700Bold,
-  //     WorkSans_800ExtraBold,
-  //     WorkSans_900Black
-  //   })
-
-  //   setFontsLoaded(true)
-  // }
-
-  // loadFonts()
-
-  const colorScheme = useColorScheme();
 
   const [showRealApp, setShowRealApp] = useState(true)
   const [logged, setLogged] = useState(false)
-
 
   const Stack = createNativeStackNavigator()
 
@@ -126,8 +115,7 @@ export default function App() {
   )
 }
       
-export function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+function BottomTabNavigator() {
   const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
   return (

@@ -1215,6 +1215,11 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/numans/-/numans-0.2.2.tgz#fb498daee2170603b53069118f5b57b0f48c59d0"
   integrity sha512-MWYilhflvZz4EbKMTKeLMrgxtn7E7uChjyMJrBFJNos5KD0LoS1IZqu+v/9zr6UBgFZr7DxXTeUEKtAVLx+n3A==
 
+"@expo-google-fonts/poppins@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/poppins/-/poppins-0.2.2.tgz#d2a343fa69400ffbaf61ae97162791a59e215678"
+  integrity sha512-x0SzC8nWTC2pInIcBDiAuMJxhoglwqCGJYMM8ylI8HKDqBxMrfRTripB3xMGo6UtzROTcL+OX1w9nEcM5FK0PQ==
+
 "@expo-google-fonts/work-sans@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/work-sans/-/work-sans-0.2.2.tgz#4b16a18929ef1cfd794273f69079483310339135"
@@ -12491,10 +12496,8 @@ watchpack@^1.6.1:
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.7.5.tgz#1267e6c55e0b9b5be44c2023aed5437a2c26c453"
   integrity sha512-9P3MWk6SrKjHsGkLT2KHXdQ/9SNkyoJbabxnKOoJepsvJjJG8uYTR3yTPxPQvNDI3w4Nz1xnE0TLHK4RIVe/MQ==
   dependencies:
-    chokidar "^3.4.1"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
-    watchpack-chokidar2 "^2.0.1"
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"
