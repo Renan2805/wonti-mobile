@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, ImageSourcePropType } from 'react-native'
-import { View, Text } from '../../components/Themed';
+import { View, Image, StyleSheet, ImageSourcePropType } from 'react-native'
+import { Text } from '../../components/Themed';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { RootStackParamList } from '../../types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -54,13 +54,20 @@ export default function IntroScreen({navigation}: Props) {
 	const _renderItems = ({ item }:SlideTypes) => {
 		return (
 			<View style={styles.slide}>
-				<Image 
-					source={item.image}
-					style={styles.image}
-          height={300}
-				/>
-				<Text style={[styles.title, { fontFamily: 'Montserrat_700Bold'}]}>{item.title}</Text>
-				<Text style={[styles.text, { fontFamily: 'WorkSans_300Light'}]}>{item.text}</Text>
+        <View style={styles.slideContent}>
+          <Image 
+            source={item.image}
+            style={styles.image}
+          />
+          <View style={{
+            flex: 1,
+            justifyContent: 'space-around',
+            maxHeight: '40%'
+          }}>
+            <Text style={[styles.title, { fontFamily: 'Montserrat_700Bold'}]}>{item.title}</Text>
+            <Text style={[styles.text, { fontFamily: 'WorkSans_300Light'}]}>{item.text}</Text>
+          </View>
+        </View>
 			</View>
 		)
 	}
@@ -107,8 +114,17 @@ const styles = StyleSheet.create({
 		paddingTop: 100,
     paddingBottom: 30,
     paddingHorizontal: 20,
-    alignItems: 'center'
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start'
 	},
+  slideContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    maxHeight: '75%',
+    gap: 100
+  },
 	title: {
 		color: '#CA0747',
     fontSize: 30,
@@ -122,13 +138,15 @@ const styles = StyleSheet.create({
     maxWidth: '90%'
 	},
 	image: {
-    height: 200,
-		width: 200,
+    minHeight: '50%',
+    minWidth: '40%',
+    maxHeight: 300,
+    maxWidth: 300
 	},
 	buttonText: {
     fontSize: 24,
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
   },
   buttonWrapper: {
     width: '100%',
