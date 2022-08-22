@@ -19,7 +19,7 @@ export type RootStackParamList = {
   NotFound: undefined;
   Intro: undefined;
   LoginScreen: undefined;
-  CardRecom: undefined;
+  
 };
 
 
@@ -30,10 +30,11 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 >;
 
 export type RootTabParamList = {
-  Home: undefined;
+  Home: {title: string};
   Vagas: undefined;
   Chat: undefined;
   Config: undefined;
+  CardRecom: undefined
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
