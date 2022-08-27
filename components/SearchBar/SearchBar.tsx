@@ -7,7 +7,7 @@ const SearchBar = () => {
   return (
     <View style={styles.bar}>
       <Search set="light" size="medium" color="black"/>
-      <TextInput placeholder="Procurar Vagas" style={styles.input} selectionColor={'rgba(0, 0, 0, .1)'}/>
+      <TextInput placeholder="Procurar Vagas" style={styles.input} />
       <Filter set="light" size="medium" color="black"/>
     </View>
   )
@@ -16,11 +16,13 @@ const SearchBar = () => {
 const styles = StyleSheet.create({
   bar: {
     width: '90%',
+    minHeight: 55,
     maxHeight: 55,
     backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 22,
     paddingVertical: 16,
+    marginVertical: 10,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'

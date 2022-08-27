@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\renan\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add expo-fonts@10.0.4
+  C:\Program Files\nodejs\node.exe C:\Users\renan\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @react-native-screens/~3.10.2
 
 PATH: 
-  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Users\renan\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\renan\AppData\Local\Programs\Python\Python310\;C:\Users\renan\AppData\Local\Programs\Python\Launcher\;C:\Users\renan\AppData\Local\Microsoft\WindowsApps;;C:\Users\renan\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\renan\AppData\Roaming\npm
+  C:\Users\renan\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\renan\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\nodejs;C:\Program Files\Git\cmd;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\dotnet;C:\Users\renan\AppData\Local\Programs\Python\Python310\Scripts;C:\Users\renan\AppData\Local\Programs\Python\Python310;C:\Users\renan\AppData\Local\Programs\Python\Launcher;C:\Users\renan\AppData\Local\Microsoft\WindowsApps;C:\Users\renan\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\renan\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
 
 Yarn version: 
   1.22.19
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/expo-fonts: Not found
+  Error: https://registry.yarnpkg.com/@react-native-screens%2f~3.10.2: Not found
       at Request.params.callback [as _callback] (C:\Users\renan\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
       at Request.self.callback (C:\Users\renan\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
       at Request.emit (node:events:526:28)
@@ -46,6 +46,7 @@ npm manifest:
       "@expo-google-fonts/inter": "^0.2.2",
       "@expo-google-fonts/montserrat": "^0.2.2",
       "@expo-google-fonts/numans": "^0.2.2",
+      "@expo-google-fonts/poppins": "^0.2.2",
       "@expo-google-fonts/work-sans": "^0.2.2",
       "@expo/vector-icons": "^13.0.0",
       "@react-native-picker/picker": "2.4.0",
@@ -61,7 +62,7 @@ npm manifest:
       "expo-splash-screen": "~0.15.1",
       "expo-status-bar": "~1.3.0",
       "expo-system-ui": "~1.2.0",
-      "expo-updates": "~0.13.3",
+      "expo-updates": "~0.13.4",
       "expo-web-browser": "~10.2.1",
       "react": "17.0.2",
       "react-dom": "17.0.2",
@@ -70,12 +71,14 @@ npm manifest:
       "react-native-app-intro-slider": "^4.0.4",
       "react-native-bouncy-checkbox": "^2.1.10",
       "react-native-date-picker": "^4.2.5",
+      "react-native-gesture-handler": "~2.2.1",
+      "react-native-iconly": "^1.0.12",
       "react-native-safe-area-context": "4.2.4",
       "react-native-screens": "~3.11.1",
       "react-native-svg": "^12.3.0",
-      "react-native-svg-uri": "^1.2.3",
       "react-native-web": "0.17.7",
       "react-navigation": "^4.4.4",
+      "react-navigation-tabs": "^2.11.2",
       "save": "^2.5.0"
     },
     "devDependencies": {
@@ -1294,6 +1297,13 @@ Lockfile:
       exec-sh "^0.3.2"
       minimist "^1.2.0"
   
+  "@egjs/hammerjs@^2.0.17":
+    version "2.0.17"
+    resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
+    integrity sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==
+    dependencies:
+      "@types/hammerjs" "^2.0.36"
+  
   "@expo-google-fonts/inter@^0.2.2":
     version "0.2.2"
     resolved "https://registry.yarnpkg.com/@expo-google-fonts/inter/-/inter-0.2.2.tgz#bd5624be6c92e7621aa9ddb5bd72757604729121"
@@ -1308,6 +1318,11 @@ Lockfile:
     version "0.2.2"
     resolved "https://registry.yarnpkg.com/@expo-google-fonts/numans/-/numans-0.2.2.tgz#fb498daee2170603b53069118f5b57b0f48c59d0"
     integrity sha512-MWYilhflvZz4EbKMTKeLMrgxtn7E7uChjyMJrBFJNos5KD0LoS1IZqu+v/9zr6UBgFZr7DxXTeUEKtAVLx+n3A==
+  
+  "@expo-google-fonts/poppins@^0.2.2":
+    version "0.2.2"
+    resolved "https://registry.yarnpkg.com/@expo-google-fonts/poppins/-/poppins-0.2.2.tgz#d2a343fa69400ffbaf61ae97162791a59e215678"
+    integrity sha512-x0SzC8nWTC2pInIcBDiAuMJxhoglwqCGJYMM8ylI8HKDqBxMrfRTripB3xMGo6UtzROTcL+OX1w9nEcM5FK0PQ==
   
   "@expo-google-fonts/work-sans@^0.2.2":
     version "0.2.2"
@@ -1556,7 +1571,7 @@ Lockfile:
       resolve-from "^5.0.0"
       sucrase "^3.20.0"
   
-  "@expo/metro-config@~0.3.7":
+  "@expo/metro-config@0.3.19":
     version "0.3.19"
     resolved "https://registry.yarnpkg.com/@expo/metro-config/-/metro-config-0.3.19.tgz#fb962f3569681b9fe5b074182389ddd76013feb5"
     integrity sha512-UZlwnD0g/7uAx/AZ5ulC7Y4unfJFJywXy3Ozu40dhQnSciOU/nkzK94XpKbxHuRZJ3crZxvL2EDwQ8jguDjASw==
@@ -2472,6 +2487,11 @@ Lockfile:
     integrity sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==
     dependencies:
       "@types/node" "*"
+  
+  "@types/hammerjs@^2.0.36":
+    version "2.0.41"
+    resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.41.tgz#f6ecf57d1b12d2befcce00e928a6a097c22980aa"
+    integrity sha512-ewXv/ceBaJprikMcxCmWU1FKyMAQ2X7a9Gtmzw8fcg2kIePI1crERDM818W+XYrxqdBBOdlf2rm137bU+BltCA==
   
   "@types/html-minifier-terser@^5.0.0":
     version "5.1.2"
@@ -4544,6 +4564,17 @@ Lockfile:
       domutils "^2.8.0"
       nth-check "^2.0.1"
   
+  css-select@^5.1.0:
+    version "5.1.0"
+    resolved "https://registry.yarnpkg.com/css-select/-/css-select-5.1.0.tgz#b8ebd6554c3637ccc76688804ad3f6a6fdaea8a6"
+    integrity sha512-nwoRF1rvRRnnCqqY7updORDsuqKzqYJ28+oSMaJMMgOauh3fvwHqMS7EZpIPqK8GL+g9mKxF1vP/ZjSeNjEVHg==
+    dependencies:
+      boolbase "^1.0.0"
+      css-what "^6.1.0"
+      domhandler "^5.0.2"
+      domutils "^3.0.1"
+      nth-check "^2.0.1"
+  
   css-tree@1.0.0-alpha.37:
     version "1.0.0-alpha.37"
     resolved "https://registry.yarnpkg.com/css-tree/-/css-tree-1.0.0-alpha.37.tgz#98bebd62c4c1d9f960ec340cf9f7522e30709a22"
@@ -4565,7 +4596,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/css-what/-/css-what-3.4.2.tgz#ea7026fcb01777edbde52124e21f327e7ae950e4"
     integrity sha512-ACUm3L0/jiZTqfzRM3Hi9Q8eZqd6IK37mMWPLz9PJxkLWllYeRf+EHUSHYEtFop2Eqytaq1FizFVh7XfBnXCDQ==
   
-  css-what@^6.0.1:
+  css-what@^6.0.1, css-what@^6.1.0:
     version "6.1.0"
     resolved "https://registry.yarnpkg.com/css-what/-/css-what-6.1.0.tgz#fb5effcf76f1ddea2c81bdfaa4de44e79bac70f4"
     integrity sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==
@@ -4966,6 +4997,15 @@ Lockfile:
       domhandler "^4.2.0"
       entities "^2.0.0"
   
+  dom-serializer@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-2.0.0.tgz#e41b802e1eedf9f6cae183ce5e622d789d7d8e53"
+    integrity sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==
+    dependencies:
+      domelementtype "^2.3.0"
+      domhandler "^5.0.2"
+      entities "^4.2.0"
+  
   domain-browser@^1.1.1:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
@@ -4976,7 +5016,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-1.3.1.tgz#d048c44b37b0d10a7f2a3d5fee3f4333d790481f"
     integrity sha512-BSKB+TSpMpFI/HOxCNr1O8aMOTZ8hT3pM3GQ0w/mWRmkhEDSFJkkyzz4XQsBV44BChwGkrDfMyjVD0eA2aFV3w==
   
-  domelementtype@^2.0.1, domelementtype@^2.2.0:
+  domelementtype@^2.0.1, domelementtype@^2.2.0, domelementtype@^2.3.0:
     version "2.3.0"
     resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-2.3.0.tgz#5c45e8e869952626331d7aab326d01daf65d589d"
     integrity sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==
@@ -5002,6 +5042,13 @@ Lockfile:
     dependencies:
       domelementtype "^2.2.0"
   
+  domhandler@^5.0.1, domhandler@^5.0.2:
+    version "5.0.3"
+    resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-5.0.3.tgz#cc385f7f751f1d1fc650c21374804254538c7d31"
+    integrity sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==
+    dependencies:
+      domelementtype "^2.3.0"
+  
   domutils@^1.7.0:
     version "1.7.0"
     resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.7.0.tgz#56ea341e834e06e6748af7a1cb25da67ea9f8c2a"
@@ -5018,6 +5065,15 @@ Lockfile:
       dom-serializer "^1.0.1"
       domelementtype "^2.2.0"
       domhandler "^4.2.0"
+  
+  domutils@^3.0.1:
+    version "3.0.1"
+    resolved "https://registry.yarnpkg.com/domutils/-/domutils-3.0.1.tgz#696b3875238338cb186b6c0612bd4901c89a4f1c"
+    integrity sha512-z08c1l761iKhDFtfXO04C7kTdPBLi41zwOZl00WS8b5eiaebNpY00HKbztwBq+e3vyqWNwWF3mP9YLUeqIrF+Q==
+    dependencies:
+      dom-serializer "^2.0.0"
+      domelementtype "^2.3.0"
+      domhandler "^5.0.1"
   
   dot-case@^3.0.4:
     version "3.0.4"
@@ -5127,6 +5183,11 @@ Lockfile:
     version "3.0.1"
     resolved "https://registry.yarnpkg.com/entities/-/entities-3.0.1.tgz#2b887ca62585e96db3903482d336c1006c3001d4"
     integrity sha512-WiyBqoomrwMdFG1e0kqvASYfnlb0lp8M5o5Fw2OFq1hNZxxcNk8Ik0Xm7LxzBhuidnZB/UtBqVCgUz3kBOP51Q==
+  
+  entities@^4.2.0:
+    version "4.3.1"
+    resolved "https://registry.yarnpkg.com/entities/-/entities-4.3.1.tgz#c34062a94c865c322f9d67b4384e4169bcede6a4"
+    integrity sha512-o4q/dYJlmyjP2zfnaWDUC6A3BQFmVTX+tZPezK7k0GLSU9QYCauscf5Y+qcEPzKL+EixVouYDgLQK5H9GrLpkg==
   
   env-editor@^0.4.1:
     version "0.4.2"
@@ -5586,15 +5647,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/expo-updates-interface/-/expo-updates-interface-0.6.0.tgz#cef5250106e59572afdfcf245c534754c8c844ba"
     integrity sha512-oQcGTsE8mSkSxENPlWjZPGoJpt3RFDNPuO5d8shBDxBb4ZNH/W2ojavSFQMaLbNMoS0bYQQhzbRNEIBd306QMg==
   
-  expo-updates@~0.13.3:
-    version "0.13.3"
-    resolved "https://registry.yarnpkg.com/expo-updates/-/expo-updates-0.13.3.tgz#1e55ba2682de4633f2d1d0424078873868821361"
-    integrity sha512-aVO3Ha+vRGnkJbqlJMNoQn/p31DMnhZSGUs977ixhb0ff2xs530vf4/zVi4s635lkwuCd23++oga44Z4quKV/w==
+  expo-updates@~0.13.4:
+    version "0.13.4"
+    resolved "https://registry.yarnpkg.com/expo-updates/-/expo-updates-0.13.4.tgz#7ffca09721fdf3ba43eb413cab918010881f3b55"
+    integrity sha512-GrA88YT2WN0rY4+uDHm7Yb3Gt7hAtVkaGq3ANIDbtIDVarvnHJ4d7cSp0U+FAyhtJCOPRo0QjF/Gy8rpP/G4yw==
     dependencies:
       "@expo/code-signing-certificates" "0.0.1"
-      "@expo/config" "^6.0.14"
+      "@expo/config" "~6.0.23"
       "@expo/config-plugins" "^4.0.14"
-      "@expo/metro-config" "~0.3.7"
+      "@expo/metro-config" "0.3.19"
       arg "4.1.0"
       expo-eas-client "~0.2.0"
       expo-manifests "~0.3.0"
@@ -6456,7 +6517,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
     integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
   
-  hoist-non-react-statics@^3.3.2:
+  hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
     version "3.3.2"
     resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
     integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -10095,7 +10156,7 @@ Lockfile:
       kleur "^3.0.3"
       sisteransi "^1.0.5"
   
-  prop-types@*, prop-types@^15.6.0, prop-types@^15.8.1:
+  prop-types@*, prop-types@^15.6.0, prop-types@^15.7.2, prop-types@^15.8.1:
     version "15.8.1"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
     integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -10379,6 +10440,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
     integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
   
+  react-lifecycles-compat@^3.0.4:
+    version "3.0.4"
+    resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+    integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+  
   react-native-app-intro-slider@^4.0.4:
     version "4.0.4"
     resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-4.0.4.tgz#fa5cda7057db62c448ac975ffd2ba0cff94cc8d8"
@@ -10406,10 +10472,33 @@ Lockfile:
     dependencies:
       prop-types "^15.8.1"
   
+  react-native-gesture-handler@~2.2.1:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.2.1.tgz#672258aa5a40c92a97c736bdde0a8bd6c8c6c692"
+    integrity sha512-P4kAPbSY8VFAjvFNzfePgFsbZEldfEnEfNqOJw6MlpcdXrPGwRbvMqWMVkA9lifdKTZ3XifvAgJ8+R+uEZN0zA==
+    dependencies:
+      "@egjs/hammerjs" "^2.0.17"
+      hoist-non-react-statics "^3.3.0"
+      invariant "^2.2.4"
+      lodash "^4.17.21"
+      prop-types "^15.7.2"
+  
   react-native-gradle-plugin@^0.0.6:
     version "0.0.6"
     resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.6.tgz#b61a9234ad2f61430937911003cddd7e15c72b45"
     integrity sha512-eIlgtsmDp1jLC24dRn43hB3kEcZVqx6DUQbR0N1ABXGnMEafm9I3V3dUUeD1vh+Dy5WqijSoEwLNUPLgu5zDMg==
+  
+  react-native-iconly@^1.0.12:
+    version "1.0.12"
+    resolved "https://registry.yarnpkg.com/react-native-iconly/-/react-native-iconly-1.0.12.tgz#44e06d45ea52933055b3e16b22ed7f354e618e83"
+    integrity sha512-HwjgSXyJrSk/TcCCbSNCNySWSst4uLInxxjG7vpCKG/zT4I4tYetiLdaFNp/uPcMEb3ZuaQWXJe9H+fMfaKhtA==
+    dependencies:
+      react-native-svg "^12.1.0"
+  
+  react-native-iphone-x-helper@^1.3.0:
+    version "1.3.1"
+    resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
+    integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
   
   react-native-safe-area-context@4.2.4:
     version "4.2.4"
@@ -10440,12 +10529,13 @@ Lockfile:
       "@svgr/plugin-svgo" "^6.1.2"
       path-dirname "^1.0.2"
   
-  react-native-svg-uri@^1.2.3:
-    version "1.2.3"
-    resolved "https://registry.yarnpkg.com/react-native-svg-uri/-/react-native-svg-uri-1.2.3.tgz#2f67f30564068a0fee68a751845332a5185a1aab"
-    integrity sha512-yECSYs6KgX8XZj0IV3Z2fTOkldmtnG1dEDNoRXvJjPnQPTEzQ2VS1NXIgxukuGSN2jourVOvKLhhRo75QmRTaw==
+  react-native-svg@^12.1.0:
+    version "12.4.4"
+    resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.4.4.tgz#2ba684eaea9a7402fbbe0ed9737e77284631d00e"
+    integrity sha512-LpcNlEVCURexqPAvQ9ne8KrPVfYz0wIDygwud8VMRmXLezysXzyQN/DTsjm1BO9lIfYp55WQsr3u3yW/vk6iiA==
     dependencies:
-      xmldom "^0.1.22"
+      css-select "^5.1.0"
+      css-tree "^1.1.3"
   
   react-native-svg@^12.3.0:
     version "12.3.0"
@@ -10454,6 +10544,11 @@ Lockfile:
     dependencies:
       css-select "^4.2.1"
       css-tree "^1.0.0-alpha.39"
+  
+  react-native-tab-view@^2.15.2:
+    version "2.16.0"
+    resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.16.0.tgz#cae72c7084394bd328fac5fefb86cd966df37a86"
+    integrity sha512-ac2DmT7+l13wzIFqtbfXn4wwfgtPoKzWjjZyrK1t+T8sdemuUvD4zIt+UImg03fu3s3VD8Wh/fBrIdcqQyZJWg==
   
   react-native-web@0.17.7:
     version "0.17.7"
@@ -10505,6 +10600,16 @@ Lockfile:
       use-subscription ">=1.0.0 <1.6.0"
       whatwg-fetch "^3.0.0"
       ws "^6.1.4"
+  
+  react-navigation-tabs@^2.11.2:
+    version "2.11.2"
+    resolved "https://registry.yarnpkg.com/react-navigation-tabs/-/react-navigation-tabs-2.11.2.tgz#20030ac2e14a0f883b9bfad24aea115966e6de43"
+    integrity sha512-8w/fiX+gGIyxYWBUT6Fg/26DTggjzK4lPfnLTP1pR7DUfYGLf2/f/aJWqiIJt6U4k/19tzpr4sXQqG7fX6PLjg==
+    dependencies:
+      hoist-non-react-statics "^3.3.2"
+      react-lifecycles-compat "^3.0.4"
+      react-native-iphone-x-helper "^1.3.0"
+      react-native-tab-view "^2.15.2"
   
   react-navigation@^4.4.4:
     version "4.4.4"
@@ -12520,10 +12625,8 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.7.5.tgz#1267e6c55e0b9b5be44c2023aed5437a2c26c453"
     integrity sha512-9P3MWk6SrKjHsGkLT2KHXdQ/9SNkyoJbabxnKOoJepsvJjJG8uYTR3yTPxPQvNDI3w4Nz1xnE0TLHK4RIVe/MQ==
     dependencies:
-      chokidar "^3.4.1"
       graceful-fs "^4.1.2"
       neo-async "^2.5.0"
-      watchpack-chokidar2 "^2.0.1"
     optionalDependencies:
       chokidar "^3.4.1"
       watchpack-chokidar2 "^2.0.1"
@@ -12888,11 +12991,6 @@ Lockfile:
     integrity sha512-ruPC/fyPNck2BD1dpz0AZZyrEwMOrWTO5lDdIXS91rs3wtm4j+T8Rp2o+zoOYkkAxJTZRPOSnOGei1egoRmKMQ==
     dependencies:
       sax "^1.2.1"
-  
-  xmldom@^0.1.22:
-    version "0.1.31"
-    resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
-    integrity sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==
   
   xtend@^4.0.0, xtend@~4.0.1:
     version "4.0.2"

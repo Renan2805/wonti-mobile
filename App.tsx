@@ -131,9 +131,9 @@ function BottomTabNavigator() {
           backgroundColor: 'white',
           borderTopLeftRadius: 25,
           borderTopRightRadius: 25,
-          height: '10%'
-        }
-        
+          height: 70
+        },
+        tabBarHideOnKeyboard: true
       }}
       >
         
