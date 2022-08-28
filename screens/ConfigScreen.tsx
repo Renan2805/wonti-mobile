@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { IoMdHeartEmpty, IoIosArrowForward } from 'react-icons/io'
-import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, ImageBackground } from 'react-native'
+import { BiShieldQuarter, BiLogOut } from "react-icons/bi";
+import { IoMdHeartEmpty, IoIosArrowForward, IoMdBookmark, IoIosNotifications, IoMdLock,IoMdHelp } from 'react-icons/io'
+import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity} from 'react-native'
 import { RootStackParamList } from '../types'
 
 type Props = NativeStackScreenProps<RootStackParamList>
@@ -32,11 +33,13 @@ const ConfigScreen = ({ navigation }: Props) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom:'16px', display:'flex', paddingLeft:'32px'}}>
         <View style={{
-         padding:'32px', 
+         padding:'12px', 
+         backgroundColor:'#8F00FF26', 
          width:'63px',
          height:'63px',
          borderRadius:100, 
-         borderWidth:1}}>
+         }}>
+          <IoIosNotifications size={40} color={'purple'}/>
         </View>
         <TouchableOpacity style={style.ButtonView}>
           <Text style={style.TextNome}>Notificações</Text>
@@ -47,11 +50,14 @@ const ConfigScreen = ({ navigation }: Props) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom:'16px', display:'flex', paddingLeft:'32px'}}>
         <View style={{
-         padding:'32px', 
+         padding:'12px', 
+         backgroundColor:'#8F00FF26', 
+         alignItems:'center',
          width:'63px',
          height:'63px',
          borderRadius:100, 
-         borderWidth:1}}>
+         }}>
+          <IoMdBookmark size={40} color={'blue'}/>
         </View>
         <TouchableOpacity style={style.ButtonView}>
           <Text style={style.TextNome}>Vagas salvas</Text>
@@ -62,11 +68,13 @@ const ConfigScreen = ({ navigation }: Props) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom:'16px', display:'flex', paddingLeft:'32px'}}>
         <View style={{
-         padding:'32px', 
+         padding:'12px', 
+         backgroundColor:'#001AFF26',
          width:'63px',
          height:'63px',
          borderRadius:100, 
-         borderWidth:1}}>
+         }}>
+          <IoMdLock size={40} color={'#0489B1'}/>
         </View>
         <TouchableOpacity style={style.ButtonView}>
           <Text style={style.TextNome}>Privacidade</Text>
@@ -77,11 +85,13 @@ const ConfigScreen = ({ navigation }: Props) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom:'16px', display:'flex', paddingLeft:'32px'}}>
         <View style={{
-         padding:'32px', 
+         padding:'12px', 
+         backgroundColor:'#D8F6CE',
          width:'63px',
          height:'63px',
          borderRadius:100, 
-         borderWidth:1}}>
+         }}>
+          <BiShieldQuarter size={40} color={'green'}/>
         </View>
         <TouchableOpacity style={style.ButtonView}>
           <Text style={style.TextNome}>Segurança</Text>
@@ -92,11 +102,13 @@ const ConfigScreen = ({ navigation }: Props) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom:'16px', display:'flex', paddingLeft:'32px'}}>
         <View style={{
-         padding:'32px', 
+         padding:'12px', 
+         backgroundColor:'#F3E2A9',
          width:'63px',
          height:'63px',
          borderRadius:100, 
-         borderWidth:1}}>
+         }}>
+          <IoMdHelp size={40} color={'#FF8000'}/>
         </View>
         <TouchableOpacity style={style.ButtonView}>
           <Text style={style.TextNome}>Ajuda e suporte</Text>
@@ -106,11 +118,13 @@ const ConfigScreen = ({ navigation }: Props) => {
         </TouchableOpacity>
       </View><View style={{width:'100%',flexDirection:'row', display:'flex',marginBottom:'32px', paddingLeft:'32px'}}>
         <View style={{
-         padding:'32px', 
+         padding:'12px', 
+         backgroundColor:'#FF7A0026',
          width:'63px',
          height:'63px',
          borderRadius:100, 
-         borderWidth:1}}>
+         }}>
+          <BiLogOut size={40} color={'red'}/>
         </View>
         <TouchableOpacity style={style.ButtonView}>
           <Text style={style.TextNome}>Sair</Text>
@@ -126,18 +140,25 @@ const ConfigScreen = ({ navigation }: Props) => {
 const style = StyleSheet.create({
   content: {
     flex: 1,
+    backgroundColor:'white',
     alignItems: 'center',
   },
   TextConta: {
-    fontSize:30
+    fontSize:30,
+    fontWeight:'bold'
   },
   TextNome: {
     fontSize:23,
+    fontWeight:'bold',
     width:'100%'
   },
   TextDesc: {
     fontSize:18,
     width:'100%'
+  },
+  imageConfig: {
+    width:'100%',
+    height:'100%'
   },
   ButtonView: {
     padding:'16px',
