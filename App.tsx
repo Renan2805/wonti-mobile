@@ -56,6 +56,7 @@ import { Home, Work, Chat, Setting } from 'react-native-iconly';
 import ChatScreen from './screens/ChatScreen';
 import ConfigScreen from './screens/ConfigScreen';
 import VagasScreen from './screens/VagasScreen';
+import DetalhesDaConta from './screens/DetalhesConta/DetalhesDaConta';
 
 export default function App() {
 
@@ -106,6 +107,7 @@ export default function App() {
         <Stack.Screen name={'Intro'} component={IntroScreen} />
         <Stack.Screen name={'LoginScreen'} component={LoginScreen}/>     
         <Stack.Screen name={'App'} component={BottomTabNavigator}/>
+        <Stack.Screen name={'Detalhes'} component={DetalhesDaConta}/>
       </Stack.Navigator>
       <StatusBar style="dark" translucent={true}/>
     </NavigationContainer>

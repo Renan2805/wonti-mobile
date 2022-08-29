@@ -20,7 +20,7 @@ const ConfigScreen = ({ navigation }: Props) => {
          borderRadius:100, 
          borderWidth:1}}>
       </View>
-        <TouchableOpacity style={style.ButtonView}>
+        <TouchableOpacity style={style.ButtonView} onPress={() => {navigation.navigate('Detalhes')}}>
           <Text style={style.TextNome}>Alana Moreira</Text>
           <Text style={style.TextDesc}>Informações da conta</Text>
           <View style={{display:'flex', position:'absolute', left:'75%',top:'32px'}}>
