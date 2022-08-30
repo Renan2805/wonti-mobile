@@ -20,6 +20,37 @@ export type RootStackParamList = {
   Intro: undefined;
   LoginScreen: undefined;
   
+  SignIn_1: {
+    isUser: boolean
+  };
+
+  SignIn_2c: {
+    cpf: string,
+    senha: string
+  };
+  SignIn_3c: {
+    nome: string,
+    sobrenome: string,
+    rg: string,
+    cpf: string,
+    senha: string
+  };
+  SignIn_4c: {
+    data_nasc: Date,
+    cidade: string,
+    uf: string,
+
+    nome: string,
+    sobrenome: string,
+    rg: string,
+    cpf: string,
+    senha: string
+  }
+
+  SignIn_2e: {
+    cnpj: string,
+    senha: string
+  }
 };
 
 

@@ -8,7 +8,7 @@ type Props = NativeStackScreenProps<RootStackParamList>
 const ConfigScreen = ({ navigation }: Props) => {
   return (
     <ScrollView contentContainerStyle={style.content}>
-      <View style={{width:'100%', padding:'2rem'}}>
+      {/* <View style={{width:'100%', padding:'2rem'}}>
         <Text style={style.TextConta}>Conta</Text>
       </View>
       <View style={{width:'100%',flexDirection:'row', display:'flex', paddingLeft:'2rem'}}>
@@ -118,7 +118,7 @@ const ConfigScreen = ({ navigation }: Props) => {
            <IoIosArrowForward size={20} style={style.Flecha}/>
           </View>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </ScrollView>
   )
 }
@@ -128,24 +128,24 @@ const style = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  TextConta: {
-    fontSize:30
-  },
-  TextNome: {
-    fontSize:23,
-    width:'100%'
-  },
-  TextDesc: {
-    fontSize:18,
-    width:'100%'
-  },
-  ButtonView: {
-    padding:'1rem',
-    flex:1,
-    display:'flex',
-  },
-  Flecha: {
-  }
+  // TextConta: {
+  //   fontSize:30
+  // },
+  // TextNome: {
+  //   fontSize:23,
+  //   width:'100%'
+  // },
+  // TextDesc: {
+  //   fontSize:18,
+  //   width:'100%'
+  // },
+  // ButtonView: {
+  //   padding:'1rem',
+  //   flex:1,
+  //   display:'flex',
+  // },
+  // Flecha: {
+  // }
 })
 
 export default ConfigScreen

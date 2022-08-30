@@ -1,10 +1,16 @@
+import { useState } from 'react' 
 import { StyleSheet, View, Text, Image, TextInput } from "react-native"
+import { RootStackScreenProps } from "../../../types"
 import Footer from "../Footer"
-import Header from "../Header"
+import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 
 
-const SignIn_2 = () => {
+const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2c'>) => {
+
+  const [nome, setNome] = useState('')
+  const [sobrenome, setSobrenome] = useState('')
+  const [rg, setRg] = useState('')
 
   return (
     <View style={{height: '100%'}}>
@@ -36,7 +42,13 @@ const SignIn_2 = () => {
           />
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => {}}/>
+          <NextButton _onPress={() => navigation.navigate('SignIn_3c', {
+            nome: nome,
+            sobrenome: sobrenome,
+            rg: rg,
+            cpf: route.params.cpf,
+            senha: route.params.senha
+          })}/>
         </View>
         <Footer />
       </View>
@@ -55,7 +67,10 @@ const styles = StyleSheet.create({
     width: 130
   },
   title: {
-    width: '8ch'
+    width: '30%',
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 24,
+    textAlign: 'center'
   },
   inputs: {
     width: '100%',

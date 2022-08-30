@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
-import Header from "../Header"
+import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 import { useFonts } from "expo-font"
 import { WorkSans_300Light, WorkSans_600SemiBold } from "@expo-google-fonts/work-sans"

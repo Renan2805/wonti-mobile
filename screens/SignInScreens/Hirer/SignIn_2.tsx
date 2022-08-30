@@ -1,12 +1,13 @@
 import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import * as navigation from 'react-navigation'
+import { RootStackScreenProps } from "../../../types"
 import Footer from "../Footer"
-import Header from "../Header"
+import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 
 
 
-const SignIn_2 = () => {
+const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
 
   return (
     <View style={{height: '100%'}}>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, ImageSourcePropType } from 'react-native'
-import { Text } from '../../components/Themed';
+import { View, Text, Image, StyleSheet, ImageSourcePropType } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { RootStackParamList } from '../../types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';

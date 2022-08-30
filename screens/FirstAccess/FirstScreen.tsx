@@ -10,14 +10,13 @@ const FirstScreen = ({navigation, route}: Props) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image 
-          width={110}
-          height={34}
+          style={{width: 75, height: 23}}
           source={require('../../assets/images/logoWonti.png')}
         />
       </View>
       <View style={styles.content}>
         <Image 
-          width={300}
+          style={{width: 345, height: 345}}
           source={require('../../assets/images/tiwoman.png')}
         />
         <Text style={styles.title}>

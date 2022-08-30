@@ -48,6 +48,8 @@ import {
   Poppins_900Black,
 } from '@expo-google-fonts/poppins'
 
+import { Numans_400Regular } from '@expo-google-fonts/numans'
+
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RootTabParamList, RootTabScreenProps } from './types';
@@ -56,6 +58,10 @@ import { Home, Work, Chat, Setting } from 'react-native-iconly';
 import ChatScreen from './screens/ChatScreen';
 import ConfigScreen from './screens/ConfigScreen';
 import VagasScreen from './screens/VagasScreen';
+import SignIn_1 from './screens/SignInScreens/SignIn_1';
+
+import * as SignInCandidate from './screens/SignInScreens/Candidate'
+import SignIn_2 from './screens/SignInScreens/Hirer/SignIn_2';
 
 export default function App() {
 
@@ -89,6 +95,8 @@ export default function App() {
       Poppins_700Bold,
       Poppins_800ExtraBold,
       Poppins_900Black,
+
+      Numans_400Regular
   })
 
   const [showRealApp, setShowRealApp] = useState(true)
@@ -106,6 +114,19 @@ export default function App() {
         <Stack.Screen name={'Intro'} component={IntroScreen} />
         <Stack.Screen name={'LoginScreen'} component={LoginScreen}/>     
         <Stack.Screen name={'App'} component={BottomTabNavigator}/>
+        <Stack.Group>
+          <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
+          <Stack.Screen name={'SignIn_2c'} component={SignInCandidate.SignIn_2}/>
+          <Stack.Screen name={'SignIn_3c'} component={SignInCandidate.SignIn_3}/>
+          <Stack.Screen name={'SignIn_4c'} component={SignInCandidate.SignIn_4}/>
+          <Stack.Screen name={'SignIn_5c'} component={SignInCandidate.SignIn_5}/>
+          <Stack.Screen name={'SignIn_6c'} component={SignInCandidate.SignIn_6}/>
+          <Stack.Screen name={'SignIn_7c'} component={SignInCandidate.SignIn_7}/>
+          <Stack.Screen name={'SignIn_8c'} component={SignInCandidate.SignIn_8}/>
+          <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/>
+          
+          <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
+        </Stack.Group>
       </Stack.Navigator>
       <StatusBar style="dark" translucent={true}/>
     </NavigationContainer>

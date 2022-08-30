@@ -1,20 +1,14 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native"
-import { useFonts } from "expo-font"
-import { WorkSans_500Medium } from "@expo-google-fonts/work-sans"
-
 interface NextButtonProps {
   _onPress: () => void
-}
+}  
 
 const NextButton = ({ _onPress }: NextButtonProps) => {
 
-  const [fontsLoaded] = useFonts({
-    WorkSans_500Medium
-  })
-return (
-    <TouchableOpacity style={styles.button} onPress={() => _onPress}>
+  return (
+    <TouchableOpacity style={styles.button} onPress={_onPress}>
       <Text style={styles.text}>
-        {fontsLoaded ? 'Próximo' : 'Carregando'}
+        {'Próximo'}
       </Text>
     </TouchableOpacity>
   )
