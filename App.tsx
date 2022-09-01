@@ -58,10 +58,14 @@ import { Home, Work, Chat, Setting } from 'react-native-iconly';
 import ChatScreen from './screens/ChatScreen';
 import ConfigScreen from './screens/ConfigScreen';
 import VagasScreen from './screens/VagasScreen';
+<<<<<<< HEAD
 import SignIn_1 from './screens/SignInScreens/SignIn_1';
 
 import * as SignInCandidate from './screens/SignInScreens/Candidate'
 import SignIn_2 from './screens/SignInScreens/Hirer/SignIn_2';
+=======
+import DetalhesDaConta from './screens/DetalhesConta/DetalhesDaConta';
+>>>>>>> ab41c69f3efe980154128fa173b9289385c1ab8e
 
 export default function App() {
 
@@ -114,6 +118,7 @@ export default function App() {
         <Stack.Screen name={'Intro'} component={IntroScreen} />
         <Stack.Screen name={'LoginScreen'} component={LoginScreen}/>     
         <Stack.Screen name={'App'} component={BottomTabNavigator}/>
+<<<<<<< HEAD
         <Stack.Group>
           <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
           <Stack.Screen name={'SignIn_2c'} component={SignInCandidate.SignIn_2}/>
@@ -127,6 +132,9 @@ export default function App() {
           
           <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
         </Stack.Group>
+=======
+        <Stack.Screen name={'Detalhes'} component={DetalhesDaConta}/>
+>>>>>>> ab41c69f3efe980154128fa173b9289385c1ab8e
       </Stack.Navigator>
       <StatusBar style="dark" translucent={true}/>
     </NavigationContainer>
