@@ -20,6 +20,7 @@ export type RootStackParamList = {
   Intro: undefined;
   LoginScreen: undefined;
   
+  Detalhes: undefined;
 };
 
 
