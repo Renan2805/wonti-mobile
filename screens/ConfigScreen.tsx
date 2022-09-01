@@ -140,7 +140,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
             <Ionicons name="arrow-forward" size={20} color="black" />
           </View>
         </TouchableOpacity>
-      </View>
+      </View> 
     </ScrollView>
   )
 }
@@ -151,6 +151,24 @@ const style = StyleSheet.create({
     backgroundColor:'white',
     alignItems: 'center',
   },
+  // TextConta: {
+  //   fontSize:30
+  // },
+  // TextNome: {
+  //   fontSize:23,
+  //   width:'100%'
+  // },
+  // TextDesc: {
+  //   fontSize:18,
+  //   width:'100%'
+  // },
+  // ButtonView: {
+  //   padding:'1rem',
+  //   flex:1,
+  //   display:'flex',
+  // },
+  // Flecha: {
+  // }
   Perfil: {
     width: '100%',
     height: '100%',

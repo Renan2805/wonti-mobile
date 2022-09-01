@@ -127,9 +127,10 @@ const CardRecommended = ({
 
 const style = StyleSheet.create({
   card: {
-    width: '90%',
+    width: '85%',
     padding: 15,
     borderRadius: 15,
+    marginVertical: 10
   },
   section1: {
     width: '100%',

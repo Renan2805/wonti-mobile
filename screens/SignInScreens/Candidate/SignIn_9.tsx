@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
-import Header from "../Header"
+import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 
 

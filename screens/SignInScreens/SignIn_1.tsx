@@ -1,34 +1,43 @@
-import { useState } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native"
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Button } from "react-native"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
-import { FcGoogle } from "react-icons/fc"
-import { FaFacebookF } from 'react-icons/fa'
-import Header from "./Header"
+import { FontAwesome } from '@expo/vector-icons'
+import Header from "../../components/Header"
 
-import { useFonts } from "expo-font"
-import { Montserrat_700Bold } from "@expo-google-fonts/montserrat"
-import { WorkSans_300Light, WorkSans_400Regular, WorkSans_500Medium, WorkSans_600SemiBold } from '@expo-google-fonts/work-sans'
-import { Numans_400Regular } from '@expo-google-fonts/numans'
 import NextButton from './NextButton'
+import { RootStackScreenProps } from '../../types'
 
-interface SignIn_1Props {
-  isUser: boolean // se for falso significa que uma empresa está se cadastrando
-}
-
-const SignIn_1 = ({ isUser }:SignIn_1Props) => {
-
-  const [fontsLoaded] = useFonts({
-    Montserrat_700Bold,
-    WorkSans_300Light,
-    WorkSans_400Regular,
-    WorkSans_500Medium,
-    WorkSans_600SemiBold,
-    Numans_400Regular
-  })
+const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
 
   const [conditionsRead, setConditionsRead] = useState(false)
+  const [isUser, setIsUser] = useState(route.params.isUser)
+
+  const [user, setUser] = useState('')
+  const [password, setPassword] = useState('')
+
+  console.log(navigation)
+
+  const goNext = () => {
+    if (isUser) navigation.navigate('SignIn_2c', {cpf: user, senha: password})
+    else navigation.navigate('SignIn_2e', {cnpj: user, senha: password})
+  }
 
   return (
+    // <View style={{height: '100%'}}>
+    //   <Header />
+    //   <NextButton _onPress={() => {}}/>
+    //   <BouncyCheckbox 
+    //     onPress={(isChecked: boolean) => setConditionsRead(isChecked)} 
+    //     text={'Aceito os termos de uso'}
+    //     textStyle={{fontFamily: 'WorkSans_600SemiBold', fontSize: 14, color: '#4A4949', textDecorationLine: 'none', textAlign: 'right', width: '100%'}}
+    //     style={{ justifyContent: 'flex-end', marginTop: 10  }}
+    //     size={17}
+    //     fillColor={'#4A4949'}
+    //     iconStyle={{ borderRadius: 6}}
+    //     useNativeDriver={false}
+    //   />
+    // </View>
+
     <View style={{height: '100%'}}>
     <Header />
     <View style={styles.container}>
@@ -38,10 +47,12 @@ const SignIn_1 = ({ isUser }:SignIn_1Props) => {
           <TextInput 
             placeholder={ isUser ? 'CPF' : 'CNPJ' }
             style={styles.input}
+            onChangeText={(text) => setUser(text)}
           />
           <TextInput 
             placeholder={'Senha'}
             style={styles.input}
+            onChangeText={(text) => setPassword(text)}
           />
         </View>
         <View style={{
@@ -57,7 +68,7 @@ const SignIn_1 = ({ isUser }:SignIn_1Props) => {
             iconStyle={{ borderRadius: 6}}
             useNativeDriver={false}
           />
-          <NextButton _onPress={() => {}}/>
+          <NextButton _onPress={() => goNext()}/>
         </View>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center', height: '10%', marginVertical: '5%'}}>
@@ -69,7 +80,8 @@ const SignIn_1 = ({ isUser }:SignIn_1Props) => {
       </View>
       <View style={styles.section_2}>
         <TouchableOpacity style={styles.button2}>
-          <FcGoogle 
+          <FontAwesome
+            name={'google'} 
             size={28}
           />
           <Text style={{
@@ -83,9 +95,10 @@ const SignIn_1 = ({ isUser }:SignIn_1Props) => {
           <View style={{width: 28}}></View>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button2, { borderColor: '#3B5998'}]}>
-          <FaFacebookF 
+          <FontAwesome
+            name={'facebook-f'} 
             size={28}
-            fill={'#3B5998'}
+            color={'#3B5998'}
           />
           <Text style={{
             fontFamily: 'Numans_400Regular',
@@ -97,10 +110,15 @@ const SignIn_1 = ({ isUser }:SignIn_1Props) => {
           </Text>
           <View style={{width: 10}}></View>
         </TouchableOpacity>
-        <Text style={{fontFamily: 'WorkSans_400Regular', width: '14ch', textAlign: 'center'}}>
-          Já possui conta?
-          Faça <Text style={{color: '#CA0747', fontFamily: 'WorkSans_600SemiBold'}}>login</Text>
-        </Text>
+        <TouchableOpacity onPress={() => {} }>
+          <Text style={{fontFamily: 'WorkSans_400Regular', maxWidth: '30%', textAlign: 'center'}}>
+            Já possui conta?
+            Faça 
+            <Text style={{color: '#CA0747', fontFamily: 'WorkSans_600SemiBold'}}>
+              {' login'}
+            </Text>
+          </Text> 
+        </TouchableOpacity>
       </View>
     </View>
     </View>
@@ -123,12 +141,12 @@ const styles = StyleSheet.create({
   section_1: {
     width: '100%',
     minHeight: '40%',
-    maxHeight: '50%'
+    maxHeight: '50%',
   },
   inputs: {
     width: '100%',
-    maxHeight: 120,
-    minHeight: 100,
+    maxHeight: 130,
+    minHeight: 110,
     flex: 1,
     justifyContent: 'space-between'
   },
@@ -160,10 +178,10 @@ const styles = StyleSheet.create({
   section_2: {
     width: '100%',
     minHeight: '30%',
+    maxHeight: 200,
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    gap: 10,
   },
   button2: {
     paddingVertical: 15,

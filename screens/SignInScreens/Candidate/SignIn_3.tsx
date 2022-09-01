@@ -1,27 +1,38 @@
-import React, { useState } from 'react'
+import React, { SetStateAction, useState } from 'react'
 import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import DatePicker from 'react-native-date-picker'
-import { IoIosArrowDown } from 'react-icons/io'
-import Header from '../Header'
+import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import SelectDropDown from 'react-native-select-dropdown'
+import Header from '../../../components/Header'
 import NextButton from '../NextButton'
 import Footer from '../Footer'
+import { RootStackScreenProps } from '../../../types';
 
-const SignIn_3 = () => {
+const SignIn_3 = ({navigation, route}: RootStackScreenProps<'SignIn_3c'>) => {
 
-  const getCurrentDate=()=>{
+  const [cidade, setCidade] = useState('')
+  const [uf, setUf] = useState('')
+  const [date, setDate] = useState(new Date())
+  const [show, setShow] = useState(false)
 
-    var date = new Date().getDate()
-    var month = new Date().getMonth()
-    var year = new Date().getFullYear()
+  const listaUf = [
+    'AC', 'AL', 'AP',
+    'AM', 'BA', 'CE',
+    'DF', 'ES', 'GO',
+    'MA', 'MT', 'MS',
+    'MG', 'PA', 'PB',
+    'PR', 'PE', 'PI',
+    'RJ', 'RN', 'RS',
+    'RO', 'RR', 'SC',
+    'SP', 'SE', 'TO'
+  ]
 
-    //Alert.alert(date + '-' + month + '-' + year);
-    // You can turn it in to your desired format
-    return date + '/' + month + '/' + year//format: dd-mm-yyyy;
-}
-  
+  const onChange = (event: DateTimePickerEvent, selectedDate: SetStateAction<Date>) => {
+    const currentDate = selectedDate
+    setShow(false)
+    setDate(currentDate)
+  };
 
-  const [date, setDate] = useState(getCurrentDate())
-  const [open, setOpen] = useState(false)
 
 
   return (
@@ -34,6 +45,9 @@ const SignIn_3 = () => {
         />
         <Text style={styles.title}>
           Dados Pessoais
+          {
+            uf
+          }
         </Text>
         <View style={styles.inputs}>
           <View
@@ -48,37 +62,38 @@ const SignIn_3 = () => {
               color: '#848484',
             }}>
               {
-                date
+                date.toLocaleDateString()
               }              
             </Text>
             <TouchableOpacity
               onPress={() => {
-                setOpen(!open)
-                alert(open)
+                setShow(!show)
               }}
             >
-              <IoIosArrowDown />
+              <Ionicons name="ios-arrow-down" size={24} color="black" />
             </TouchableOpacity>
-            {/* <DatePicker
-              modal
-              open={open}
-              date={date}
-              onConfirm={(date) => {
-                setOpen(false)
-                setDate(date)
-              }}
-              onCancel={() => {
-                setOpen(false)
-              }}
-            /> */} 
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={'date'}
+                // @ts-ignore
+                onChange={(event, date) => onChange(event, date)}
+              />
+            )}
           </View>
           <TextInput 
             placeholder={'Cidade De Nascimento'}
             style={styles.input}
           />
-          <TextInput 
-            placeholder={'UF'}
-            style={styles.input}
+          <SelectDropDown 
+            data={listaUf}
+            defaultButtonText={'UF'}
+            buttonTextAfterSelection={(item) => item}
+            onSelect={item => setUf(item)}
+            buttonStyle={{width: '100%', borderWidth: 1, borderRadius: 30, borderColor: '#848484'}}
+            buttonTextStyle={{width: '100%', fontFamily: 'WorkSans_300Light', fontSize: 18, color: '#848484'}}
+            dropdownStyle={{borderRadius: 30, }}
           />
           <TextInput 
             placeholder={'CPF'}
@@ -86,7 +101,9 @@ const SignIn_3 = () => {
           />
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => {}}/>
+          <NextButton _onPress={() => navigation.navigate('SignIn_4c', {
+
+          })}/>
         </View>
         <Footer />
       </View>
@@ -105,10 +122,10 @@ const styles = StyleSheet.create({
     width: 130
   },
   title: {
-    width: '8ch',
+    width: '30%',
     textAlign: 'center',
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 24
+    fontSize: 24,
   },
   inputs: {
     width: '100%',

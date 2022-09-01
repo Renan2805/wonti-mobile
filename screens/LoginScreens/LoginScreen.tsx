@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import { View, KeyboardAvoidingView, Text, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import { StatusBar } from 'expo-status-bar';
-import { AntDesign } from '@expo/vector-icons';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types';
-import { isLoaded } from 'expo-font';
+import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, StatusBar } from 'react-native'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../types'
+import Header from '../../components/Header'
 
 type Props = NativeStackScreenProps<RootStackParamList>
 
@@ -37,16 +35,8 @@ function LoginScreen({navigation}: Props) {
 
   return (
     <View style={styles.container}>
-      
-      <View style={[styles.header, {paddingVertical: 0, margin: 0}]}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-        <AntDesign name="arrowleft" size={45} color="black" />
-        </TouchableOpacity>
-        <Image 
-          source={require('../../assets/images/logoWonti.png')}
-          style={styles.logo}
-        />
-      </View>
+      <StatusBar />
+      <Header />
       <View style={styles.imageContainer}>
         <Image
           source={require('../../assets/images/login-screen.png')}
@@ -85,7 +75,9 @@ function LoginScreen({navigation}: Props) {
           </TouchableOpacity>
         </View>
         <Text style={{fontFamily: 'WorkSans_400Regular', fontSize: 17, textAlign: 'center', marginTop: 35}}>Não possui cadastro?</Text>
-        <Text style={{fontFamily: 'WorkSans_600SemiBold', fontSize: 17, textAlign: 'center', color: '#CA0747'}}>Cadastre-se</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignIn_1', {isUser: active})}>
+          <Text style={{fontFamily: 'WorkSans_600SemiBold', fontSize: 17, textAlign: 'center', color: '#CA0747'}}>Cadastre-se</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -163,16 +155,7 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: '100%',
     flex: 1,
-    backgroundColor: 'white'
-  },
-  header: {
-    width: '100%',
-    minHeight: '10%',
-    paddingHorizontal: 20,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    backgroundColor: 'white',
   },
   logo: {
     width: 110,
