@@ -93,7 +93,7 @@ const SignIn_3 = ({navigation, route}: RootStackScreenProps<'SignIn_3c'>) => {
             onSelect={item => setUf(item)}
             buttonStyle={{width: '100%', borderWidth: 1, borderRadius: 30, borderColor: '#848484'}}
             buttonTextStyle={{width: '100%', fontFamily: 'WorkSans_300Light', fontSize: 18, color: '#848484'}}
-            dropdownStyle={{borderRadius: 30}}
+            dropdownStyle={{borderRadius: 30, }}
           />
           <TextInput 
             placeholder={'CPF'}

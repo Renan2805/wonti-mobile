@@ -51,6 +51,7 @@ export type RootStackParamList = {
     cnpj: string,
     senha: string
   }
+  Detalhes: undefined;
 };
 
 
