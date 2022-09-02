@@ -2,8 +2,24 @@ import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
+import { useState } from "react"
+import { storeData } from "../../../hooks/useAsyncStorage"
+import { RootStackScreenProps } from "../../../types"
 
-const SignIn_4 = () => {
+const SignIn_4 = ({navigation}: RootStackScreenProps<'SignIn_4c'>) => {
+
+  const [telefone, setTelefone] = useState('')
+  const [celular, setCelular] = useState('')
+  const [email, setEmail] = useState('')
+
+  const [confirmaEmail, setConfirmaEmail] = useState('')
+
+  const goNext = () => {
+    storeData('telefone', telefone)
+    storeData('celular', celular)
+    storeData('email', email)
+    navigation.navigate('SignIn_5c')
+  }
 
   return (
     <View style={{height: '100%'}}>
@@ -35,7 +51,7 @@ const SignIn_4 = () => {
           />
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => {}}/>
+          <NextButton _onPress={() => goNext()}/>
         </View>
         <Footer />
       </View>
@@ -54,7 +70,7 @@ const styles = StyleSheet.create({
     width: 130
   },
   title: {
-    width: '8ch',
+    width: '30%',
     textAlign: 'center',
     fontFamily: 'Montserrat_700Bold',
     fontSize: 24

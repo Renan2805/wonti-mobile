@@ -2,15 +2,40 @@ import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
+import { useEffect, useState } from "react"
+import { getData } from "../../../hooks/useAsyncStorage"
 
 
 const SignIn_9 = () => {
 
+  const [teste, setTeste] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    setIsLoading(true)
+    const data = await getData('endereco')
+    // @ts-ignore
+    setTeste(JSON.parse(data))
+    setIsLoading(false)
+  }
+
+  console.log(teste)
+  
+  if(!isLoading)
   return (
     <View style={{height: '100%'}}>
       <Header/>
       <View style={styles.content}>
-        <Image 
+        {
+          <>
+          <Text>{teste.bairro}</Text>
+          </>
+        }
+        {/* <Image 
           source={require('../../../assets/images/done.png')}
           style={styles.image}
         />
@@ -32,9 +57,12 @@ const SignIn_9 = () => {
         <View style={{width: '90%'}}>
           <NextButton _onPress={() => {}}/>
         </View>
-        <Footer />
+        <Footer /> */}
       </View>
     </View>
+  )
+  else return (
+    <Text>Loading...</Text>
   )
 }
 

@@ -1,19 +1,25 @@
+import { useState } from 'react'
 import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
-import { useFonts } from "expo-font"
-import { WorkSans_300Light, WorkSans_600SemiBold } from "@expo-google-fonts/work-sans"
-import { Montserrat_700Bold } from "@expo-google-fonts/montserrat"
+import { storeData } from '../../../hooks/useAsyncStorage'
+import { RootStackScreenProps } from '../../../types'
 
 
-const SignIn_6 = () => {
+const SignIn_6 = ({navigation}: RootStackScreenProps<'SignIn_6c'>) => {
 
-  useFonts({
-    WorkSans_300Light,
-    WorkSans_600SemiBold,
-    Montserrat_700Bold
-  })
+  const [instituicao, setInstituicao] = useState('')
+  const [nivel, setNivel] = useState('')
+  const [qualificacao, setQualificacao] = useState('')
+
+  const goNext = () => {
+    navigation.navigate('SignIn_7c', {
+      instituicao: instituicao,
+      nivel: nivel,
+      qualificacao: qualificacao
+    })
+  }
 
   return (
     <View style={{height: '100%'}}>
@@ -34,25 +40,28 @@ const SignIn_6 = () => {
           <TextInput 
             placeholder={'Ex: ETEC'}
             style={styles.input}
+            onChangeText={text => setInstituicao(text)}
           />
           <Text style={styles.subTitle}>
-            Instituição de ensino
+            Nivel Acadêmico
           </Text>
           <TextInput 
             placeholder={'Ex: Ensino Médio'}
             style={styles.input}
+            onChangeText={text => setNivel(text)}
           />
           <Text style={styles.subTitle}>
-            Instituição de ensino
+            Qualificação
           </Text>
           <TextInput 
             placeholder={'Ex: Informática'}
             style={styles.input}
+            onChangeText={text => setQualificacao(text)}
           />
           
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => {}}/>
+          <NextButton _onPress={() => goNext()}/>
         </View>
         <Footer />
       </View>
@@ -71,7 +80,7 @@ const styles = StyleSheet.create({
     width: 130
   },
   title: {
-    width: '9ch',
+    width: '35%',
     textAlign: 'center',
     fontFamily: 'Montserrat_700Bold',
     fontSize: 24

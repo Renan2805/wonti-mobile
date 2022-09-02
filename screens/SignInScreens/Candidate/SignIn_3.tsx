@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react'
+import React, { SetStateAction, useState, useEffect } from 'react'
 import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
@@ -7,6 +7,7 @@ import Header from '../../../components/Header'
 import NextButton from '../NextButton'
 import Footer from '../Footer'
 import { RootStackScreenProps } from '../../../types';
+import { storeData } from '../../../hooks/useAsyncStorage';
 
 const SignIn_3 = ({navigation, route}: RootStackScreenProps<'SignIn_3c'>) => {
 
@@ -33,7 +34,12 @@ const SignIn_3 = ({navigation, route}: RootStackScreenProps<'SignIn_3c'>) => {
     setDate(currentDate)
   };
 
-
+  const goNext = () => {
+    storeData('cidade', cidade)
+    storeData('uf', uf)
+    storeData('data-nascimento', date.toString())
+    navigation.navigate('SignIn_4c')
+  }
 
   return (
     <View style={{height: '100%'}}>
@@ -45,9 +51,6 @@ const SignIn_3 = ({navigation, route}: RootStackScreenProps<'SignIn_3c'>) => {
         />
         <Text style={styles.title}>
           Dados Pessoais
-          {
-            uf
-          }
         </Text>
         <View style={styles.inputs}>
           <View
@@ -85,9 +88,11 @@ const SignIn_3 = ({navigation, route}: RootStackScreenProps<'SignIn_3c'>) => {
           <TextInput 
             placeholder={'Cidade De Nascimento'}
             style={styles.input}
+            onChangeText={text => setCidade(text)}
           />
-          <SelectDropDown 
+          <SelectDropDown
             data={listaUf}
+            rowTextForSelection={(item) => item}
             defaultButtonText={'UF'}
             buttonTextAfterSelection={(item) => item}
             onSelect={item => setUf(item)}
@@ -95,15 +100,9 @@ const SignIn_3 = ({navigation, route}: RootStackScreenProps<'SignIn_3c'>) => {
             buttonTextStyle={{width: '100%', fontFamily: 'WorkSans_300Light', fontSize: 18, color: '#848484'}}
             dropdownStyle={{borderRadius: 30, }}
           />
-          <TextInput 
-            placeholder={'CPF'}
-            style={styles.input}
-          />
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => navigation.navigate('SignIn_4c', {
-
-          })}/>
+          <NextButton _onPress={() => goNext()}/>
         </View>
         <Footer />
       </View>

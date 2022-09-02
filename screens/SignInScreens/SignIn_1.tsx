@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Button } from "react-native"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import { FontAwesome } from '@expo/vector-icons'
@@ -6,6 +6,7 @@ import Header from "../../components/Header"
 
 import NextButton from './NextButton'
 import { RootStackScreenProps } from '../../types'
+import { storeData, getData } from '../../hooks/useAsyncStorage'
 
 const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
 
@@ -14,12 +15,16 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
 
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
-
-  console.log(navigation)
-
+  
+  const [isLoading, setIsLoading] = useState(true)
+  const [teste, setTeste] = useState('')
+  
   const goNext = () => {
-    if (isUser) navigation.navigate('SignIn_2c', {cpf: user, senha: password})
-    else navigation.navigate('SignIn_2e', {cnpj: user, senha: password})
+    storeData('user', user)
+    storeData('password', password)
+
+    if (isUser) navigation.navigate('SignIn_2c')
+    else navigation.navigate('SignIn_2e')
   }
 
   return (
@@ -42,7 +47,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
     <Header />
     <View style={styles.container}>
       <View style={styles.section_1}>
-        <Text style={styles.title}>Cadastre-se</Text>
+        <Text style={styles.title}>Cadastre-se {teste}</Text>
         <View style={[styles.inputs, { minHeight: 110}]}>
           <TextInput 
             placeholder={ isUser ? 'CPF' : 'CNPJ' }

@@ -1,16 +1,24 @@
-import { useState } from 'react' 
+import { useState, useEffect } from 'react' 
 import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import { RootStackScreenProps } from "../../../types"
 import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
-
+import { storeData } from '../../../hooks/useAsyncStorage'
 
 const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2c'>) => {
 
   const [nome, setNome] = useState('')
   const [sobrenome, setSobrenome] = useState('')
   const [rg, setRg] = useState('')
+
+  const goNext = () => {
+    storeData('nome', nome)
+    storeData('sobrenome', sobrenome)
+    storeData('rg', rg)
+
+    navigation.navigate('SignIn_3c')
+  }
 
   return (
     <View style={{height: '100%'}}>
@@ -27,28 +35,21 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2c'>) => {
           <TextInput 
             placeholder={'Nome'}
             style={styles.input}
+            onChangeText={text => setNome(text)}
           />
           <TextInput 
             placeholder={'Sobrenome'}
             style={styles.input}
+            onChangeText={text => setSobrenome(text)}
           />
           <TextInput 
             placeholder={'RG'}
             style={styles.input}
-          />
-          <TextInput 
-            placeholder={'CPF'}
-            style={styles.input}
+            onChangeText={text => setRg(text)}
           />
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => navigation.navigate('SignIn_3c', {
-            nome: nome,
-            sobrenome: sobrenome,
-            rg: rg,
-            cpf: route.params.cpf,
-            senha: route.params.senha
-          })}/>
+          <NextButton _onPress={() => goNext()}/>
         </View>
         <Footer />
       </View>

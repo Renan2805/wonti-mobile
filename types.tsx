@@ -19,38 +19,32 @@ export type RootStackParamList = {
   NotFound: undefined;
   Intro: undefined;
   LoginScreen: undefined;
-  
+
   SignIn_1: {
     isUser: boolean
   };
 
-  SignIn_2c: {
-    cpf: string,
-    senha: string
+  SignIn_2c: undefined;
+  SignIn_3c: undefined;
+  SignIn_4c: undefined;
+  SignIn_5c: undefined;
+  SignIn_6c: undefined;
+  SignIn_7c: {
+    instituicao: string,
+    nivel: string,
+    qualificacao: string
   };
-  SignIn_3c: {
-    nome: string,
-    sobrenome: string,
-    rg: string,
-    cpf: string,
-    senha: string
+  SignIn_8c: {
+    instituicao: string,
+    nivel: string,
+    qualificacao: string,
+
+    dataInicio: string,
+    dataTermino: string
   };
-  SignIn_4c: {
-    data_nasc: Date,
-    cidade: string,
-    uf: string,
+  SignIn_9c: undefined;
 
-    nome: string,
-    sobrenome: string,
-    rg: string,
-    cpf: string,
-    senha: string
-  }
-
-  SignIn_2e: {
-    cnpj: string,
-    senha: string
-  }
+  SignIn_2e: undefined;
   Detalhes: undefined;
 };
 
