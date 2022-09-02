@@ -14,12 +14,12 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
       </View>
       <View style={{width:'100%',flexDirection:'row', display:'flex', paddingLeft: 32}}>
         <View style={{
-         width: 81,
-         height: 80,
+         width: 90,
+         height: 91,
          borderRadius:100, 
          borderWidth:1}}>
           <Image 
-            source={require('../assets/images/adaptive-icon.png')}
+            source={require('../assets/images/vh.jpg')}
             style={style.Perfil}  
           />
       </View>
@@ -53,7 +53,8 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
         <View style={{
-         padding: 12, 
+         padding: 9,
+         paddingLeft:10, 
          backgroundColor:'#8F00FF26', 
          alignItems:'center',
          width: 63,
@@ -71,7 +72,8 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
         <View style={{
-         padding: 12, 
+         padding: 9,
+         paddingLeft:13,
          backgroundColor:'#001AFF26',
          width: 63,
          height:63,
@@ -88,7 +90,8 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
         <View style={{
-         padding: 12, 
+         padding: 9,
+         paddingLeft:12, 
          backgroundColor:'#D8F6CE',
          width: 63,
          height: 63,
@@ -105,7 +108,8 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
       </View>
       <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
         <View style={{
-         padding: 12, 
+         padding: 9, 
+         paddingLeft:12,
          backgroundColor:'#F3E2A9',
          width: 63,
          height: 63,
@@ -121,7 +125,8 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
         </TouchableOpacity>
       </View><View style={{width:'100%',flexDirection:'row', display:'flex',marginBottom: 32, paddingLeft: 32}}>
         <View style={{
-         padding: 12, 
+         padding: 11, 
+         paddingLeft:15,
          backgroundColor:'#FF7A0026',
          width: 63,
          height: 63,
@@ -166,7 +171,8 @@ const style = StyleSheet.create({
   // }
   Perfil: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    borderRadius:100
   },
   TextConta: {
     fontSize:30,
