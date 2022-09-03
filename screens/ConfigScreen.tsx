@@ -5,8 +5,20 @@ import { RootTabScreenProps } from '../types'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { auth } from '../config/firebase';
 
 const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
+
+  const logOut = async () => {
+    auth.signOut()
+    .then(() => {
+      navigation.navigate('LoginScreen')
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
   return (
     <ScrollView contentContainerStyle={style.content}>
       <View style={{width:'100%', padding: 32}}>
@@ -132,7 +144,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
          height: 63,
          borderRadius:100, 
          }}>
-          <Entypo name="log-out" size={40} color="red" />
+          <Entypo name="log-out" size={40} color="red" onPress={() => logOut()}/>
         </View>
         <TouchableOpacity style={style.ButtonView}>
           <Text style={style.TextNome}>Sair</Text>

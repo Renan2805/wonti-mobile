@@ -1,154 +1,131 @@
-import { useState } from 'react'
-import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, StatusBar } from 'react-native'
+import { useEffect, useState } from 'react'
+import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, StatusBar, KeyboardAvoidingView } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../types'
 import Header from '../../components/Header'
+import { auth, storage } from '../../config/firebase'
+import { signInWithEmailAndPassword, UserCredential, AuthError, signOut } from 'firebase/auth'
+import { storeData } from '../../hooks/useAsyncStorage'
 
 type Props = NativeStackScreenProps<RootStackParamList>
 
 function LoginScreen({navigation}: Props) {
 
-  const [active, setActive]     = useState(true)
+  const [active, setActive]       = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const [user, setUser]         = useState("pp")
-  const [password, setPassword] = useState("uu")
+  const [email, setEmail]       = useState("")
+  const [password, setPassword] = useState("")
   
-  const [userValid, setUserValid]         = useState(false)
-  const [passwordValid, setPasswordValid] = useState(false)
-  const doLogin = () => {
-  
-    if(active) {
-      if (validaCPF(user)) setUserValid(true)
-      else alert('CPF Inválido')
-    } else {
+  const [error, setError]       = useState('')
 
+  const handleError = (err: AuthError) => {
+    switch(err.code) {
+      case 'auth/invalid-email':
+        setError('Email Invalido')
+        break
+      case 'auth/wrong-password':
+        setError('Senha Incorreta')
+        break
+      case 'auth/too-many-requests':
+        setError('Muitas tentativas, tente novamente mais tarde')
+        break
+      case 'auth/internal-error':
+        setError('Erro Interno, tente novamente mais tarde')
+        break
+      default:
+        setError(err.code)
+        break
     }
 
-    if (validaSenha(password)) setPasswordValid(true)
-    else alert('Senha Inválida')
-
-    if (userValid && passwordValid) {
-      alert('tudo certo')
-    }
-
+    console.log(err)
+    
   }
 
-  return (
-    <View style={styles.container}>
-      <StatusBar />
-      <Header />
-      <View style={styles.imageContainer}>
-        <Image
-          source={require('../../assets/images/login-screen.png')}
-          style={styles.image}
-        />
+  const loginFirebase = () => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential: UserCredential) => {
+      return userCredential.user.uid
+    })
+    .catch((err: AuthError) => handleError(err))
+  }
+  
+  const doLogin = () => {
+    const userUid = loginFirebase()
+    if(email !== '' && password !== '') {
+
+      // @ts-ignore
+      storeData('uid', userUid)
+      // @ts-ignore
+      navigation.navigate('App')
+    }
+  }
+
+  useEffect(() => {
+    signOut(auth)
+      .then(() => {
+        setIsLoading(false)
+      })
+      .catch(e => setError(e))
+  }, [])
+
+  if(!isLoading) return (
+    <KeyboardAvoidingView style={styles.container} behavior={'height'}>
+      <View style={{flex: 3}}>
+        <Header />
+        <View style={styles.imageContainer}>
+          <Image source={require('../../assets/images/login-screen.png')} style={styles.image}/>
+        </View>
       </View>
       <View style={styles.pinkContainer}>
         <View style={styles.loginContainer}>
           <View style={styles.ce}>
-            <TouchableOpacity onPress={() => setActive(true)}>
-              <Text style={active ? styles.ceTextActive : styles.ceText}>
-                Candidatas
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setActive(false)}>
-              <Text style={active ? styles.ceText : styles.ceTextActive}>
-                Empresas
-              </Text>
-            </TouchableOpacity>
+            <Text style={active ? styles.ceTextActive : styles.ceText} onPress={() => setActive(true)}>Candidata</Text>
+            <Text style={!active ? styles.ceTextActive : styles.ceText} onPress={() => setActive(false)}>Empresa</Text>
           </View>
-          <TextInput placeholder={active ? 'CPF' : 'CNPJ' } style={styles.input} onChangeText={(text) => setUser(text)}/>
-          <Spacer height={10}/>
-          <TextInput placeholder='Senha' style={styles.input} onChangeText={(text) => setPassword(text)}/>
-          <Text style={{textAlign: 'right', fontFamily: 'WorkSans_400Regular', fontSize: 15, marginBottom: 10}}>Esqueceu a senha?</Text>
-          <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('App')}>
-            <Text
-              style={{
-                color: '#FFF',
-                fontSize: 23,
-                fontFamily: 'WorkSans_500Medium',
-                textAlign: 'center'
-              }}
-            >
-              Entrar
-            </Text>
+          {
+            error != ''
+            ?
+            <Text style={styles.erro}>{error}</Text>
+            :
+            <></>
+          }
+          <View style={styles.inputs}>
+            <TextInput 
+              style={styles.input}
+              placeholder={'Email'}
+              value={email}
+              onChangeText={text => setEmail(text)}
+              keyboardType={'email-address'}
+
+              />
+            <TextInput 
+              style={styles.input}
+              placeholder={'Senha'}
+              value={password}
+              onChangeText={text => setPassword(text)}
+              secureTextEntry={true}
+            />
+          </View>
+          {/* @ts-ignore */}
+          <Text style={{fontFamily: 'WorkSans_400Regular', fontSize: 15, textAlign: 'right', marginVertical: 5}} onPress={() => navigation.navigate('passwordRecover')}>Esqueceu a senha?</Text>
+          <TouchableOpacity style={styles.loginButton} onPress={() => doLogin()}>
+            <Text style={{fontFamily: 'WorkSans_500Medium', fontSize: 23, color: 'white', textAlign: 'center'}}>Entrar</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{fontFamily: 'WorkSans_400Regular', fontSize: 17, textAlign: 'center', marginTop: 35}}>Não possui cadastro?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('SignIn_1', {isUser: active})}>
-          <Text style={{fontFamily: 'WorkSans_600SemiBold', fontSize: 17, textAlign: 'center', color: '#CA0747'}}>Cadastre-se</Text>
-        </TouchableOpacity>
+        <Text style={{fontFamily: 'WorkSans_400Regular', fontSize: 17, textAlign: 'center', maxWidth: '100%', flex: 0}}>
+          Não possui cadastro?{'\n'}
+          <Text style={{fontFamily: 'WorkSans_600SemiBold', color: '#CA0747'}} onPress={() => navigation.navigate('SignIn_1', {isUser: active})}> Cadastre-se</Text>
+        </Text>
       </View>
-    </View>
+    </KeyboardAvoidingView>
+  )
+  else return (
+    <Text>Loading...</Text>
   )
 }
 
 export default LoginScreen
-
-interface SpacerProps {
-  height: number
-}
-
-const Spacer = ({ height }: SpacerProps) => {
-  return (
-    <View style={{height: height}}></View>
-  )
-}
-
-function validaCPF(strCPF: string) {
-  //Verifica se o CPF é o mesmo numero repetido 11 vezes 
-  var intCPF: number = parseInt(strCPF),
-      soma:   number = 0
-  while(intCPF) {
-    soma += intCPF % 10
-    intCPF = Math.floor(intCPF / 10)
-  }
-  if(soma === parseInt(strCPF[0]) * 11) return false
-
-  var Soma
-  var Resto
-  Soma = 0
-
-  for (let i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i)
-  Resto = (Soma * 10) % 11
-
-  if ((Resto == 10) || (Resto == 11))  Resto = 0
-  if (Resto != parseInt(strCPF.substring(9, 10)) ) return false
-
-  Soma = 0
-  for (let i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i)
-  Resto = (Soma * 10) % 11
-
-  if ((Resto == 10) || (Resto == 11))  Resto = 0
-  if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false
-  return true
-}
-
-// function validaCNPJ (strCnpj: any) {
-//   var b = [ 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 ]
-//   var c = String(strCnpj).replace(/[^\d]/g, '')
-  
-//   if(c.length !== 14)
-//       return false
-
-//   if(/0{14}/.test(c))
-//       return false
-
-//   for (var i: any = 0, n = 0; i < 12; n += c[i] * b[++i]);
-//   if(c[12] != (((n %= 11) < 2) ? 0 : 11 - n))
-//       return false
-
-//   for (var i = 0, n = 0; i <= 12; n += c[i] * b[i++]);
-//   if(c[13] != (((n %= 11) < 2) ? 0 : 11 - n))
-//       return false
-
-//   return true
-// }
-
-function validaSenha(strSenha: string) {
-  if (strSenha.length < 8 || strSenha.length > 12) return false
-  else return true
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -156,6 +133,7 @@ const styles = StyleSheet.create({
     minHeight: '100%',
     flex: 1,
     backgroundColor: 'white',
+    paddingTop: StatusBar.currentHeight
   },
   logo: {
     width: 110,
@@ -163,47 +141,63 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: '30%',
+    height: '90%',
     alignItems: 'center',
   },
   image: {
     height: '100%',
-    width: '80%'
+    aspectRatio: 1 / 1
+  },
+  erro: {
+    width: '100%',
+    textAlign: 'center',
+    fontSize: 16,
+    fontFamily: 'WorkSans_700Bold',
+    color: 'red'
   },
   pinkContainer: {
     width: '100%',
-    minHeight: '55%',
     backgroundColor: '#FFEEF5',
-    borderTopRightRadius: 50,
-    borderTopLeftRadius: 50,
-    paddingTop: 40,
-    paddingHorizontal: 25,
+    flex: 3,
+    justifyContent: 'space-between',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 40,
+    paddingHorizontal: 20
   },
   loginContainer: {
+    flex: 0,
     width: '100%',
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 30,
+    paddingBottom: 20,
     borderRadius: 25,
     backgroundColor: 'white',
     borderColor: '#ff035626',
     borderWidth: 1,
+  },
+  inputs: {
+    flex: 0,
+    maxHeight: '50%',
+    minHeight: '30%',
+    justifyContent: 'space-around',
   },
   input: {
     width: '100%',
     borderWidth: 1,
     borderColor: '#848484',
     borderRadius: 30,
-    padding: 15,
-    fontSize: 20
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    fontFamily: 'WorkSans_300Light',
+    fontSize: 18
   },
   ce: {
-    flex: 1,
+    flex: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingBottom: 5,
     marginBottom: 5,
-    minHeight: '11%'
   },
   ceText: {
     fontFamily: 'Montserrat_600SemiBold',
@@ -226,8 +220,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 40,
     paddingVertical: 15,
-    transform: [
-      { translateY: 15}
-    ]
   }
 })

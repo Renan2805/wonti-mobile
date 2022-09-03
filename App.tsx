@@ -2,9 +2,6 @@ import React, { useState } from 'react'
 import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import useColorScheme from './hooks/useColorScheme';
-
 import IntroScreen from './screens/FirstAccess/IntroScreen';
 import FirstScreen from './screens/FirstAccess/FirstScreen';
 
@@ -52,7 +49,7 @@ import { Numans_400Regular } from '@expo-google-fonts/numans'
 
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { RootTabParamList, RootTabScreenProps } from './types';
+import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from './types';
 import HomeScreen from './screens/HomeScreen';
 import { Home, Work, Chat, Setting } from 'react-native-iconly';
 import ChatScreen from './screens/ChatScreen';
@@ -138,7 +135,7 @@ export default function App() {
   )
 }
       
-function BottomTabNavigator() {
+function BottomTabNavigator({route}: RootStackScreenProps<'App'>) {
   const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
   return (
@@ -165,7 +162,6 @@ function BottomTabNavigator() {
           component={HomeScreen}
           options={({ navigation }: RootTabScreenProps<'Home'>) => ({
             tabBarIcon: ({ color, focused }) => focused ? <Home primaryColor={color} set="bold" size={'large'}/> : <Home primaryColor={color} size={'large'}/>,
-            
           })}
         />
         <BottomTab.Screen

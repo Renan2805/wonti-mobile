@@ -4,6 +4,7 @@ import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 import { useEffect, useState } from "react"
 import { getData } from "../../../hooks/useAsyncStorage"
+import { storage } from "../../../config/firebase"
 
 
 const SignIn_9 = () => {
@@ -30,8 +31,9 @@ const SignIn_9 = () => {
     <View style={{height: '100%'}}>
       <Header/>
       <View style={styles.content}>
-        {
+        { 
           <>
+          {/* @ts-ignore */}
           <Text>{teste.bairro}</Text>
           </>
         }

@@ -1,7 +1,6 @@
 import React from "react"
 import { View, Image, StyleSheet,  TouchableOpacity, StatusBar } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import { CaretLeft } from "react-native-iconly"
 import { AntDesign } from "@expo/vector-icons"
 
 const Header = () => {
@@ -10,7 +9,7 @@ const Header = () => {
 
   return (
     <View style={[styles.header, {paddingVertical: 0, margin: 0}]}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.canGoBack() ? navigation.goBack() : {}}>
         <AntDesign name="arrowleft" size={35} color="black" />
       </TouchableOpacity>
       <Image 
@@ -25,17 +24,16 @@ const Header = () => {
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: '10%',
-    paddingHorizontal: 20,
-    flex: 1,
+    flex: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: StatusBar.currentHeight
+    paddingHorizontal: 20,
+    height: '10%'
   },
   logo: {
-    width: 75,
-    height: 23
+    height: 30,
+    width: 100
   }
 })
 
