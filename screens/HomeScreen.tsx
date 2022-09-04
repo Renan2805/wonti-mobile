@@ -1,18 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, View, Text, StyleSheet, StatusBar, SafeAreaView, KeyboardAvoidingView } from 'react-native'
+import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
 import { RootTabScreenProps } from '../types'
+import { getData } from '../hooks/useAsyncStorage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
 
+  const [uid, setUid] = useState('')
+
+  const fetchData = async () => {
+    const d = await getData('uid')
+      .then(data => data)
+      .catch(e => console.log(e))
+    setUid(d)
+  }
+
+  useEffect(() => {
+    const keys = AsyncStorage.getAllKeys()
+    console.log(keys)
+    
+  }, [uid])
+  
+
   return (
     <SafeAreaView style={style.safeView}>
-      <StatusBar />
+      <ExpoStatusBar.StatusBar translucent={true}/>
       <ScrollView contentContainerStyle={style.content} showsVerticalScrollIndicator={false} stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true} >
       <View style={{width: '100%', alignItems: 'center'}}>
         <SearchBar />
       </View>
+      <Text>{uid ? uid : 'Vazio'}</Text>
       <CardRecommended 
         title={'Dev. Front End'}
         image={'https://logopng.com.br/logos/google-37.png'}
