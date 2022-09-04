@@ -10,11 +10,11 @@ const storeData = (key: string, value: string) => {
 
 const getData = async (key: string) => {
   try {
-    const data = await AsyncStorage.getItem(key);
-    if (data !== null) {
-      console.log(data);
-      return data;
-    }
+    return await AsyncStorage.getItem(key);
+    // if (data !== null) {
+    //   console.log(data);
+    //   return data;
+    // }
   } catch (error) {
     console.log(error);
   }

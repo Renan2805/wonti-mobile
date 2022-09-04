@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -60,6 +60,7 @@ import SignIn_1 from './screens/SignInScreens/SignIn_1';
 import * as SignInCandidate from './screens/SignInScreens/Candidate'
 import SignIn_2 from './screens/SignInScreens/Hirer/SignIn_2';
 import DetalhesDaConta from './screens/DetalhesConta/DetalhesDaConta';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
 
@@ -137,7 +138,14 @@ export default function App() {
       
 function BottomTabNavigator({route}: RootStackScreenProps<'App'>) {
   const BottomTab = createBottomTabNavigator<RootTabParamList>();
+  const [isLoading, setIsLoading] = useState(true)
 
+  useEffect(() => {
+    AsyncStorage.removeItem('user')
+    setIsLoading(false)
+  }, [])
+
+  if(!isLoading)
   return (
     <BottomTab.Navigator
 
@@ -186,5 +194,8 @@ function BottomTabNavigator({route}: RootStackScreenProps<'App'>) {
           })}
         />
     </BottomTab.Navigator>
-  );
+  )
+  else return (
+    <Text>Loading...</Text>
+  )
 }

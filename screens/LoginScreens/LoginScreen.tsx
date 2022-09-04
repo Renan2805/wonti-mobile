@@ -5,7 +5,8 @@ import { RootStackParamList } from '../../types'
 import Header from '../../components/Header'
 import { auth, storage } from '../../config/firebase'
 import { signInWithEmailAndPassword, UserCredential, AuthError, signOut } from 'firebase/auth'
-import { storeData } from '../../hooks/useAsyncStorage'
+import { getData, storeData } from '../../hooks/useAsyncStorage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type Props = NativeStackScreenProps<RootStackParamList>
 
@@ -16,7 +17,7 @@ function LoginScreen({navigation}: Props) {
 
   const [email, setEmail]       = useState("")
   const [password, setPassword] = useState("")
-  
+
   const [error, setError]       = useState('')
 
   const handleError = (err: AuthError) => {
@@ -45,26 +46,18 @@ function LoginScreen({navigation}: Props) {
   const loginFirebase = () => {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential: UserCredential) => {
-      return userCredential.user.uid
+      const userStr = JSON.stringify(userCredential.user)
+      storeData('user', userStr)
     })
+    .finally(() => {navigation.navigate('App')})
     .catch((err: AuthError) => handleError(err))
-  }
-  
-  const doLogin = () => {
-    const userUid = loginFirebase()
-    if(email !== '' && password !== '') {
-
-      // @ts-ignore
-      storeData('uid', userUid)
-      // @ts-ignore
-      navigation.navigate('App')
-    }
   }
 
   useEffect(() => {
+    setIsLoading(true)
     signOut(auth)
-      .then(() => {
-        setIsLoading(false)
+    .then(() => {
+      setIsLoading(false)
       })
       .catch(e => setError(e))
   }, [])
@@ -109,7 +102,7 @@ function LoginScreen({navigation}: Props) {
           </View>
           {/* @ts-ignore */}
           <Text style={{fontFamily: 'WorkSans_400Regular', fontSize: 15, textAlign: 'right', marginVertical: 5}} onPress={() => navigation.navigate('passwordRecover')}>Esqueceu a senha?</Text>
-          <TouchableOpacity style={styles.loginButton} onPress={() => doLogin()}>
+          <TouchableOpacity style={styles.loginButton} onPress={() => loginFirebase()}>
             <Text style={{fontFamily: 'WorkSans_500Medium', fontSize: 23, color: 'white', textAlign: 'center'}}>Entrar</Text>
           </TouchableOpacity>
         </View>

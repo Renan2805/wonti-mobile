@@ -14,9 +14,7 @@ declare global {
 }
 
 export type RootStackParamList = {
-  App: {
-    uid: string
-  };
+  App: undefined;
   Modal: undefined;
   NotFound: undefined;
   Intro: undefined;

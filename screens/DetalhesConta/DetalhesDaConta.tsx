@@ -1,12 +1,16 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { ScrollView, Text, StyleSheet, View, Image ,TouchableOpacity, ImageBackground } from 'react-native'
 import { RootStackParamList } from '../../types'
+import { auth } from '../../config/firebase';
 
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import { useState } from 'react';
 
 type Props = NativeStackScreenProps<RootStackParamList>
 
 const DetalhesDaConta = ({ navigation }: Props) => {
+
+  const [user, setUser] = useState(auth.currentUser)
 
   return (
     <ScrollView contentContainerStyle={style.content}>

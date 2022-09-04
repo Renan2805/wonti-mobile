@@ -18,9 +18,9 @@ const SignIn_9 = () => {
 
   const fetchData = async () => {
     setIsLoading(true)
-    const data = await getData('endereco')
+    const data = await getData('uid')
     // @ts-ignore
-    setTeste(JSON.parse(data))
+    setTeste(data)
     setIsLoading(false)
   }
 
@@ -34,7 +34,7 @@ const SignIn_9 = () => {
         { 
           <>
           {/* @ts-ignore */}
-          <Text>{teste.bairro}</Text>
+          <Text>{teste}</Text>
           </>
         }
         {/* <Image 

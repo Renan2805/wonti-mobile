@@ -6,8 +6,11 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { auth } from '../config/firebase';
+import { useState } from 'react';
 
 const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
+
+  const [user, setUser] = useState(auth.currentUser)
 
   const logOut = async () => {
     auth.signOut()
@@ -31,7 +34,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
          borderRadius:100, 
          borderWidth:1}}>
           <Image 
-            source={require('../assets/images/vh.jpg')}
+            source={{uri: user.photoURL}}
             style={style.Perfil}  
           />
       </View>
