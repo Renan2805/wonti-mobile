@@ -20,4 +20,13 @@ const getData = async (key: string) => {
   }
 }
 
-export {storeData, getData}
+const getMultipleData = async (keys: Array<string>) => {
+  try {
+    return await AsyncStorage.multiGet(keys)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+export {storeData, getData, getMultipleData}

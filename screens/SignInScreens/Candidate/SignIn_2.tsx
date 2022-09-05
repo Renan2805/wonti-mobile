@@ -11,13 +11,20 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2c'>) => {
   const [nome, setNome] = useState('')
   const [sobrenome, setSobrenome] = useState('')
   const [rg, setRg] = useState('')
+  const [cpf, setCpf] = useState('')
 
   const goNext = () => {
-    storeData('nome', nome)
-    storeData('sobrenome', sobrenome)
-    storeData('rg', rg)
 
-    navigation.navigate('SignIn_3c')
+    const dadosPessoais = {
+      nome: nome,
+      sobrenome: sobrenome,
+      rg: rg,
+      cpf: cpf
+    }
+
+    storeData('dadosPessoais', JSON.stringify(dadosPessoais))
+
+    navigation.navigate('SignIn_4c')
   }
 
   return (
@@ -46,6 +53,11 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2c'>) => {
             placeholder={'RG'}
             style={styles.input}
             onChangeText={text => setRg(text)}
+          />
+          <TextInput 
+            placeholder={'CPF'}
+            style={styles.input}
+            onChangeText={text => setCpf(text)}
           />
         </View>
         <View style={{width: '90%'}}>

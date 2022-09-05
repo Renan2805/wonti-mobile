@@ -17,6 +17,7 @@ export type RootStackParamList = {
   App: undefined;
   Modal: undefined;
   NotFound: undefined;
+  First: undefined;
   Intro: undefined;
   LoginScreen: undefined;
 

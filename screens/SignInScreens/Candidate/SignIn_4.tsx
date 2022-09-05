@@ -15,9 +15,13 @@ const SignIn_4 = ({navigation}: RootStackScreenProps<'SignIn_4c'>) => {
   const [confirmaEmail, setConfirmaEmail] = useState('')
 
   const goNext = () => {
-    storeData('telefone', telefone)
-    storeData('celular', celular)
-    storeData('email', email)
+
+    const contato = {
+      telefone: telefone,
+      celular: celular
+    }
+
+    storeData('contato', JSON.stringify(contato))
     navigation.navigate('SignIn_5c')
   }
 
@@ -36,18 +40,12 @@ const SignIn_4 = ({navigation}: RootStackScreenProps<'SignIn_4c'>) => {
           <TextInput 
             placeholder={'Telefone'}
             style={styles.input}
+            onChangeText={text => setTelefone(text)}
           />
           <TextInput 
             placeholder={'Celular'}
             style={styles.input}
-          />
-          <TextInput 
-            placeholder={'Email'}
-            style={styles.input}
-          />
-          <TextInput 
-            placeholder={'Confirmar Email'}
-            style={styles.input}
+            onChangeText={text => setCelular(text)}
           />
         </View>
         <View style={{width: '90%'}}>

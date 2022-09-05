@@ -1,30 +1,43 @@
 import { IoMdLock,IoMdHelp } from 'react-icons/io'
-import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity} from 'react-native'
+import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, StatusBar} from 'react-native'
 import { RootTabScreenProps } from '../types'
 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { auth } from '../config/firebase';
-import { useState } from 'react';
+import { auth, db } from '../config/firebase';
+import { useState, useEffect } from 'react';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import Loader from '../components/Loader/Loader';
+import { updateCurrentUser, updateProfile, signOut } from '@firebase/auth';
 
 const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
 
   const [user, setUser] = useState(auth.currentUser)
+  const [adress, setAdress] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
 
-  const logOut = async () => {
-    auth.signOut()
-    .then(() => {
-      navigation.navigate('LoginScreen')
-    })
-    .catch(e => {
-      console.log(e)
-    })
+  const logOut =  () => {
+    signOut(auth).catch(e => console.error(e))
   }
 
+  // const fetchData = async () => {
+  //   // @ts-ignore
+  //   const d = doc(db, `Users/${user?.uid}`)
+  //   const document = await getDoc(d)
+  //   // @ts-ignore
+  //   setAdress(document.data())
+    
+  // }
+
+  useEffect(() => {
+    if(user != null) setIsLoading(false)
+  }, [user])
+
+  if(!isLoading)
   return (
     <ScrollView contentContainerStyle={style.content}>
-      <View style={{width:'100%', padding: 32}}>
+      <View style={{width:'100%', padding: 32, marginTop: StatusBar.currentHeight}}>
         <Text style={style.TextConta}>Conta</Text>
       </View>
       <View style={{width:'100%',flexDirection:'row', display:'flex', paddingLeft: 32}}>
@@ -33,13 +46,15 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
          height: 91,
          borderRadius:100, 
          borderWidth:1}}>
-          <Image 
-            source={{uri: user.photoURL}}
+          <Image
+            // @ts-ignore
+            source={{uri: user?.photoURL}}
             style={style.Perfil}  
           />
       </View>
-        <TouchableOpacity style={style.ButtonView} onPress={() => {navigation.navigate('Detalhes')}}>
-          <Text style={style.TextNome}>Alana Moreira</Text>
+         {/* @ts-ignore  */}
+        <TouchableOpacity style={style.ButtonView} onPress={() => {navigation.navigate('DetailScreen')}}>
+          <Text style={style.TextNome}>{user?.displayName}</Text>
           <Text style={style.TextDesc}>Informações da conta</Text>
           <View style={{display:'flex', position:'absolute', left:'75%',top: 32}}>
             <Ionicons name="arrow-forward" size={20} color="black" />
@@ -157,6 +172,9 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
         </TouchableOpacity>
       </View> 
     </ScrollView>
+  )
+  else return (
+    <Loader />
   )
 }
 

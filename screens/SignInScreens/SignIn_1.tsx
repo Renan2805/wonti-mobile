@@ -20,7 +20,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
   const [teste, setTeste] = useState('')
   
   const goNext = () => {
-    storeData('user', user)
+    storeData('email', user)
     storeData('password', password)
 
     if (isUser) navigation.navigate('SignIn_2c')
@@ -50,7 +50,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
         <Text style={styles.title}>Cadastre-se {teste}</Text>
         <View style={[styles.inputs, { minHeight: 110}]}>
           <TextInput 
-            placeholder={ isUser ? 'CPF' : 'CNPJ' }
+            placeholder={ 'Email' }
             style={styles.input}
             onChangeText={(text) => setUser(text)}
           />

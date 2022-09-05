@@ -3,41 +3,77 @@ import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 import { useEffect, useState } from "react"
-import { getData } from "../../../hooks/useAsyncStorage"
-import { storage } from "../../../config/firebase"
+import { getData, getMultipleData } from "../../../hooks/useAsyncStorage"
+import { auth, storage } from "../../../config/firebase"
+import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth"
+import { RootStackScreenProps } from "../../../types"
+import { User } from "react-native-iconly"
 
 
-const SignIn_9 = () => {
+const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
 
-  const [teste, setTeste] = useState({})
+  const [dados, setDados] = useState({
+    email: '',
+    password: '',
+    dadosPessoais: {
+      nome: '',
+      sobrenome: ''
+    },
+    contato: {},
+    endereco: {},
+    formacao: {}
+  })
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    fetchData()
-  }, [])
-
+  
   const fetchData = async () => {
     setIsLoading(true)
-    const data = await getData('uid')
+    
+    const email = await getData('email')
+    const senha = await getData('password')
+    const dadosPessoais = await getData('dadosPessoais')
+    const contato = await getData('contato')
+    const endereco = await getData('endereco')
+    const formacao = await getData('formacao')
+
+    const data = {
+      email: email,
+      password: senha,
+      // @ts-ignore
+      dadosPessoais: JSON.parse(dadosPessoais),
+      // @ts-ignore
+      contato: JSON.parse(contato),
+      // @ts-ignore
+      endereco: JSON.parse(endereco),
+      // @ts-ignore
+      formacao: JSON.parse(formacao)
+    }
+
     // @ts-ignore
-    setTeste(data)
-    setIsLoading(false)
+    setDados(data)
+
   }
 
-  console.log(teste)
+  const doSignUp = () => {
+    createUserWithEmailAndPassword(auth, dados.email, dados.password).then(userCredential => {
+      setIsLoading(true)
+      const user = userCredential.user
+      updateProfile(user, {
+        displayName: dados.dadosPessoais.nome + ' ' + dados.dadosPessoais.sobrenome
+      })
+    })
+  }
   
+  useEffect(() => {
+    fetchData().then(() => setIsLoading(false)).catch(e => console.log(e))
+  }, [])
+
   if(!isLoading)
   return (
     <View style={{height: '100%'}}>
       <Header/>
       <View style={styles.content}>
-        { 
-          <>
-          {/* @ts-ignore */}
-          <Text>{teste}</Text>
-          </>
-        }
-        {/* <Image 
+        <Image 
           source={require('../../../assets/images/done.png')}
           style={styles.image}
         />
@@ -50,16 +86,16 @@ const SignIn_9 = () => {
             fontFamily: 'Montserrat_400Regular',
             fontSize: 21,
             textAlign: 'center',
-            maxWidth: '25ch'
+            maxWidth: 250
           }}
         >
           Você finalizou seu cadastro e faz parte da WonTI, agora faça login e tenha acesso às vagas disponiveis na plataforma.
         </Text>
 
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => {}}/>
+          <NextButton _onPress={() => doSignUp()}/>
         </View>
-        <Footer /> */}
+        <Footer />
       </View>
     </View>
   )
@@ -79,7 +115,7 @@ const styles = StyleSheet.create({
     width: 290
   },
   title: {
-    width: '100',
+    width: 120,
     textAlign: 'center',
     fontFamily: 'Montserrat_700Bold',
     fontSize: 28,

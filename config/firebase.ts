@@ -29,5 +29,5 @@ if(getApps().length === 0) {
 
 const auth     = getAuth(app)
 const storage  = getStorage(app)
-const db = getFirestore(app)
+const db       = getFirestore(app)
 export { auth, storage, db }

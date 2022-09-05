@@ -4,9 +4,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../types'
 import Header from '../../components/Header'
 import { auth, storage } from '../../config/firebase'
-import { signInWithEmailAndPassword, UserCredential, AuthError, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, UserCredential, AuthError, signOut, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth'
 import { getData, storeData } from '../../hooks/useAsyncStorage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Loader from '../../components/Loader/Loader'
 
 type Props = NativeStackScreenProps<RootStackParamList>
 
@@ -49,7 +50,6 @@ function LoginScreen({navigation}: Props) {
       const userStr = JSON.stringify(userCredential.user)
       storeData('user', userStr)
     })
-    .finally(() => {navigation.navigate('App')})
     .catch((err: AuthError) => handleError(err))
   }
 
@@ -114,7 +114,7 @@ function LoginScreen({navigation}: Props) {
     </KeyboardAvoidingView>
   )
   else return (
-    <Text>Loading...</Text>
+    <Loader />
   )
 }
 
