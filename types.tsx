@@ -14,12 +14,14 @@ declare global {
 }
 
 export type RootStackParamList = {
+  Root: undefined;
   App: undefined;
   Modal: undefined;
   NotFound: undefined;
   First: undefined;
   Intro: undefined;
   LoginScreen: undefined;
+  Home: undefined;
 
   SignIn_1: {
     isUser: boolean

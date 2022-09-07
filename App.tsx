@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IntroScreen from './screens/FirstAccess/IntroScreen';
 import FirstScreen from './screens/FirstAccess/FirstScreen';
@@ -61,12 +60,10 @@ import SignIn_1 from './screens/SignInScreens/SignIn_1';
 import * as SignInCandidate from './screens/SignInScreens/Candidate'
 import SignIn_2 from './screens/SignInScreens/Hirer/SignIn_2';
 import DetalhesDaConta from './screens/DetalhesConta/DetalhesDaConta';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from './components/Loader/Loader';
 import { auth } from './config/firebase';
 
 export default function App() {
-  const [user, setUser] = useState(auth.currentUser)
 
   const [fontsLoaded] = Font.useFonts({
       Montserrat_100Thin,
@@ -102,7 +99,6 @@ export default function App() {
       Numans_400Regular
   })
 
-  const [showRealApp, setShowRealApp] = useState(true)
   const [logged, setLogged] = useState(false)
 
   const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -114,7 +110,7 @@ export default function App() {
         setLogged(true)
       } else setLogged(false)
     })
-  }, [user])
+  }, [auth.currentUser ])
 
   if(fontsLoaded) return (
     <NavigationContainer>
@@ -194,30 +190,6 @@ export default function App() {
           </Stack.Group>
         </Stack.Navigator>
       }
-      {/* <Stack.Navigator screenOptions={{
-        headerShown: false
-      }}
-      >
-        <Stack.Screen name={'First'} component={FirstScreen} />
-        <Stack.Screen name={'Intro'} component={IntroScreen} />
-        <Stack.Screen name={'LoginScreen'} component={LoginScreen}/>     
-        <Stack.Screen name={'App'} component={BottomTabNavigator}/>
-        <Stack.Group>
-          <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
-          <Stack.Screen name={'SignIn_2c'} component={SignInCandidate.SignIn_2}/>
-          <Stack.Screen name={'SignIn_3c'} component={SignInCandidate.SignIn_3}/>
-          <Stack.Screen name={'SignIn_4c'} component={SignInCandidate.SignIn_4}/>
-          <Stack.Screen name={'SignIn_5c'} component={SignInCandidate.SignIn_5}/>
-          <Stack.Screen name={'SignIn_6c'} component={SignInCandidate.SignIn_6}/>
-          <Stack.Screen name={'SignIn_7c'} component={SignInCandidate.SignIn_7}/>
-          <Stack.Screen name={'SignIn_8c'} component={SignInCandidate.SignIn_8}/>
-          <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/>
-          
-          <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
-        </Stack.Group>
-        <Stack.Screen name={'Detalhes'} component={DetalhesDaConta}/>
-      </Stack.Navigator>
-      <StatusBar style="dark" translucent={true}/> */}
     </NavigationContainer>
   )
   else return (
@@ -235,67 +207,3 @@ const ConfigStack = () => {
     </Stack.Navigator>
   )
 }
-
-// function BottomTabNavigator({route}: RootStackScreenProps<'App'>) {
-//   const BottomTab = createBottomTabNavigator<RootTabParamList>();
-//   const [isLoading, setIsLoading] = useState(true)
-
-//   useEffect(() => {
-//     AsyncStorage.removeItem('user')
-//     setIsLoading(false)
-//   }, [])
-
-//   if(!isLoading)
-//   return (
-//     <BottomTab.Navigator
-
-//       initialRouteName="Home"
-//       screenOptions={{
-//         tabBarActiveTintColor: '#FF0356',
-//         tabBarInactiveTintColor: '#000000',
-//         tabBarShowLabel: false,
-//         headerShown: false,
-//         tabBarStyle: {
-//           backgroundColor: 'white',
-//           borderTopLeftRadius: 25,
-//           borderTopRightRadius: 25,
-//           height: 70
-//         },
-//         tabBarHideOnKeyboard: true
-//       }}
-//       >
-        
-//         <BottomTab.Screen
-//           name="Home"
-//           component={HomeScreen}
-//           options={({ navigation }: RootTabScreenProps<'Home'>) => ({
-//             tabBarIcon: ({ color, focused }) => focused ? <Home primaryColor={color} set="bold" size={'large'}/> : <Home primaryColor={color} size={'large'}/>,
-//           })}
-//         />
-//         <BottomTab.Screen
-//           name="Vagas"
-//           component={VagasScreen}
-//           options={({ navigation }: RootTabScreenProps<'Vagas'>) => ({
-//             tabBarIcon: ({ color, focused }) => focused ? <Work primaryColor={color} set="bold" size={'large'}/> : <Work primaryColor={color} size={'large'}/>,
-//           })}
-//         />
-//         <BottomTab.Screen
-//           name="Chat"
-//           component={ChatScreen}
-//           options={({ navigation }: RootTabScreenProps<'Chat'>) => ({
-//             tabBarIcon: ({ color, focused }) => focused ? <Chat primaryColor={color} set="bold" size={'large'}/> : <Chat primaryColor={color} size={'large'}/>,
-//           })}
-//         />
-//         <BottomTab.Screen
-//           name="Config"
-//           component={ConfigScreen}
-//           options={({ navigation }: RootTabScreenProps<'Config'>) => ({
-//             tabBarIcon: ({ color, focused }) => focused ? <Setting primaryColor={color} set="bold" size={'large'}/> : <Setting primaryColor={color} size={'large'}/>,
-//           })}
-//         />
-//     </BottomTab.Navigator>
-//   )
-//   else return (
-//     <Loader />
-//   )
-// }

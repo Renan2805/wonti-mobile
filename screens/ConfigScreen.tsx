@@ -14,7 +14,8 @@ import { updateCurrentUser, updateProfile, signOut } from '@firebase/auth';
 const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
 
   const [user, setUser] = useState(auth.currentUser)
-  const [adress, setAdress] = useState({})
+  const [profileImage, setProfileImage] = useState('')
+
   const [isLoading, setIsLoading] = useState(true)
 
   const logOut =  () => {
@@ -31,8 +32,13 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
   // }
 
   useEffect(() => {
-    if(user != null) setIsLoading(false)
-  }, [user])
+    if(auth.currentUser) {
+      if(auth.currentUser.photoURL) setProfileImage(auth.currentUser?.photoURL)
+      setIsLoading(false)
+
+    }
+    
+  }, [auth.currentUser])
 
   if(!isLoading)
   return (
@@ -48,7 +54,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
          borderWidth:1}}>
           <Image
             // @ts-ignore
-            source={{uri: user?.photoURL}}
+            source={{uri: auth.currentUser?.photoURL}}
             style={style.Perfil}  
           />
       </View>

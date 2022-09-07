@@ -24,6 +24,7 @@ const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
     formacao: {}
   })
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
 
   
   const fetchData = async () => {
@@ -61,7 +62,7 @@ const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
       updateProfile(user, {
         displayName: dados.dadosPessoais.nome + ' ' + dados.dadosPessoais.sobrenome
       })
-    })
+    }).catch(e => {setError(e)})
   }
   
   useEffect(() => {
@@ -94,6 +95,7 @@ const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
 
         <View style={{width: '90%'}}>
           <NextButton _onPress={() => doSignUp()}/>
+          <Text>{error.toString()}</Text>
         </View>
         <Footer />
       </View>
