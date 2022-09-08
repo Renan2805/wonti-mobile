@@ -62,6 +62,7 @@ import SignIn_2 from './screens/SignInScreens/Hirer/SignIn_2';
 import DetalhesDaConta from './screens/DetalhesConta/DetalhesDaConta';
 import Loader from './components/Loader/Loader';
 import { auth } from './config/firebase';
+import RecoverPasswordScreen from './screens/RecoverPasswordScreen/RecoverPasswordScreen';
 
 export default function App() {
 
@@ -139,14 +140,14 @@ export default function App() {
           <BottomTab.Screen
             name="Home"
             component={HomeScreen}
-            options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+            options={() => ({
               tabBarIcon: ({ color, focused }) => focused ? <Home primaryColor={color} set="bold" size={'large'}/> : <Home primaryColor={color} size={'large'}/>,
             })}
           />
           <BottomTab.Screen
             name="Vagas"
             component={VagasScreen}
-            options={({ navigation }: RootTabScreenProps<'Vagas'>) => ({
+            options={() => ({
               tabBarIcon: ({ color, focused }) => focused ? <Work primaryColor={color} set="bold" size={'large'}/> : <Work primaryColor={color} size={'large'}/>,
             })}
           />
@@ -154,7 +155,7 @@ export default function App() {
             name="Chat"
 
             component={ChatScreen}
-            options={({ navigation }: RootTabScreenProps<'Chat'>) => ({
+            options={() => ({
               tabBarIcon: ({ color, focused }) => focused ? <Chat primaryColor={color} set="bold" size={'large'}/> : <Chat primaryColor={color} size={'large'}/>,
               
             })}
@@ -162,7 +163,7 @@ export default function App() {
           <BottomTab.Screen
             name="Config"
             component={ConfigStack}
-            options={({ navigation }: RootTabScreenProps<'Config'>) => ({
+            options={() => ({
               tabBarIcon: ({ color, focused }) => focused ? <Setting primaryColor={color} set="bold" size={'large'}/> : <Setting primaryColor={color} size={'large'}/>,
             })}
           />
@@ -175,7 +176,8 @@ export default function App() {
           <Stack.Screen name={'First'} component={FirstScreen} />
           <Stack.Screen name={'Intro'} component={IntroScreen} />
           <Stack.Screen name={'LoginScreen'} component={LoginScreen}/> 
-          {/* <Stack.Group>
+          <Stack.Screen name={'RecoverPasswordScreen'} component={RecoverPasswordScreen}/> 
+          <Stack.Group>
             <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
             <Stack.Screen name={'SignIn_2c'} component={SignInCandidate.SignIn_2}/>
             <Stack.Screen name={'SignIn_3c'} component={SignInCandidate.SignIn_3}/>
@@ -187,7 +189,7 @@ export default function App() {
             <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/>
             
             <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
-          </Stack.Group> */}
+          </Stack.Group>
         </Stack.Navigator>
       }
     </NavigationContainer>

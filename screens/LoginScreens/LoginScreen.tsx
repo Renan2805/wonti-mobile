@@ -81,7 +81,7 @@ function LoginScreen({navigation}: Props) {
       </View>
       <View style={styles.pinkContainer}>
         <View style={styles.loginContainer}>
-          {/* <View style={styles.ce}>
+          <View style={styles.ce}>
             <Text style={active ? styles.ceTextActive : styles.ceText} onPress={() => setActive(true)}>Candidata</Text>
             <Text style={!active ? styles.ceTextActive : styles.ceText} onPress={() => setActive(false)}>Empresa</Text>
           </View>
@@ -109,7 +109,7 @@ function LoginScreen({navigation}: Props) {
               secureTextEntry={true}
             />
           </View>
-          @ts-ignore */}
+          {/* @ts-ignore */}
           <Text style={{fontFamily: 'WorkSans_400Regular', fontSize: 15, textAlign: 'right', marginVertical: 5}} onPress={() => navigation.navigate('RecoverPasswordScreen')}>Esqueceu a senha?</Text>
           <TouchableOpacity style={styles.loginButton} onPress={() => loginFirebase()}>
             <Text style={{fontFamily: 'WorkSans_500Medium', fontSize: 23, color: 'white', textAlign: 'center'}}>Entrar</Text>
