@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, StatusBar, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, StatusBar, KeyboardAvoidingView, Alert } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../types'
 import Header from '../../components/Header'
 import { auth, storage } from '../../config/firebase'
-import { signInWithEmailAndPassword, UserCredential, AuthError, signOut, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth'
+import { signInWithEmailAndPassword, UserCredential, AuthError, signOut, sendPasswordResetEmail } from 'firebase/auth'
 import { getData, storeData } from '../../hooks/useAsyncStorage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loader from '../../components/Loader/Loader'
@@ -53,6 +53,15 @@ function LoginScreen({navigation}: Props) {
     .catch((err: AuthError) => handleError(err))
   }
 
+  const sendPasswordEmail = () => {
+    if(auth.currentUser?.email) {
+      sendPasswordResetEmail(auth, auth.currentUser?.email)
+        .then(() => {
+          Alert.alert('Email enviado para ' + auth.currentUser?.email)
+        })
+    }
+  }
+
   useEffect(() => {
     setIsLoading(true)
     signOut(auth)
@@ -72,7 +81,7 @@ function LoginScreen({navigation}: Props) {
       </View>
       <View style={styles.pinkContainer}>
         <View style={styles.loginContainer}>
-          <View style={styles.ce}>
+          {/* <View style={styles.ce}>
             <Text style={active ? styles.ceTextActive : styles.ceText} onPress={() => setActive(true)}>Candidata</Text>
             <Text style={!active ? styles.ceTextActive : styles.ceText} onPress={() => setActive(false)}>Empresa</Text>
           </View>
@@ -100,8 +109,8 @@ function LoginScreen({navigation}: Props) {
               secureTextEntry={true}
             />
           </View>
-          {/* @ts-ignore */}
-          <Text style={{fontFamily: 'WorkSans_400Regular', fontSize: 15, textAlign: 'right', marginVertical: 5}} onPress={() => navigation.navigate('passwordRecover')}>Esqueceu a senha?</Text>
+          @ts-ignore */}
+          <Text style={{fontFamily: 'WorkSans_400Regular', fontSize: 15, textAlign: 'right', marginVertical: 5}} onPress={() => navigation.navigate('RecoverPasswordScreen')}>Esqueceu a senha?</Text>
           <TouchableOpacity style={styles.loginButton} onPress={() => loginFirebase()}>
             <Text style={{fontFamily: 'WorkSans_500Medium', fontSize: 23, color: 'white', textAlign: 'center'}}>Entrar</Text>
           </TouchableOpacity>

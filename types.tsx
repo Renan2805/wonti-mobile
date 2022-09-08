@@ -21,6 +21,7 @@ export type RootStackParamList = {
   First: undefined;
   Intro: undefined;
   LoginScreen: undefined;
+  RecoverPasswordScreen: undefined;
   Home: undefined;
 
   SignIn_1: {

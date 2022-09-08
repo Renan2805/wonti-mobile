@@ -36,6 +36,15 @@ const DetalhesDaConta = ({ navigation }: Props) => {
     }
   }
 
+  const takePhoto = async () => {
+    let pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+
+    handleImagePicked(pickerResult);
+  };
+
   const pickImage = async () => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -148,7 +157,7 @@ const DetalhesDaConta = ({ navigation }: Props) => {
             <Text style={style.optionsText}>Trocar Foto de Perfil</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={style.optionsRow} onPress={() => {}}>
+          <TouchableOpacity style={style.optionsRow} onPress={() => status == 'granted' ? takePhoto() : askPermision()}>
             <FontAwesome name="camera" size={24} color="black" />
             <Text style={style.optionsText}>Trocar Foto de Perfil</Text>
           </TouchableOpacity>
@@ -158,7 +167,6 @@ const DetalhesDaConta = ({ navigation }: Props) => {
             <FontAwesome name="google" size={24} color="black" />
             <Text style={style.optionsText}>Trocar Foto de Perfil</Text>
           </TouchableOpacity>
-          
         </View>
         :
         <></>

@@ -175,7 +175,7 @@ export default function App() {
           <Stack.Screen name={'First'} component={FirstScreen} />
           <Stack.Screen name={'Intro'} component={IntroScreen} />
           <Stack.Screen name={'LoginScreen'} component={LoginScreen}/> 
-          <Stack.Group>
+          {/* <Stack.Group>
             <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
             <Stack.Screen name={'SignIn_2c'} component={SignInCandidate.SignIn_2}/>
             <Stack.Screen name={'SignIn_3c'} component={SignInCandidate.SignIn_3}/>
@@ -187,7 +187,7 @@ export default function App() {
             <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/>
             
             <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
-          </Stack.Group>
+          </Stack.Group> */}
         </Stack.Navigator>
       }
     </NavigationContainer>
