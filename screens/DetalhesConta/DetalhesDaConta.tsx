@@ -147,6 +147,7 @@ const DetalhesDaConta = ({ navigation }: Props) => {
           />
         </TouchableOpacity>
         <Text style={style.name}>{user?.displayName}</Text>
+
       </ImageBackground>
       {
         isOptionsOpen 

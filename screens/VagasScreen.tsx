@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types'
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, StyleSheet, StatusBar, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
+import { ScrollView, View, Text, StyleSheet, StatusBar, SafeAreaView, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -11,10 +11,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { auth } from '../config/firebase'
 import { updateProfile,  } from '@firebase/auth'
 import Loader from '../components/Loader/Loader'
+import { useLinkProps } from '@react-navigation/native'
 
 
 
 type Props = NativeStackScreenProps<RootStackParamList>
+
+const dados = {
+  nome:'vitor'
+}
 
 const VagasScreen = ({ navigation }: Props) => {
 

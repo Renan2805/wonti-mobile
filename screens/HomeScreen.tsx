@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, StyleSheet, StatusBar, Image,SafeAreaView, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { ScrollView, View ,Text, StyleSheet, StatusBar, Image,SafeAreaView, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -9,8 +9,49 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { auth } from '../config/firebase'
 import { updateProfile,  } from '@firebase/auth'
 import Loader from '../components/Loader/Loader'
+import Carousel from 'react-native-snap-carousel'
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
+
+  {/*const itemSlide = [
+    {
+      title: 'Dev. Front End'
+    },
+    {    
+    image: 'https://logopng.com.br/logos/google-37.png'
+    },
+    {
+    description: 'A Dev. Front End será responsável por desenvolver produtos e serviços.'
+    },
+    {
+    hirer:'Google'
+    },
+    {
+    theme:true
+    },
+    {
+    time:'Integral'
+    },
+    {
+    type:'Remoto'
+    },
+    {
+    salary:2000
+    },
+    {
+    competitors:20
+    },
+    {
+    place:'São Paulo, SP'
+    },
+    {
+    posted:2
+    },
+    {
+    full:true
+    }
+  ] */}
+  
   const [user, setUser] = useState(auth.currentUser)
   const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
@@ -99,7 +140,8 @@ const style = StyleSheet.create({
   viewFoto: {
     width:'30%',
     textAlign:'right'
-  }
+  },
+  
 })
 
 export default HomeScreen

@@ -26,7 +26,6 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
   const logOut =  () => {
     signOut(auth).catch(e => console.error(e))
   }
-
   // const fetchData = async () => {
   //   // @ts-ignore
   //   const d = doc(db, `Users/${user?.uid}`)
@@ -199,6 +198,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
             <View style={style.ModalText}>
               <Text style={{fontSize:25, fontWeight:'700'}}>Vagas salvas</Text>
             </View>
+            <Text></Text>
          </ScrollView>
       </Modal>
     </ScrollView>
