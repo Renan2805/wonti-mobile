@@ -1,6 +1,8 @@
 import { IoMdLock,IoMdHelp } from 'react-icons/io'
-import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, StatusBar} from 'react-native'
+import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, StatusBar, Modal} from 'react-native'
 import { RootTabScreenProps } from '../types'
+
+import CardRecommended from '../components/CardRecommended/CardRecommended';
 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,12 +13,15 @@ import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import Loader from '../components/Loader/Loader';
 import { updateCurrentUser, updateProfile, signOut } from '@firebase/auth';
 
-const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
 
+const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
+  const [modalActive, setmodalActive] = useState(false)
   const [user, setUser] = useState(auth.currentUser)
   const [profileImage, setProfileImage] = useState('')
 
   const [isLoading, setIsLoading] = useState(true)
+
+  const [CardRecommended, setCardRecommended] = useState(false)
 
   const logOut =  () => {
     signOut(auth).catch(e => console.error(e))
@@ -30,6 +35,11 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
   //   setAdress(document.data())
     
   // }
+  const sairButton = () => {
+    if(modalActive) {
+      setmodalActive(false)
+    }
+  }
 
   useEffect(() => {
     if(auth.currentUser) {
@@ -97,9 +107,10 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
          height: 63,
          borderRadius:100, 
          }}>
+          
           <Ionicons name="bookmark" size={40} color="blue" />
         </View>
-        <TouchableOpacity style={style.ButtonView}>
+        <TouchableOpacity style={style.ButtonView} onPress={()=> setmodalActive(true)}>
           <Text style={style.TextNome}>Vagas salvas</Text>
           <View style={{display:'flex', position:'absolute', left:'75%',top: 16}}>
             <Ionicons name="arrow-forward" size={20} color="black" />
@@ -177,6 +188,19 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
           </View>
         </TouchableOpacity>
       </View> 
+      <Modal
+      transparent={true}
+      animationType='slide'
+      onRequestClose={()=> setmodalActive(false)}
+      visible={modalActive}
+      >
+         <TouchableOpacity style={style.botaoSairModal} onPress={sairButton}></TouchableOpacity>
+         <ScrollView style={style.viewModal}>
+            <View style={style.ModalText}>
+              <Text style={{fontSize:25, fontWeight:'700'}}>Vagas salvas</Text>
+            </View>
+         </ScrollView>
+      </Modal>
     </ScrollView>
   )
   else return (
@@ -208,6 +232,30 @@ const style = StyleSheet.create({
   // },
   // Flecha: {
   // }
+  botaoSairModal: {
+    height:'50%',
+    backgroundColor:'transparent',
+  },
+  viewModal: {
+
+    height:'60%',
+    borderTopRightRadius:40,
+    borderTopLeftRadius:40,
+    backgroundColor:'#E6E6E6',
+    shadowColor:'#000',
+    shadowOffset: {
+      width: 0,
+      height:2
+    },
+    shadowOpacity:0.25,
+    shadowRadius:4,
+    elevation:5
+  },
+  ModalText: {
+    width:'100%',
+    textAlign:'center',
+    padding:20,
+  },
   Perfil: {
     width: '100%',
     height: '100%',
