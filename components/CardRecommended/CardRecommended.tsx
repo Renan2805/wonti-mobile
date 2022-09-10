@@ -39,7 +39,7 @@ const CardRecommended = ({
 
   const primaryColor   = theme ? '#FFF' : '#000'
   const secondaryColor = theme ? '#000' : '#FFF'
-
+  
   return (
     <View style={[style.card, { backgroundColor: secondaryColor, height: full ? 200 : 120}]}>
       <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('LoginScreen')}>
@@ -128,7 +128,7 @@ const CardRecommended = ({
 const style = StyleSheet.create({
   card: {
     width: '85%',
-    padding: 15,
+    padding: 20,
     borderRadius: 15,
     marginVertical: 10
   },
@@ -138,6 +138,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding:5
   },
   image: {
     width: 40,
@@ -154,6 +155,7 @@ const style = StyleSheet.create({
     fontSize: 14,
   },
   section2: {
+    padding:5,
     width: '100%',
   },
   description: {

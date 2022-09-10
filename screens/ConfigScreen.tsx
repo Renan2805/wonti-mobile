@@ -1,6 +1,8 @@
 import { IoMdLock,IoMdHelp } from 'react-icons/io'
-import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, StatusBar, Alert} from 'react-native'
+import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, StatusBar, Alert, Modal} from 'react-native'
 import { RootTabScreenProps } from '../types'
+
+import CardRecommended from '../components/CardRecommended/CardRecommended';
 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -13,9 +15,9 @@ import Loader from '../components/Loader/Loader';
 import Header from '../components/Header';
 import { signOut } from 'firebase/auth';
 
-const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
 
-  const [user, setUser] = useState(auth.currentUser)
+const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
+  const [modalActive, setmodalActive] = useState(false)
   const [profileImage, setProfileImage] = useState('')
 
   const [isLoading, setIsLoading] = useState(true)
@@ -33,7 +35,6 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
     ])
     // signOut(auth).catch(e => console.error(e))
   }
-
   // const fetchData = async () => {
   //   // @ts-ignore
   //   const d = doc(db, `Users/${user?.uid}`)
@@ -42,6 +43,11 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
   //   setAdress(document.data())
     
   // }
+  const sairButton = () => {
+    if(modalActive) {
+      setmodalActive(false)
+    }
+  }
 
   useEffect(() => {
     if(auth.currentUser) {
@@ -142,6 +148,20 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
             </TouchableOpacity>
           </View>
         </View>
+        <Modal
+          transparent={true}
+          animationType='slide'
+          onRequestClose={()=> setmodalActive(false)}
+          visible={modalActive}
+        >
+          <TouchableOpacity style={style.botaoSairModal} onPress={sairButton}></TouchableOpacity>
+          <ScrollView style={style.viewModal}>
+            <View style={style.ModalText}>
+              <Text style={{fontSize:25, fontWeight:'700'}}>Vagas salvas</Text>
+            </View>
+            <Text></Text>
+          </ScrollView>
+        </Modal>
       </View>
     </View>
   )
@@ -197,7 +217,31 @@ const style = StyleSheet.create({
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  botaoSairModal: {
+    height:'50%',
+    backgroundColor:'transparent',
+  },
+  viewModal: {
+
+    height:'60%',
+    borderTopRightRadius:40,
+    borderTopLeftRadius:40,
+    backgroundColor:'#E6E6E6',
+    shadowColor:'#000',
+    shadowOffset: {
+      width: 0,
+      height:2
+    },
+    shadowOpacity:0.25,
+    shadowRadius:4,
+    elevation:5
+  },
+  ModalText: {
+    width:'100%',
+    textAlign:'center',
+    padding:20,
+  },
 })
 
 export default ConfigScreen

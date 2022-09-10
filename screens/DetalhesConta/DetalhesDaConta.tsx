@@ -145,6 +145,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
           />
         </TouchableOpacity>
         <Text style={style.name}>{user?.displayName}</Text>
+
       </ImageBackground>
       {
         isOptionsOpen 

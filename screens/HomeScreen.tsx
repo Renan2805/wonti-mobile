@@ -6,9 +6,49 @@ import SearchBar from '../components/SearchBar/SearchBar'
 import { RootTabScreenProps } from '../types'
 import { auth } from '../config/firebase'
 import Loader from '../components/Loader/Loader'
+import Carousel from 'react-native-snap-carousel'
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
 
+  {/*const itemSlide = [
+    {
+      title: 'Dev. Front End'
+    },
+    {    
+    image: 'https://logopng.com.br/logos/google-37.png'
+    },
+    {
+    description: 'A Dev. Front End será responsável por desenvolver produtos e serviços.'
+    },
+    {
+    hirer:'Google'
+    },
+    {
+    theme:true
+    },
+    {
+    time:'Integral'
+    },
+    {
+    type:'Remoto'
+    },
+    {
+    salary:2000
+    },
+    {
+    competitors:20
+    },
+    {
+    place:'São Paulo, SP'
+    },
+    {
+    posted:2
+    },
+    {
+    full:true
+    }
+  ] */}
+  
   const [user, setUser] = useState(auth.currentUser)
   const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
@@ -108,6 +148,7 @@ const style = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0)'
   },
   content: {
+    flex:1,
     width: '100%',
     alignItems: 'center'
   },
