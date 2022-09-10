@@ -49,9 +49,19 @@ export type RootStackParamList = {
   SignIn_9c: undefined;
 
   SignIn_2e: undefined;
-  Detalhes: undefined;
+  DetailScreen: undefined;
 };
 
+export type ConfigStackParamList = {
+  ConfigScreen: undefined;
+  DetailScreen: undefined;
+  ConfigConta:  undefined;
+};
+
+export type ConfigStackScreenProps<Screen extends keyof ConfigStackParamList> = NativeStackScreenProps<
+  ConfigStackParamList,
+  Screen
+>
 
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

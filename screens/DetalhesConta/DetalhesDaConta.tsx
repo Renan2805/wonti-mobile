@@ -3,7 +3,7 @@ import { ScrollView, Text, StyleSheet, View, Image ,TouchableOpacity, ImageBackg
 import DocumentPicker, { types } from 'react-native-document-picker'
 import * as ImagePicker from 'expo-image-picker'
 import { FontAwesome } from '@expo/vector-icons';
-import { RootStackParamList } from '../../types'
+import { ConfigStackScreenProps } from '../../types'
 import { auth, storage } from '../../config/firebase';
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable, UploadTask } from 'firebase/storage';
 
@@ -12,9 +12,7 @@ import { useCallback, useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import { setPersistence, updateProfile } from '@firebase/auth';
 
-type Props = NativeStackScreenProps<RootStackParamList>
-
-const DetalhesDaConta = ({ navigation }: Props) => {
+const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>) => {
 
   const [user, setUser] = useState(auth.currentUser)
   const [profileImage, setProfileImage] = useState('')
@@ -137,7 +135,7 @@ const DetalhesDaConta = ({ navigation }: Props) => {
       >
         <View style={style.header}>
           <AntDesign name="arrowleft" size={35} color="white" onPress={() => navigation.goBack()}/>
-          <Entypo name="dots-three-vertical" size={25} color="white" onPress={() => setIsOptionsOpen(!isOptionsOpen)}/>
+          <Entypo name="dots-three-vertical" size={25} color="white" onPress={() => navigation.navigate('ConfigConta')}/>
         </View>
         <TouchableOpacity style={style.profilePictureWrapper} onPress={() => {}}>
           <Image 
@@ -150,7 +148,7 @@ const DetalhesDaConta = ({ navigation }: Props) => {
       </ImageBackground>
       {
         isOptionsOpen 
-        ?
+        &&
         <View style={style.options}>
           <TouchableOpacity style={style.optionsRow} onPress={() => status == 'granted' ? pickImage() : askPermision()}>
             <FontAwesome name="camera" size={24} color="black" />
@@ -168,8 +166,6 @@ const DetalhesDaConta = ({ navigation }: Props) => {
             <Text style={style.optionsText}>Trocar Foto de Perfil</Text>
           </TouchableOpacity>
         </View>
-        :
-        <></>
       }
       {
         maybeRenderUploadingOverlay()

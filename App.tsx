@@ -49,7 +49,7 @@ import { Numans_400Regular } from '@expo-google-fonts/numans'
 
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from './types';
+import { ConfigStackParamList, RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from './types';
 import HomeScreen from './screens/HomeScreen';
 import { Home, Work, Chat, Setting } from 'react-native-iconly';
 import ChatScreen from './screens/ChatScreen';
@@ -63,6 +63,7 @@ import DetalhesDaConta from './screens/DetalhesConta/DetalhesDaConta';
 import Loader from './components/Loader/Loader';
 import { auth } from './config/firebase';
 import RecoverPasswordScreen from './screens/RecoverPasswordScreen/RecoverPasswordScreen';
+import ConfiguracoesConta from './screens/ConfiguracoesConta/ConfiguracoesConta';
 
 export default function App() {
 
@@ -101,6 +102,7 @@ export default function App() {
   })
 
   const [logged, setLogged] = useState(false)
+  const [user, setUser] = useState(auth.currentUser)
 
   const Stack = createNativeStackNavigator<RootStackParamList>()
   const BottomTab = createBottomTabNavigator<RootTabParamList>()
@@ -111,7 +113,7 @@ export default function App() {
         setLogged(true)
       } else setLogged(false)
     })
-  }, [auth.currentUser ])
+  }, [user])
 
   if(fontsLoaded) return (
     <NavigationContainer>
@@ -200,12 +202,13 @@ export default function App() {
 }
 
 const ConfigStack = () => {
-  const Stack = createNativeStackNavigator()
+  const Stack = createNativeStackNavigator<ConfigStackParamList>()
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name={'ConfigScreen'} component={ConfigScreen}/>
       <Stack.Screen name={'DetailScreen'} component={DetalhesDaConta}/>
+      <Stack.Screen name={'ConfigConta'}  component={ConfiguracoesConta}/>
     </Stack.Navigator>
   )
 }

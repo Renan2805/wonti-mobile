@@ -1,15 +1,17 @@
 import { IoMdLock,IoMdHelp } from 'react-icons/io'
-import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, StatusBar} from 'react-native'
+import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, StatusBar, Alert} from 'react-native'
 import { RootTabScreenProps } from '../types'
 
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { Notification, Bookmark, Lock, Logout } from 'react-native-iconly';
+
 import { auth, db } from '../config/firebase';
 import { useState, useEffect } from 'react';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import Loader from '../components/Loader/Loader';
-import { updateCurrentUser, updateProfile, signOut } from '@firebase/auth';
+import Header from '../components/Header';
+import { signOut } from 'firebase/auth';
 
 const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
 
@@ -18,8 +20,18 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
 
   const [isLoading, setIsLoading] = useState(true)
 
-  const logOut =  () => {
-    signOut(auth).catch(e => console.error(e))
+  const doLogOut =  () => {
+    Alert.alert('Sair', 'Deseja se desconectar?', [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      {
+        text: 'Sair',
+        onPress: () => signOut(auth).catch(e => console.error(e))
+      }
+    ])
+    // signOut(auth).catch(e => console.error(e))
   }
 
   // const fetchData = async () => {
@@ -42,142 +54,96 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
 
   if(!isLoading)
   return (
-    <ScrollView contentContainerStyle={style.content}>
-      <View style={{width:'100%', padding: 32, marginTop: StatusBar.currentHeight}}>
-        <Text style={style.TextConta}>Conta</Text>
-      </View>
-      <View style={{width:'100%',flexDirection:'row', display:'flex', paddingLeft: 32}}>
-        <View style={{
-         width: 90,
-         height: 91,
-         borderRadius:100, 
-         borderWidth:1}}>
-          <Image
-            // @ts-ignore
-            source={{uri: auth.currentUser?.photoURL}}
-            style={style.Perfil}  
-          />
-      </View>
-         {/* @ts-ignore  */}
-        <TouchableOpacity style={style.ButtonView} onPress={() => {navigation.navigate('DetailScreen')}}>
-          <Text style={style.TextNome}>{user?.displayName}</Text>
-          <Text style={style.TextDesc}>Informações da conta</Text>
-          <View style={{display:'flex', position:'absolute', left:'75%',top: 32}}>
-            <Ionicons name="arrow-forward" size={20} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={{width:'100%', padding: 32}}>
-        <Text style={style.TextConta}>Geral</Text>
-      </View>
-      <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
-        <View style={{
-         padding: 12, 
-         backgroundColor:'#8F00FF26', 
-         width: 63,
-         height: 63,
-         borderRadius:100, 
-         }}>
-          <Ionicons name="notifications" size={40} color="purple" />
+    <View
+      style={style.content}
+    >
+      <Header />
+      <View style={{paddingHorizontal: 20, width: '100%'}}>
+        <View style={style.section1}>
+          <Text style={style.title}>Conta</Text>
+          <TouchableOpacity 
+            style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}
+            onPress={() => navigation.navigate('DetailScreen')}  
+          >
+            <Image 
+              source={{uri: profileImage}}
+              style={style.image}
+            />
+            <View style={{width: '50%'}}>
+              <Text style={style.name}>{auth.currentUser?.displayName}</Text>
+              <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 15, color: '#7C7C7C'}}>informações da conta</Text>
+            </View>
+            <FontAwesome5 name="angle-right" size={24} color="#7C7C7C" />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={style.ButtonView}>
-          <Text style={style.TextNome}>Notificações</Text>
-          <View style={{display:'flex', position:'absolute', left:'75%',top: 16}}>
-            <Ionicons name="arrow-forward" size={20} color="black" />
+
+        <View style={style.section2}>
+          <Text style={style.title}>Geral</Text>
+          <View style={style.buttons}>
+            <TouchableOpacity 
+              style={style.button}
+              onPress={() => {}}
+            >
+              <View style={[style.iconWrapper, {backgroundColor: 'rgba(143, 0, 255, .15)'}]}>
+                <Notification set={'bold'} size={30} color={'#8F00FF'} />
+              </View>
+              <Text style={style.buttonStyle}>Notificações</Text>
+              <FontAwesome5 name="angle-right" size={24} color="#7C7C7C" />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={style.button}
+              onPress={() => {}}
+            >
+              <View style={[style.iconWrapper, {backgroundColor: 'rgba(0, 26, 255, .15)'}]}>
+                <Bookmark set={'bold'} size={30} color={'#001AFF'} />
+              </View>
+              <Text style={style.buttonStyle}>Vagas salvas</Text>
+              <FontAwesome5 name="angle-right" size={24} color="#7C7C7C" />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={style.button}
+              onPress={() => {}}
+            >
+              <View style={[style.iconWrapper, {backgroundColor: 'rgba(0, 148, 255, .15)'}]}>
+                <Lock set={'bold'} size={30} color={'#0094FF'} />
+              </View>
+              <Text style={style.buttonStyle}>Privacidade</Text>
+              <FontAwesome5 name="angle-right" size={24} color="#7C7C7C" />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={style.button}
+              onPress={() => {}}
+            >
+              <View style={[style.iconWrapper, {backgroundColor: 'rgba(65, 188, 70, .15)'}]}>
+                <MaterialIcons name="security" size={30} color="#41BC46" />
+              </View>
+              <Text style={style.buttonStyle}>Segurança</Text>
+              <FontAwesome5 name="angle-right" size={24} color="#7C7C7C" />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={style.button}
+              onPress={() => {}}
+            >
+              <View style={[style.iconWrapper, {backgroundColor: 'rgba(255, 122, 0, .15)'}]}>
+                <Entypo name="help" size={30} color="#FF7A00" />
+              </View>
+              <Text style={style.buttonStyle}>Ajuda e Suporte</Text>
+              <FontAwesome5 name="angle-right" size={24} color="#7C7C7C" />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={style.button}
+              onPress={() => doLogOut()}
+            >
+              <View style={[style.iconWrapper, {backgroundColor: 'rgba(255, 0, 0, .15)'}]}>
+                <Logout set={'bold'} size={30} color="#FF0000" />
+              </View>
+              <Text style={style.buttonStyle}>Sair</Text>
+              <FontAwesome5 name="angle-right" size={24} color="#7C7C7C" />
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
+        </View>
       </View>
-      <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
-        <View style={{
-         padding: 9,
-         paddingLeft:10, 
-         backgroundColor:'#8F00FF26', 
-         alignItems:'center',
-         width: 63,
-         height: 63,
-         borderRadius:100, 
-         }}>
-          <Ionicons name="bookmark" size={40} color="blue" />
-        </View>
-        <TouchableOpacity style={style.ButtonView}>
-          <Text style={style.TextNome}>Vagas salvas</Text>
-          <View style={{display:'flex', position:'absolute', left:'75%',top: 16}}>
-            <Ionicons name="arrow-forward" size={20} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
-        <View style={{
-         padding: 9,
-         paddingLeft:13,
-         backgroundColor:'#001AFF26',
-         width: 63,
-         height:63,
-         borderRadius:100, 
-         }}>
-          <Ionicons name="md-lock-closed" size={40} color="black" />
-        </View>
-        <TouchableOpacity style={style.ButtonView}>
-          <Text style={style.TextNome}>Privacidade</Text>
-          <View style={{display:'flex', position:'absolute', left:'75%',top: 16}}>
-            <Ionicons name="arrow-forward" size={20} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
-        <View style={{
-         padding: 9,
-         paddingLeft:12, 
-         backgroundColor:'#D8F6CE',
-         width: 63,
-         height: 63,
-         borderRadius:100, 
-         }}>
-          <FontAwesome5 name="shield-alt" size={40} color="green" />
-        </View>
-        <TouchableOpacity style={style.ButtonView}>
-          <Text style={style.TextNome}>Segurança</Text>
-          <View style={{display:'flex', position:'absolute', left:'75%',top: 16}}>
-            <Ionicons name="arrow-forward" size={20} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={{width:'100%',flexDirection:'row',marginBottom: 16, display:'flex', paddingLeft: 32}}>
-        <View style={{
-         padding: 9, 
-         paddingLeft:12,
-         backgroundColor:'#F3E2A9',
-         width: 63,
-         height: 63,
-         borderRadius:100, 
-         }}>
-          <Ionicons name="md-help" size={40} color="#FF8000" />
-        </View>
-        <TouchableOpacity style={style.ButtonView}>
-          <Text style={style.TextNome}>Ajuda e suporte</Text>
-          <View style={{display:'flex', position:'absolute', left:'75%',top: 16}}>
-            <Ionicons name="arrow-forward" size={20} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View><View style={{width:'100%',flexDirection:'row', display:'flex',marginBottom: 32, paddingLeft: 32}}>
-        <View style={{
-         padding: 11, 
-         paddingLeft:15,
-         backgroundColor:'#FF7A0026',
-         width: 63,
-         height: 63,
-         borderRadius:100, 
-         }}>
-          <Entypo name="log-out" size={40} color="red" onPress={() => logOut()}/>
-        </View>
-        <TouchableOpacity style={style.ButtonView}>
-          <Text style={style.TextNome}>Sair</Text>
-          <View style={{display:'flex', position:'absolute', left:'75%',top: 16}}>
-            <Ionicons name="arrow-forward" size={20} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View> 
-    </ScrollView>
+    </View>
   )
   else return (
     <Loader />
@@ -190,52 +156,47 @@ const style = StyleSheet.create({
     backgroundColor:'white',
     alignItems: 'center',
   },
-  // TextConta: {
-  //   fontSize:30
-  // },
-  // TextNome: {
-  //   fontSize:23,
-  //   width:'100%'
-  // },
-  // TextDesc: {
-  //   fontSize:18,
-  //   width:'100%'
-  // },
-  // ButtonView: {
-  //   padding:'1rem',
-  //   flex:1,
-  //   display:'flex',
-  // },
-  // Flecha: {
-  // }
-  Perfil: {
-    width: '100%',
+  section1: {
+    flex: 0,
+    height: '20%'
+  },
+  section2: {
+    height: '70%'
+  },
+  title: {
+    fontFamily: 'Poppins_700Bold',
+    fontSize: 26
+  },
+  image: {
+    width: 80,
+    aspectRatio: 1 / 1,
+    borderRadius: 50
+  },
+  name: {
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 20,
+    margin: 0
+  },
+  buttons: {
     height: '100%',
-    borderRadius:100
+    justifyContent: 'space-around',
   },
-  TextConta: {
-    fontSize:30,
-    fontWeight:'bold'
+  button: {
+    marginHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
-  TextNome: {
-    fontSize:23,
-    fontWeight:'bold',
-    width:'100%'
+  buttonStyle: {
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 20,
+    flex: .9
   },
-  TextDesc: {
-    fontSize:18,
-    width:'100%'
-  },
-  imageConfig: {
-    width:'100%',
-    height:'100%'
-  },
-  ButtonView: {
-    padding: 16,
-    flex:1,
-    display:'flex',
-  },
-  Flecha: {
+  iconWrapper: {
+    padding: 15,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 
