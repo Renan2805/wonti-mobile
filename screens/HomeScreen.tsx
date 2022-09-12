@@ -32,19 +32,10 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
 
   // @ts-ignore
   const _renderItem = ({item}) => (
-    <CardRecommended 
-      theme={item.theme} 
-      image={item.image} 
-      title={item.title} 
-      hirer={item.hirer} 
-      description={item.description} 
-      time={item.time} 
-      type={item.type} 
-      salary={item.salary} 
-      competitors={item.competitors} 
-      place={item.place} 
-      posted={item.posted} 
-      full={item.full}
+    <CardRecommended
+      theme={false}
+      full={true}
+      jobId={item.id}
        
     />
   )
@@ -59,28 +50,34 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
 
   const DATA = [
     {
-      title: 'Dev. Front End',
-      hirer: 'Google',
-      salary: 3000,
-      posted: 3,
+      id: 'CQg7xkDZSrZBi6z6mYg2'
     },
     {
-      title: 'Dev. Front End',
-      hirer: 'Google',
-      salary: 3000,
-      posted: 3,
+      id: 'CQg7xkDZSrZBi6z6mYg2'
     },
     {
-      title: 'Dev. Front End',
-      hirer: 'Google',
-      salary: 3000,
-      posted: 3,
+      id: 'CQg7xkDZSrZBi6z6mYg2'
     },
     {
-      title: 'Dev. Front End',
-      hirer: 'Google',
-      salary: 3000,
-      posted: 3,
+      id: 'CQg7xkDZSrZBi6z6mYg2'
+    },
+    {
+      id: 'CQg7xkDZSrZBi6z6mYg2'
+    },
+    {
+      id: 'CQg7xkDZSrZBi6z6mYg2'
+    },
+    {
+      id: 'CQg7xkDZSrZBi6z6mYg2'
+    },
+    {
+      id: 'CQg7xkDZSrZBi6z6mYg2'
+    },
+    {
+      id: 'CQg7xkDZSrZBi6z6mYg2'
+    },
+    {
+      id: 'CQg7xkDZSrZBi6z6mYg2'
     },
   ]
 
@@ -100,14 +97,18 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
         />
         <View style={style.sectionRecomendados}>
           <Text style={[style.title, {textAlign: 'left'}]}>Recomendados</Text>
-          <Carousel 
-            data={DATA}
-            renderItem={(item) => _renderItem(item)}
-            ref={c => c && setCarousel(c)}
-            sliderWidth={400}
-            itemWidth={400}
-            activeSlideAlignment={'end'}
-          />
+          
+          <View style={style.carouselWrapper}>
+            <Carousel 
+              data={DATA}
+              renderItem={(item) => _renderItem(item)}
+              ref={c => c && setCarousel(c)}
+              sliderWidth={450}
+              itemWidth={350}
+              activeSlideAlignment={'center'}
+              
+            />
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -152,9 +153,13 @@ const style = StyleSheet.create({
     minWidth: '100%'
   },
   sectionRecomendados: {
-    backgroundColor: 'grey',
     minWidth: '100%',
     alignItems: 'center',
+    marginTop: 20
+  },
+  carouselWrapper: {
+    width: '100%',
+    alignItems: 'center'
   }
 })
 

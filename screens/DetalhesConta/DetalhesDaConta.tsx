@@ -49,7 +49,8 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
       aspect: [1, 1],
     });
 
-    handleImagePicked(pickerResult)
+    
+    (pickerResult)
   }
 
   const handleImagePicked = async (pickerResult: ImagePicker.ImagePickerResult) => {

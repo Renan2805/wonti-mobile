@@ -12,8 +12,8 @@ import { Notification, Bookmark, Lock, Logout } from 'react-native-iconly';
 import { auth, db } from '../config/firebase';
 import { useState, useEffect } from 'react';
 import Loader from '../components/Loader/Loader';
-import Header from '../components/Header';
 import { signOut } from 'firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 
 const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
@@ -63,19 +63,20 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
     <View
       style={style.content}
     >
+      <StatusBar backgroundColor={'white'}/>
       <Header />
       <View style={{paddingHorizontal: 20, width: '100%'}}>
         <View style={style.section1}>
           <Text style={style.title}>Conta</Text>
           <TouchableOpacity 
-            style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}
+            style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10}}
             onPress={() => navigation.navigate('DetailScreen')}  
           >
             <Image 
               source={{uri: profileImage}}
               style={style.image}
             />
-            <View style={{width: '50%'}}>
+            <View style={{width: '65%'}}>
               <Text style={style.name}>{auth.currentUser?.displayName}</Text>
               <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 15, color: '#7C7C7C'}}>informações da conta</Text>
             </View>
@@ -98,7 +99,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
             </TouchableOpacity>
             <TouchableOpacity 
               style={style.button}
-              onPress={() => {}}
+              onPress={() => setmodalActive(true)}
             >
               <View style={[style.iconWrapper, {backgroundColor: 'rgba(0, 26, 255, .15)'}]}>
                 <Bookmark set={'bold'} size={30} color={'#001AFF'} />
@@ -170,22 +171,40 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
   )
 }
 
+const Header = () => {
+
+  const navigation = useNavigation()
+
+  return (
+    <View style={[style.header, {paddingVertical: 0, margin: 0}]}>
+      <Image 
+        source={require('../assets/images/logoWonti.png')}
+        style={style.logo}
+      />
+    </View>
+  )
+
+}
+
+
 const style = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor:'white',
     alignItems: 'center',
+    marginTop: StatusBar.currentHeight
   },
   section1: {
     flex: 0,
     height: '20%'
   },
   section2: {
-    height: '70%'
+    height: '67%',
+    marginTop: 20
   },
   title: {
     fontFamily: 'Poppins_700Bold',
-    fontSize: 26
+    fontSize: 26,
   },
   image: {
     width: 80,
@@ -213,7 +232,7 @@ const style = StyleSheet.create({
     flex: .9
   },
   iconWrapper: {
-    padding: 15,
+    padding: 13,
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center'
@@ -242,6 +261,20 @@ const style = StyleSheet.create({
     textAlign:'center',
     padding:20,
   },
+
+  header: {
+    width: '100%',
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    height: '10%'
+  },
+  logo: {
+    height: 30,
+    width: 100
+  }
 })
 
 export default ConfigScreen

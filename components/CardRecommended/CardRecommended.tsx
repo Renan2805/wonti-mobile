@@ -1,61 +1,94 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, ViewStyle } from 'react-native'
 import { Bookmark, People, Location, TimeCircle, Wallet } from 'react-native-iconly'
 import { useNavigation } from '@react-navigation/native'
+import Loader from '../Loader/Loader'
+import { db, storage } from '../../config/firebase'
+import { doc, getDoc } from 'firebase/firestore'
+import { getDownloadURL, ref } from 'firebase/storage'
 
 type Props = {
-  theme: boolean 
-  image: string
-  title: string
-  hirer: string
-  description: string
-  time: string
-  type: string
-  salary: number
-  competitors: number
-  place: string
-  posted: number
+  theme: boolean
   full: boolean
+  jobId: string
   _style?: ViewStyle
 }
 
 const CardRecommended = ({ 
-    theme, 
-    image,
-    title,
-    hirer,
-    description,
-    time,
-    type,
-    salary,
-    competitors,
-    place,
-    posted,
+    theme,
     full,
+    jobId,
     _style
   }: Props) => {
 
+  type Job = {
+    Hirer: string,
+    HirerUid: string,
+    Title: string,
+    Description: string,
+    Time: string,
+    Type: string,
+    Competitors: number,
+    Place: string,
+    Salary: number,
+    Posted: number
+  }
+
   const [saved, setSaved] = useState(true)
+  const [image, setImage] = useState<string>()
+  const [data, setData] = useState<Job>()
+  const [isLoading, setIsLoading] = useState(true)
 
   const navigation = useNavigation()
+
 
   const primaryColor   = theme ? '#FFF' : '#000'
   const secondaryColor = theme ? '#000' : '#FFF'
   
+  const getData = async () => {
+    const ref = doc(db, `Jobs/${jobId}`)
+    await getDoc(ref).then((doc) => {
+      if(doc.exists()) {
+        // @ts-ignore
+        setData(doc.data())
+        console.log(data)
+      }
+    })
+    .finally(() => setIsLoading(false))
+  }
+
+  const getImage = async () => {
+    await getDownloadURL(ref(storage, `Users/${data && data.HirerUid}/Profile`))
+    .then((url) => {
+      setImage(url)
+    })
+    .catch((error) => {
+      console.error('Error: ', error)
+    })
+    .finally(() => setIsLoading(false))
+  }
+
+  useEffect(() => {
+    getData()
+    if(image == null) getImage()
+  }, [image, data])
+
+
+  if(data)
   return (
     <View style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 120}]}>
       <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('LoginScreen')}>
           <Image 
-            source={{uri: image}}
+            // @ts-ignore
+            source={image != '' ? {uri: image} : require('../../assets/images/DefaultProfile.png')}
             style={style.image}  
           />
           <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-evenly', paddingHorizontal: 10}}>
-            <Text style={[style.title, {color: primaryColor}]}>{title}</Text>
-            <Text style={[style.hirer, {color: primaryColor}]}>{hirer}</Text>
+            <Text style={[style.title, {color: primaryColor}]}>{data.Title}</Text>
+            <Text style={[style.hirer, {color: primaryColor}]}>{data.Hirer}</Text>
           </View>
           <TouchableOpacity onPress={() => {
               setSaved(!saved)
-              console.log('Saved: ',saved);
             }}>
             <Bookmark size={'medium'} set={saved ? 'bold' : 'light'} primaryColor={primaryColor} />
           </TouchableOpacity>
@@ -64,7 +97,7 @@ const CardRecommended = ({
         full ? 
         <>
           <View style={style.section2}>
-            <Text style={[style.description, {color: primaryColor}]}>{description}</Text>
+            <Text style={[style.description, {color: primaryColor}]}>{data.Description}</Text>
           </View>
           <View style={style.section3}>
             <View style={{
@@ -73,7 +106,7 @@ const CardRecommended = ({
               borderRadius: 2,
               justifyContent: 'center'
             }}>
-              <Text style={[style.info, {color: primaryColor}]}>{time}</Text>
+              <Text style={[style.info, {color: primaryColor}]}>{data.Time}</Text>
             </View>
             <View style={{
               backgroundColor: theme ? 'rgba(255, 255, 255, 0.12)' : 'rgba(152, 152, 152, 0.12)',
@@ -81,7 +114,7 @@ const CardRecommended = ({
               borderRadius: 2,
               justifyContent: 'center'
             }}>
-              <Text style={[style.info, {color: primaryColor}]}>{type}</Text>
+              <Text style={[style.info, {color: primaryColor}]}>{data.Type}</Text>
             </View>
             <View style={{
               backgroundColor: theme ? 'rgba(255, 255, 255, 0.12)' : 'rgba(152, 152, 152, 0.12)',
@@ -89,7 +122,7 @@ const CardRecommended = ({
               borderRadius: 2,
               justifyContent: 'center'
             }}>
-              <Text style={[style.info, {color: primaryColor}]}>{'R$' + salary}</Text>
+              <Text style={[style.info, {color: primaryColor}]}>{'R$' + data.Salary}</Text>
             </View>
           </View>
         </>:<></>
@@ -98,21 +131,21 @@ const CardRecommended = ({
       <View style={style.section4}>
         <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
           <People set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-          <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{competitors}</Text>
+          <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Competitors}</Text>
         </View>
         {
           full ?
             <>
               <View style={{ width: '45%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                 <Location set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-                <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{place}</Text>
+                <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Place}</Text>
               </View>
             </>
           :
             <>
               <View style={{ width: '45%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                 <Wallet set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-                <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{'R$' + salary}</Text>
+                <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{'R$' + data.Salary}</Text>
               </View>
             </>
 
@@ -120,10 +153,13 @@ const CardRecommended = ({
         
         <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
           <TimeCircle set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-          <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{posted + ' Dias'}</Text>
+          <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Posted + ' Dias'}</Text>
         </View> 
       </View>
     </View>
+  )
+  else return (
+    <Loader />
   )
 }
 
@@ -145,7 +181,7 @@ const style = StyleSheet.create({
   image: {
     width: 40,
     height: 40,
-    borderRadius: 5
+    borderRadius: 100
   },
   title: {
     fontFamily: 'Poppins_700Bold',
