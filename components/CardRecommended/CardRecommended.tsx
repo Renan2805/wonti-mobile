@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, ViewStyle } from 'react-native'
 import { Bookmark, People, Location, TimeCircle, Wallet } from 'react-native-iconly'
 import { useNavigation } from '@react-navigation/native'
 
@@ -16,6 +16,7 @@ type Props = {
   place: string
   posted: number
   full: boolean
+  _style?: ViewStyle
 }
 
 const CardRecommended = ({ 
@@ -30,7 +31,8 @@ const CardRecommended = ({
     competitors,
     place,
     posted,
-    full
+    full,
+    _style
   }: Props) => {
 
   const [saved, setSaved] = useState(true)
@@ -41,7 +43,7 @@ const CardRecommended = ({
   const secondaryColor = theme ? '#000' : '#FFF'
   
   return (
-    <View style={[style.card, { backgroundColor: secondaryColor, height: full ? 200 : 120}]}>
+    <View style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 120}]}>
       <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('LoginScreen')}>
           <Image 
             source={{uri: image}}
@@ -127,7 +129,7 @@ const CardRecommended = ({
 
 const style = StyleSheet.create({
   card: {
-    width: '85%',
+    width: '90%',
     padding: 20,
     borderRadius: 15,
     marginVertical: 10

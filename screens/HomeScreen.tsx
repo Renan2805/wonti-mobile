@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, StatusBar, SafeAreaView, FlatList } from 'react-native'
+import { ScrollView, View, Text, Image, StyleSheet, StatusBar, SafeAreaView, FlatList, Alert } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -7,50 +7,16 @@ import { RootTabScreenProps } from '../types'
 import { auth } from '../config/firebase'
 import Loader from '../components/Loader/Loader'
 import Carousel from 'react-native-snap-carousel'
+import useWindowDimensions from '../hooks/useWindowDimension'
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
-
-  {/*const itemSlide = [
-    {
-      title: 'Dev. Front End'
-    },
-    {    
-    image: 'https://logopng.com.br/logos/google-37.png'
-    },
-    {
-    description: 'A Dev. Front End será responsável por desenvolver produtos e serviços.'
-    },
-    {
-    hirer:'Google'
-    },
-    {
-    theme:true
-    },
-    {
-    time:'Integral'
-    },
-    {
-    type:'Remoto'
-    },
-    {
-    salary:2000
-    },
-    {
-    competitors:20
-    },
-    {
-    place:'São Paulo, SP'
-    },
-    {
-    posted:2
-    },
-    {
-    full:true
-    }
-  ] */}
   
   const [user, setUser] = useState(auth.currentUser)
   const [isLoading, setIsLoading] = useState(false)
+  const [carousel, setCarousel] = useState({})
+
+  const [test, setTest] = useState('')
+
   useEffect(() => {
     if(user === null) {
       setIsLoading(true)
@@ -78,45 +44,73 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
       competitors={item.competitors} 
       place={item.place} 
       posted={item.posted} 
-      full={item.full}      
+      full={item.full}
+       
     />
   )
 
+  const doSearch = () => {
+    Alert.alert('teste')
+  }
+
+  const filter = () => {
+    Alert.alert('teste 2')
+  }
+
   const DATA = [
     {
-      hirer: 'Google'
+      title: 'Dev. Front End',
+      hirer: 'Google',
+      salary: 3000,
+      posted: 3,
     },
     {
-      hirer: 'Google'
+      title: 'Dev. Front End',
+      hirer: 'Google',
+      salary: 3000,
+      posted: 3,
     },
     {
-      hirer: 'Google'
+      title: 'Dev. Front End',
+      hirer: 'Google',
+      salary: 3000,
+      posted: 3,
     },
     {
-      hirer: 'Google'
+      title: 'Dev. Front End',
+      hirer: 'Google',
+      salary: 3000,
+      posted: 3,
     },
   ]
 
   if(!isLoading)
   return (
-    <SafeAreaView style={style.safeView}>
-      <ExpoStatusBar.StatusBar translucent={true}/>
+    <View style={style.safeView}>
       <HomeHeader />
-      <ScrollView contentContainerStyle={style.content} showsVerticalScrollIndicator={false} stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true} >
-      <View style={{width: '100%', alignItems: 'center'}}>
-        <SearchBar />
-      </View>
-      <View style={style.sectionRecomendados}>
-        <Text style={style.title}>Recomendados</Text>
-        <FlatList 
-          data={DATA}
-          renderItem={_renderItem}
-          horizontal={true}
-
+      <ScrollView
+        contentContainerStyle={style.content}
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll={true}
+      >
+        <SearchBar 
+          _onChangeText={(text) => setTest(text)}
+          _onPressS={() => doSearch()}
+          _onPressF={() => filter()}
         />
-      </View>
+        <View style={style.sectionRecomendados}>
+          <Text style={[style.title, {textAlign: 'left'}]}>Recomendados</Text>
+          <Carousel 
+            data={DATA}
+            renderItem={(item) => _renderItem(item)}
+            ref={c => c && setCarousel(c)}
+            sliderWidth={400}
+            itemWidth={400}
+            activeSlideAlignment={'end'}
+          />
+        </View>
       </ScrollView>
-      </SafeAreaView>
+    </View>
   )
   else return (
     <Loader />
@@ -145,19 +139,22 @@ const style = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0)'
   },
   content: {
-    flex:1,
+    flex: 0,
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
+    
   },
   title: {
     fontFamily: 'Poppins_700Bold',
-    fontSize: 22
+    fontSize: 22,
+    minWidth: '100%'
   },
   sectionRecomendados: {
-    paddingHorizontal: 10
+    backgroundColor: 'grey',
+    minWidth: '100%',
+    alignItems: 'center',
   }
 })
 
