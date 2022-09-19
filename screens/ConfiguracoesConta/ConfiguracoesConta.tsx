@@ -258,8 +258,8 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, .3)'
   },
   image: {
-    width: 100,
-    aspectRatio: 1,
+    maxWidth: 100,
+    maxHeight: 100,
     borderRadius: 100
   },
   imageWrapper: {},

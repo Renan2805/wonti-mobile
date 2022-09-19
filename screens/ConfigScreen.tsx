@@ -64,7 +64,6 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
     <View
       style={style.content}
     >
-      <StatusBar backgroundColor={'white'}/>
       <Header />
       <View style={{paddingHorizontal: 20, width: '100%'}}>
         <View style={style.section1}>

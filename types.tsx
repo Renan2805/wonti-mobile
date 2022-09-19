@@ -23,6 +23,7 @@ export type RootStackParamList = {
   LoginScreen: undefined;
   RecoverPasswordScreen: undefined;
   Home: undefined;
+  Vagas: undefined;
 
   SignIn_1: {
     isUser: boolean
@@ -94,3 +95,18 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   BottomTabScreenProps<RootTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
 >;
+
+
+
+export type Job = {
+  Hirer: string,
+  HirerUid: string,
+  Title: string,
+  Description: string,
+  Time: string,
+  Type: string,
+  Competitors: number,
+  Place: string,
+  Salary: number,
+  Posted: number
+}

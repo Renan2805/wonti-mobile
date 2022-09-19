@@ -1,37 +1,37 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../types'
+import { Job, RootStackScreenProps } from '../types'
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, StyleSheet, StatusBar, SafeAreaView, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, StyleSheet, StatusBar, SafeAreaView } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
-import { RootTabScreenProps } from '../types'
-import { getData } from '../hooks/useAsyncStorage'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { auth } from '../config/firebase'
-import { updateProfile,  } from '@firebase/auth'
+import { auth, db } from '../config/firebase'
+import { collection, getDocs } from 'firebase/firestore'
 import Loader from '../components/Loader/Loader'
-import { useLinkProps } from '@react-navigation/native'
 
-
-
-type Props = NativeStackScreenProps<RootStackParamList>
-
-const dados = {
-  nome:'vitor'
-}
-
-const VagasScreen = ({ navigation }: Props) => {
+const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
 
   const [user, setUser] = useState(auth.currentUser)
-  const [isLoading, setIsLoading] = useState(false)
+  const [vagas, setVagas] = useState<string[]>()
+  const [isLoading, setIsLoading] = useState(true)
+
+  const getJobs = async () => {
+    const querySnapshot = await getDocs(collection(db, 'Jobs'))
+    let jobs: string[] = []
+    querySnapshot.forEach(doc => {
+      // @ts-ignore
+      jobs = [...jobs, doc.id]
+    })
+    console.log('Jobs: ', jobs)
+    setVagas(jobs)
+  }
+
   useEffect(() => {
     if(user === null) {
       setIsLoading(true)
-    }else {
-      setIsLoading(false)
     }
-
+    getJobs().then(() => setIsLoading(false)).catch(e => console.error(e))
+    vagas && console.log(vagas)
+    
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault()
     })
@@ -45,68 +45,30 @@ const VagasScreen = ({ navigation }: Props) => {
       </View>
       <ExpoStatusBar.StatusBar translucent={true}/>
       <ScrollView contentContainerStyle={style.content} showsVerticalScrollIndicator={false} stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true} >
-      <View style={{width: '100%', alignItems: 'center'}}>
-        <SearchBar />
-      </View>
-      {/*<Text>{user?.uid}</Text>*/}
-      <CardRecommended 
-        title={'Dev. Front End'}
-        image={'https://logopng.com.br/logos/google-37.png'}
-        description={'A Dev. Front End será responsável por desenvolver produtos e serviços.'}
-        hirer={'Google'}
-        theme={true}
-        time={'Integral'}
-        type={'Remoto'}
-        salary={2000}
-        competitors={20}
-        place={'São Paulo, SP'}
-        posted={2}
-        full={true}
-      />
-      <CardRecommended 
-        title={'Dev. Front End'}
-        image={'https://logopng.com.br/logos/google-37.png'}
-        description={'A Dev. Front End será responsável por desenvolver produtos e serviços.'}
-        hirer={'Google'}
-        theme={true}
-        time={'Integral'}
-        type={'Remoto'}
-        salary={2000}
-        competitors={20}
-        place={'São Paulo, SP'}
-        posted={2}
-        full={true}
-      />
-      <CardRecommended 
-        title={'Dev. Front End'}
-        image={'https://logopng.com.br/logos/google-37.png'}
-        description={'A Dev. Front End será responsável por desenvolver produtos e serviços.'}
-        hirer={'Google'}
-        theme={true}
-        time={'Integral'}
-        type={'Remoto'}
-        salary={2000}
-        competitors={20}
-        place={'São Paulo, SP'}
-        posted={2}
-        full={true}
-      />
-      <CardRecommended 
-        title={'Dev. Front End'}
-        image={'https://logopng.com.br/logos/google-37.png'}
-        description={'A Dev. Front End será responsável por desenvolver produtos e serviços.'}
-        hirer={'Google'}
-        theme={true}
-        time={'Integral'}
-        type={'Remoto'}
-        salary={2000}
-        competitors={20}
-        place={'São Paulo, SP'}
-        posted={2}
-        full={true}
-      />
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <SearchBar _onPressS={function (): void {
+              throw new Error('Function not implemented.')
+            } } _onPressF={function (): void {
+              throw new Error('Function not implemented.')
+            } } _onChangeText={function (text: string): void {
+              throw new Error('Function not implemented.')
+            } } />
+        </View>
+        {/*<Text>{user?.uid}</Text>*/}
+        <View style={style.cardWrapper}>
+          {
+            vagas?.map(job => (
+              <CardRecommended 
+                jobId={job}
+                theme={false}
+                full={true}
+                _style={{marginVertical: 10}}
+              />
+            ))
+          }
+        </View>
       </ScrollView>
-      </SafeAreaView>
+    </SafeAreaView>
   )
   else return (
     <Loader />
@@ -124,6 +86,9 @@ const style = StyleSheet.create({
   content: {
     width: '100%',
     alignItems: 'center'
+  },
+  cardWrapper: {
+    width: '80%'
   }
 })
 

@@ -54,6 +54,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
             style={styles.input}
             onChangeText={(text) => setUser(text)}
           />
+          <View style={{maxHeight: 10, minHeight: 5}}/>
           <TextInput 
             placeholder={'Senha'}
             style={styles.input}
@@ -76,7 +77,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
           <NextButton _onPress={() => goNext()}/>
         </View>
       </View>
-      <View style={{flexDirection: 'row', alignItems: 'center', height: '10%', marginVertical: '5%'}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', height: '10%', marginVertical: 20}}>
         <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
           <View>
             <Text style={{width: 70, textAlign: 'center', fontFamily: 'WorkSans_400Regular', fontSize: 16}}>ou</Text>

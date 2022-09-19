@@ -6,7 +6,6 @@ import Loader from '../Loader/Loader'
 import { db, storage } from '../../config/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
-import { HomeStackScreenProps } from '../../types'
 
 type Props = {
   theme: boolean
@@ -38,7 +37,7 @@ const CardRecommended = ({
 
   const navigation = useNavigation()
 
-  const [saved, setSaved] = useState(true)
+  const [saved, setSaved] = useState(false)
   const [image, setImage] = useState<string>()
   const [data, setData] = useState<Job>()
   const [isLoading, setIsLoading] = useState(true)
@@ -54,7 +53,8 @@ const CardRecommended = ({
       if(doc.exists()) {
         // @ts-ignore
         setData(doc.data())
-        data && getImage(data.HirerUid)
+        data && getImage(data?.HirerUid)
+        
       }
     })
 
@@ -70,11 +70,15 @@ const CardRecommended = ({
     .catch((error) => {
       console.error('Error: ', error)
     })
-    .finally(() => setIsLoading(false))
   }
 
   useEffect(() => {
-    getData()
+    let isSub = true
+    isSub && getData()
+
+    return () => {
+      isSub = false
+    }
   }, [data, image])
 
 

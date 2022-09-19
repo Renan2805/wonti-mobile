@@ -99,8 +99,8 @@ function LoginScreen({navigation}: Props) {
               value={email}
               onChangeText={text => setEmail(text)}
               keyboardType={'email-address'}
-
-              />
+            />
+            <View style={{maxHeight: 10, minHeight: 5}}/>
             <TextInput 
               style={styles.input}
               placeholder={'Senha'}
@@ -190,9 +190,9 @@ const styles = StyleSheet.create({
     borderColor: '#848484',
     borderRadius: 30,
     paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingVertical: 10,
     fontFamily: 'WorkSans_300Light',
-    fontSize: 18
+    fontSize: 16
   },
   ce: {
     flex: 0,
@@ -221,6 +221,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'black',
     borderRadius: 40,
-    paddingVertical: 15,
+    paddingVertical: 10,
   }
 })
