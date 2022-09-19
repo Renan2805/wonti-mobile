@@ -1,5 +1,6 @@
 import { IoMdLock,IoMdHelp } from 'react-icons/io'
-import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, StatusBar, Alert, Modal} from 'react-native'
+import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, Alert, Modal, StatusBar} from 'react-native'
+import * as Expo from 'expo-status-bar'
 import { RootTabScreenProps } from '../types'
 
 import CardRecommended from '../components/CardRecommended/CardRecommended';

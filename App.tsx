@@ -49,7 +49,7 @@ import { Numans_400Regular } from '@expo-google-fonts/numans'
 
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ConfigStackParamList, RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from './types';
+import { ConfigStackParamList, RootStackParamList, RootTabParamList, HomeStackScreenProps, HomeStackparamList } from './types';
 import HomeScreen from './screens/HomeScreen';
 import { Home, Work, Chat, Setting } from 'react-native-iconly';
 import ChatScreen from './screens/ChatScreen';
@@ -141,7 +141,7 @@ export default function App() {
         
           <BottomTab.Screen
             name="Home"
-            component={HomeScreen}
+            component={HomeStack}
             options={() => ({
               tabBarIcon: ({ color, focused }) => focused ? <Home primaryColor={color} set="bold" size={'large'}/> : <Home primaryColor={color} size={'large'}/>,
             })}
@@ -209,6 +209,17 @@ const ConfigStack = () => {
       <Stack.Screen name={'ConfigScreen'} component={ConfigScreen}/>
       <Stack.Screen name={'DetailScreen'} component={DetalhesDaConta}/>
       <Stack.Screen name={'ConfigConta'}  component={ConfiguracoesConta}/>
+    </Stack.Navigator>
+  )
+}
+
+const HomeStack = () => {
+  const Stack = createNativeStackNavigator<HomeStackparamList>()
+
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name={'Home'} component={HomeScreen}/>
+      <Stack.Screen name={'Job'} component={ConfigScreen}/>
     </Stack.Navigator>
   )
 }

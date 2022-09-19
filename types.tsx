@@ -52,6 +52,19 @@ export type RootStackParamList = {
   DetailScreen: undefined;
 };
 
+export type HomeStackparamList = {
+  Home: undefined;
+  Job: { 
+    id: string
+    theme: boolean
+  };
+}
+
+export type HomeStackScreenProps<Screen extends keyof HomeStackparamList> = NativeStackScreenProps<
+  HomeStackparamList,
+  Screen
+>
+
 export type ConfigStackParamList = {
   ConfigScreen: undefined;
   DetailScreen: undefined;

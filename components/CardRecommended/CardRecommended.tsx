@@ -6,19 +6,21 @@ import Loader from '../Loader/Loader'
 import { db, storage } from '../../config/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
+import { HomeStackScreenProps } from '../../types'
 
 type Props = {
   theme: boolean
   full: boolean
   jobId: string
   _style?: ViewStyle
+  
 }
 
 const CardRecommended = ({ 
     theme,
     full,
     jobId,
-    _style
+    _style,
   }: Props) => {
 
   type Job = {
@@ -34,31 +36,34 @@ const CardRecommended = ({
     Posted: number
   }
 
+  const navigation = useNavigation()
+
   const [saved, setSaved] = useState(true)
   const [image, setImage] = useState<string>()
   const [data, setData] = useState<Job>()
   const [isLoading, setIsLoading] = useState(true)
-
-  const navigation = useNavigation()
 
 
   const primaryColor   = theme ? '#FFF' : '#000'
   const secondaryColor = theme ? '#000' : '#FFF'
   
   const getData = async () => {
-    const ref = doc(db, `Jobs/${jobId}`)
-    await getDoc(ref).then((doc) => {
+    // Fetch all job data out of the jobId given in the props
+    const docRef = doc(db, `Jobs/${jobId}`)
+    await getDoc(docRef).then((doc) => {
       if(doc.exists()) {
         // @ts-ignore
         setData(doc.data())
-        console.log(data)
+        data && getImage(data.HirerUid)
       }
     })
-    .finally(() => setIsLoading(false))
+
+    
   }
 
-  const getImage = async () => {
-    await getDownloadURL(ref(storage, `Users/${data && data.HirerUid}/Profile`))
+  const getImage = async (uid: string) => {
+    // Fetch the profile image url of the hirer
+    await getDownloadURL(ref(storage, `Users/${uid}/Profile`))
     .then((url) => {
       setImage(url)
     })
@@ -70,17 +75,17 @@ const CardRecommended = ({
 
   useEffect(() => {
     getData()
-    if(image == null) getImage()
-  }, [image, data])
+  }, [data, image])
 
 
-  if(data)
+  if(data && image !== '')
   return (
     <View style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 120}]}>
-      <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('LoginScreen')}>
+      {/* @ts-ignore */}
+      <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('Job', {id: jobId})}>
           <Image 
             // @ts-ignore
-            source={image != '' ? {uri: image} : require('../../assets/images/DefaultProfile.png')}
+            source={image != undefined ? {uri: image} : require('../../assets/images/DefaultProfile.png')}
             style={style.image}  
           />
           <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-evenly', paddingHorizontal: 10}}>
@@ -165,10 +170,9 @@ const CardRecommended = ({
 
 const style = StyleSheet.create({
   card: {
-    width: '90%',
+    width: '100%',
     padding: 20,
     borderRadius: 15,
-    marginVertical: 10
   },
   section1: {
     width: '100%',

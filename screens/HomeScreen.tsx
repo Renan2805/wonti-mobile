@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, StatusBar, SafeAreaView, FlatList, Alert } from 'react-native'
+import { ScrollView, View, Text, Image, StyleSheet, StatusBar, SafeAreaView, FlatList, Alert, Dimensions } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
   // @ts-ignore
   const _renderItem = ({item}) => (
     <CardRecommended
-      theme={false}
+      theme={true}
       full={true}
       jobId={item.id}
        
@@ -49,27 +49,6 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
   }
 
   const DATA = [
-    {
-      id: 'CQg7xkDZSrZBi6z6mYg2'
-    },
-    {
-      id: 'CQg7xkDZSrZBi6z6mYg2'
-    },
-    {
-      id: 'CQg7xkDZSrZBi6z6mYg2'
-    },
-    {
-      id: 'CQg7xkDZSrZBi6z6mYg2'
-    },
-    {
-      id: 'CQg7xkDZSrZBi6z6mYg2'
-    },
-    {
-      id: 'CQg7xkDZSrZBi6z6mYg2'
-    },
-    {
-      id: 'CQg7xkDZSrZBi6z6mYg2'
-    },
     {
       id: 'CQg7xkDZSrZBi6z6mYg2'
     },
@@ -96,16 +75,15 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
           _onPressF={() => filter()}
         />
         <View style={style.sectionRecomendados}>
-          <Text style={[style.title, {textAlign: 'left'}]}>Recomendados</Text>
+          <Text style={[style.title]}>Recomendados</Text>
           
           <View style={style.carouselWrapper}>
             <Carousel 
               data={DATA}
               renderItem={(item) => _renderItem(item)}
               ref={c => c && setCarousel(c)}
-              sliderWidth={450}
-              itemWidth={350}
-              activeSlideAlignment={'center'}
+              sliderWidth={Dimensions.get('screen').width}
+              itemWidth={(Dimensions.get('screen').width * 80) / 100}
               
             />
           </View>
@@ -128,7 +106,7 @@ const HomeHeader = () => {
       <Image
         // @ts-ignore
         source={{uri: auth.currentUser?.photoURL}}
-        style={{height: '100%', aspectRatio: 1 / 1, borderRadius: 100}}
+        style={{height: '100%', aspectRatio: 1, borderRadius: 100}}
       />
     </View>
   )
@@ -150,7 +128,7 @@ const style = StyleSheet.create({
   title: {
     fontFamily: 'Poppins_700Bold',
     fontSize: 22,
-    minWidth: '100%'
+    minWidth: '95%'
   },
   sectionRecomendados: {
     minWidth: '100%',

@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { ScrollView, Text, StyleSheet, View, Image ,TouchableOpacity, ImageBackground, StatusBar, Alert, ActivityIndicator, Platform } from 'react-native'
+import * as ExpoStatusBar from 'expo-status-bar'
 import DocumentPicker, { types } from 'react-native-document-picker'
 import * as ImagePicker from 'expo-image-picker'
 import { FontAwesome } from '@expo/vector-icons';
@@ -129,6 +130,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
 
   return (
     <ScrollView contentContainerStyle={style.content}>
+      <ExpoStatusBar.StatusBar translucent={true}/>
       <ImageBackground
         source={require('../../assets/images/FundoVideo.png')}
         style={[style.fundo, {paddingTop: StatusBar.currentHeight}]}
