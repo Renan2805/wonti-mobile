@@ -18,20 +18,23 @@ import { TickSquare, Camera } from 'react-native-iconly'
 import * as ImagePicker from 'expo-image-picker'
 
 import { RootStackScreenProps } from '../../types'
-import { useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import { auth, storage } from '../../config/firebase'
 import { updateProfile } from 'firebase/auth'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
 const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
   
-  const [profileImage, setProfileImage] = useState('')
+  const [profileImage, setProfileImage] = useState<string | null>()
+  const [user, setUser] = useState(auth.currentUser)
+  const [isLoading, setIsLoading] = useState(true)
 
   const [isEnabled, setIsEnabled] = useState(true)
   const [isOptionsOpen, setIsOptionsOpen] = useState(false)
   const [error, setError] = useState('')
 
   const [isUploading, setIsUploading] = useState(false)
+  const [progress, setProgress] = useState(0)
   const [status, setStatus] = useState('')
 
   const askPermision = async () => {
@@ -75,7 +78,6 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
           photoURL: uploadUrl
         })
         setProfileImage(uploadUrl)
-        console.log('User: ', auth.currentUser)
       }
     } catch (e) {
       if(typeof e === 'string') setError(e)
@@ -104,10 +106,22 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
 
     const fileRef = ref(storage, `Users/${auth.currentUser?.uid}/Profile`);
     // @ts-ignore
-    const result = await uploadBytes(fileRef, blob);
-    // @ts-ignore
-    // We're done with the blob, close and release it
-    blob.close();
+    const result = uploadBytesResumable(fileRef, blob);
+    result.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        setProgress(progress)
+      },
+      (error) => {
+        setError(error.message)
+        console.error(error)
+      },
+      () => {
+        setIsUploading(false)
+        // @ts-ignore
+        // We're done with the blob, close and release it
+        blob.close();
+      })
 
     return await getDownloadURL(fileRef);
   }
@@ -126,10 +140,11 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
           ]}
         >
           <ActivityIndicator animating size="large" />
+          <Text>{progress + '%'}</Text>
         </View>
       )
     }
-  }
+  } 
 
   const Header = () => {
     return (
@@ -143,7 +158,16 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
     )
   }
 
-  return (
+  useEffect(() => {
+    if(user === null) {
+      setIsLoading(true)
+    }else {
+      user?.photoURL && setProfileImage(user.photoURL)
+      setIsLoading(false)
+    }
+  }, [user])
+
+  if(!isLoading) return (
     <>
     <ScrollView>
       <Header />
@@ -165,7 +189,8 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
       <View style ={styles.content} >
         <View style={styles.imageWrapper}>
           <Image 
-            source={auth.currentUser?.photoURL ? {uri: auth.currentUser.photoURL} : require('../../assets/images/DefaultProfile.png')}
+            // @ts-ignore
+            source={{uri: auth.currentUser?.photoURL}}
             style={styles.image}
           />
           <TouchableOpacity style={styles.cameraButton} onPress={() => setIsOptionsOpen(!isOptionsOpen)}>
@@ -177,7 +202,8 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
             <View style={styles.account}>
               <View style={styles.labeledInput}>
                 <Text style={styles.label}>Nome de Usuário</Text>
-                <TextInput value={'Nome'} onChangeText={() => {}} style={styles.input}/>
+                {/* @ts-ignore */}
+                <TextInput value={user?.displayName} onChangeText={(text) => {setUser({displayName: text})}} style={styles.input}/>
               </View>
               <View style={styles.labeledInput}>
                 <Text style={styles.label}>Local em que reside</Text>
@@ -200,22 +226,28 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
     </ScrollView>
     {
       isOptionsOpen &&
-      <View style={styles.options}>
-        <TouchableOpacity style={[styles.optionsRow, {borderBottomWidth: 1, borderBottomColor: 'black'}]} onPress={() => status == 'granted' ? takePhoto() : askPermision()}>
-          <FontAwesome name="camera" size={24} color="black" />
-          <Text style={styles.optionsText}>Tirar Foto</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.optionsRow} onPress={() => status == 'granted' ? pickImage() : askPermision()}>
-          <FontAwesome name="folder" size={24} color="black" />
-          <Text style={styles.optionsText}>Escolher Foto da Galeria</Text>
-        </TouchableOpacity>
+      <View style={{width: '100%', height: '100%', position: 'absolute', backgroundColor: 'rgba(0, 0, 0, .1)'}}>
+        <TouchableOpacity style={{width: '100%', height: '83%'}} onPress={() => setIsOptionsOpen(false)}/>
+        <View style={styles.options}>
+          <TouchableOpacity style={[styles.optionsRow, {borderBottomWidth: 1, borderBottomColor: 'rgba(0, 0, 0, .3)'}]} onPress={() => status == 'granted' ? takePhoto() : askPermision()}>
+            <FontAwesome name="camera" size={24} color="black" />
+            <Text style={styles.optionsText}>Tirar Foto</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.optionsRow} onPress={() => status == 'granted' ? pickImage() : askPermision()}>
+            <FontAwesome name="folder" size={24} color="black" />
+            <Text style={styles.optionsText}>Escolher Foto da Galeria</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     }
     {
       maybeRenderUploadingOverlay()
     }
     </>
+  ) 
+  else return (
+    <Text>Carregando...</Text>
   )
 }
 
@@ -258,11 +290,15 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, .3)'
   },
   image: {
-    maxWidth: 100,
-    maxHeight: 100,
+    width: 100,
+    height: 100,
     borderRadius: 100
   },
-  imageWrapper: {},
+  imageWrapper: {
+    minWidth: 100,
+    minHeight: 100,
+    borderRadius: 100
+  },
   cameraButton: {
     position: 'absolute',
     bottom: 0,

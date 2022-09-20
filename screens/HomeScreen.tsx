@@ -12,7 +12,7 @@ import useWindowDimensions from '../hooks/useWindowDimension'
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
   
   const [user, setUser] = useState(auth.currentUser)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [carousel, setCarousel] = useState({})
 
   const [test, setTest] = useState('')
@@ -78,14 +78,14 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
           <Text style={[style.title]}>Recomendados</Text>
           
           <View style={style.carouselWrapper}>
-            <Carousel 
+            {/* <Carousel 
               data={DATA}
               renderItem={(item) => _renderItem(item)}
               ref={c => c && setCarousel(c)}
               sliderWidth={Dimensions.get('screen').width}
               itemWidth={(Dimensions.get('screen').width * 80) / 100}
               
-            />
+            /> */}
           </View>
         </View>
       </ScrollView>

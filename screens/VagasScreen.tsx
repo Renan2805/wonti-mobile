@@ -56,7 +56,7 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
         </View>
         {/*<Text>{user?.uid}</Text>*/}
         <View style={style.cardWrapper}>
-          {
+          {/* {
             vagas?.map(job => (
               <CardRecommended 
                 jobId={job}
@@ -65,7 +65,7 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
                 _style={{marginVertical: 10}}
               />
             ))
-          }
+          } */}
         </View>
       </ScrollView>
     </SafeAreaView>
