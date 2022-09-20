@@ -19,6 +19,7 @@ import * as ImagePicker from 'expo-image-picker'
 
 import { RootStackScreenProps } from '../../types'
 import { SetStateAction, useEffect, useState } from 'react'
+import * as ExpoStatusBar from 'expo-status-bar'
 import { auth, storage } from '../../config/firebase'
 import { updateProfile } from 'firebase/auth'
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
@@ -169,6 +170,7 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
 
   if(!isLoading) return (
     <>
+    <ExpoStatusBar.StatusBar translucent={true} style={'dark'}/>
     <ScrollView>
       <Header />
       <View style={styles.switches}>

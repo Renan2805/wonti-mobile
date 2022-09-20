@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, StatusBar, SafeAreaView, FlatList, Alert, Dimensions } from 'react-native'
+import { ScrollView, View, Text, Image, StyleSheet, StatusBar, SafeAreaView, FlatList, Alert, Dimensions, TouchableOpacity } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -53,7 +53,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
       id: 'CQg7xkDZSrZBi6z6mYg2'
     },
     {
-      id: 'CQg7xkDZSrZBi6z6mYg2'
+      id: 'dAcbFWzeQFClwHpEC5bB'
     },
     {
       id: 'CQg7xkDZSrZBi6z6mYg2'
@@ -63,6 +63,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
   if(!isLoading)
   return (
     <View style={style.safeView}>
+      <ExpoStatusBar.StatusBar translucent={true} backgroundColor={''}/>
       <HomeHeader />
       <ScrollView
         contentContainerStyle={style.content}
@@ -78,14 +79,14 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
           <Text style={[style.title]}>Recomendados</Text>
           
           <View style={style.carouselWrapper}>
-            {/* <Carousel 
+            <Carousel 
               data={DATA}
               renderItem={(item) => _renderItem(item)}
               ref={c => c && setCarousel(c)}
               sliderWidth={Dimensions.get('screen').width}
               itemWidth={(Dimensions.get('screen').width * 80) / 100}
               
-            /> */}
+            />
           </View>
         </View>
       </ScrollView>
@@ -103,11 +104,13 @@ const HomeHeader = () => {
         source={require('../assets/images/logoWonti.png')}
         style={{height: 30, width: 100}}
       />
-      <Image
-        // @ts-ignore
-        source={{uri: auth.currentUser?.photoURL}}
-        style={{height: '100%', aspectRatio: 1, borderRadius: 100}}
-      />
+      <TouchableOpacity onPress={() => {}}>
+        <Image
+          // @ts-ignore
+          source={{uri: auth.currentUser?.photoURL}}
+          style={{height: '100%', aspectRatio: 1, borderRadius: 100}}
+        />
+      </TouchableOpacity>
     </View>
   )
 }

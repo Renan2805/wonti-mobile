@@ -53,8 +53,7 @@ const CardRecommended = ({
       if(doc.exists()) {
         // @ts-ignore
         setData(doc.data())
-        data && getImage(data?.HirerUid)
-        
+        data && getImage(data.HirerUid)
       }
     })
 
@@ -74,15 +73,17 @@ const CardRecommended = ({
 
   useEffect(() => {
     let isSub = true
-    isSub && getData()
-
+    isSub && getData().then(() => {
+      setIsLoading(false)
+    })
+    .catch(e => console.error(e))
     return () => {
       isSub = false
     }
-  }, [data, image])
+  }, [data])
 
 
-  if(data && image !== '')
+  if(!isLoading && data)
   return (
     <View style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 120}]}>
       {/* @ts-ignore */}

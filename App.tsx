@@ -101,6 +101,8 @@ export default function App() {
       Numans_400Regular
   })
 
+  const [isLoading, setIsLoading] = useState(true)
+
   const [logged, setLogged] = useState(false)
   const [user, setUser] = useState(auth.currentUser)
 
@@ -111,11 +113,16 @@ export default function App() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setLogged(true)
-      } else setLogged(false)
+        setIsLoading(false)
+        setUser(user)
+      } else {
+        setLogged(false)
+        setIsLoading(false)
+      }
     })
   }, [user])
 
-  if(fontsLoaded) return (
+  if(fontsLoaded && !isLoading) return (
     <NavigationContainer>
       <StatusBar style="dark" translucent={true}/>
       {
@@ -180,7 +187,7 @@ export default function App() {
           <Stack.Screen name={'LoginScreen'} component={LoginScreen}/> 
           <Stack.Screen name={'RecoverPasswordScreen'} component={RecoverPasswordScreen}/> 
           <Stack.Group>
-            <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
+            {/* <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
             <Stack.Screen name={'SignIn_2c'} component={SignInCandidate.SignIn_2}/>
             <Stack.Screen name={'SignIn_3c'} component={SignInCandidate.SignIn_3}/>
             <Stack.Screen name={'SignIn_4c'} component={SignInCandidate.SignIn_4}/>
@@ -188,9 +195,9 @@ export default function App() {
             <Stack.Screen name={'SignIn_6c'} component={SignInCandidate.SignIn_6}/>
             <Stack.Screen name={'SignIn_7c'} component={SignInCandidate.SignIn_7}/>
             <Stack.Screen name={'SignIn_8c'} component={SignInCandidate.SignIn_8}/>
-            <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/>
+            <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/> */}
             
-            <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
+            {/* <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/> */}
           </Stack.Group>
         </Stack.Navigator>
       }

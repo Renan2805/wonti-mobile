@@ -1,6 +1,6 @@
 import { IoMdLock,IoMdHelp } from 'react-icons/io'
 import { ScrollView,Image,Text,StyleSheet, View, TouchableOpacity, Alert, Modal, StatusBar} from 'react-native'
-import * as Expo from 'expo-status-bar'
+import * as ExpoStatusBar from 'expo-status-bar'
 import { RootTabScreenProps } from '../types'
 
 import CardRecommended from '../components/CardRecommended/CardRecommended';
@@ -64,6 +64,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
     <View
       style={style.content}
     >
+      <ExpoStatusBar.StatusBar backgroundColor={'white'}/>
       <Header />
       <View style={{paddingHorizontal: 20, width: '100%'}}>
         <View style={style.section1}>

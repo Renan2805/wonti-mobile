@@ -14,24 +14,32 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
   const [vagas, setVagas] = useState<string[]>()
   const [isLoading, setIsLoading] = useState(true)
 
+  const [count, setCount] = useState(0)
+
   const getJobs = async () => {
-    const querySnapshot = await getDocs(collection(db, 'Jobs'))
     let jobs: string[] = []
-    querySnapshot.forEach(doc => {
-      // @ts-ignore
-      jobs = [...jobs, doc.id]
-    })
-    console.log('Jobs: ', jobs)
-    setVagas(jobs)
+    await getDocs(collection(db, 'Jobs'))
+      .then((snapshot) => {
+        snapshot.forEach(doc => {
+          jobs = [...jobs, doc.id]
+        })
+      })
+      .catch(e => console.error('getJobs Error: ', e))
+      .finally(() => {
+        console.log('Jobs: ', jobs)
+        setVagas(jobs)
+      })
+    
   }
 
   useEffect(() => {
     if(user === null) {
       setIsLoading(true)
     }
-    getJobs().then(() => setIsLoading(false)).catch(e => console.error(e))
-    vagas && console.log(vagas)
-    
+    getJobs().then(() => setIsLoading(false)).catch(e => console.error(e)).finally(() => {
+      setCount(count + 1)
+      console.log('Loops: ', count)
+    })
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault()
     })
@@ -56,16 +64,17 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
         </View>
         {/*<Text>{user?.uid}</Text>*/}
         <View style={style.cardWrapper}>
-          {/* {
-            vagas?.map(job => (
+          {
+            vagas?.map((job, index) => (
               <CardRecommended 
+                key={index}
                 jobId={job}
                 theme={false}
                 full={true}
                 _style={{marginVertical: 10}}
               />
             ))
-          } */}
+          }
         </View>
       </ScrollView>
     </SafeAreaView>

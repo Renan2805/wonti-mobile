@@ -130,7 +130,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
 
   return (
     <ScrollView contentContainerStyle={style.content}>
-      <ExpoStatusBar.StatusBar translucent={true}/>
+      <ExpoStatusBar.StatusBar translucent={true} style={'light'}/>
       <ImageBackground
         source={require('../../assets/images/FundoVideo.png')}
         style={[style.fundo, {paddingTop: StatusBar.currentHeight}]}
