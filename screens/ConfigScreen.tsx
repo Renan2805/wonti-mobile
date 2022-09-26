@@ -11,15 +11,18 @@ import { Entypo } from '@expo/vector-icons';
 import { Notification, Bookmark, Lock, Logout } from 'react-native-iconly';
 
 import { auth, db } from '../config/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import Loader from '../components/Loader/Loader';
 import { signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+import { BsJournalBookmark } from 'react-icons/bs';
 
 
 const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
   const [modalActive, setmodalActive] = useState(false)
   const [profileImage, setProfileImage] = useState('')
+  const [vagas, setVagas] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -48,6 +51,18 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
     if(modalActive) {
       setmodalActive(false)
     }
+  }
+
+  const getVagas = async () => {
+    // @ts-ignore
+    const ref = doc(db, `Users/${auth.currentUser.uid}`)
+    await getDoc(ref)
+    .then(snapshot => {
+      if(snapshot.exists()) {
+        setVagas(snapshot.data().Vagas_Salvas)
+      }
+    })
+    .catch(e => console.error(e))
   }
 
   useEffect(() => {
@@ -153,16 +168,31 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
         <Modal
           transparent={true}
           animationType='slide'
+          onShow={() => getVagas()}
           onRequestClose={()=> setmodalActive(false)}
           visible={modalActive}
         >
-          <TouchableOpacity style={style.botaoSairModal} onPress={sairButton}></TouchableOpacity>
-          <ScrollView style={style.viewModal}>
-            <View style={style.ModalText}>
-              <Text style={{fontSize:25, fontWeight:'700'}}>Vagas salvas</Text>
-            </View>
-            <Text></Text>
-          </ScrollView>
+          <TouchableOpacity style={style.botaoSairModal} onPress={sairButton} />
+          <View style={style.viewModal}>
+            <Text style={style.modalTitle}>Vagas Salvas</Text>
+            <ScrollView style={style.modalContent}>
+              {
+                vagas ? vagas.map((jobId, index) => (
+                  <CardRecommended 
+                    key={index}
+                    jobId={jobId}
+                    theme={false}
+                    full={false}
+                    _style={{marginVertical: 5}}
+                  />
+                ))
+
+                :
+
+                <Text style={{fontFamily: 'Poppins_500Medium', fontSize: 16, textAlign: 'center'}}>Não há vagas</Text>
+              }
+            </ScrollView>
+          </View>
         </Modal>
       </View>
     </View>
@@ -173,8 +203,6 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
 }
 
 const Header = () => {
-
-  const navigation = useNavigation()
 
   return (
     <View style={[style.header, {paddingVertical: 0, margin: 0}]}>
@@ -244,25 +272,35 @@ const style = StyleSheet.create({
   },
   viewModal: {
 
-    height:'60%',
-    borderTopRightRadius:40,
-    borderTopLeftRadius:40,
-    backgroundColor:'#E6E6E6',
-    shadowColor:'#000',
+    height: '50%',
+    borderTopRightRadius: 40,
+    borderTopLeftRadius: 40,
+    backgroundColor: '#E6E6E6',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height:2
+      height: 2
     },
-    shadowOpacity:0.25,
-    shadowRadius:4,
-    elevation:5
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+
+    paddingTop: 10,
+    alignItems: 'center'
+  },
+  modalContent: {
+    width: '90%'
   },
   ModalText: {
     width:'100%',
     textAlign:'center',
     padding:20,
   },
-
+  modalTitle: {
+    fontFamily: 'Poppins_700Bold',
+    fontSize: 20,
+    textAlign: 'center'
+  },
   header: {
     width: '100%',
     flex: 0,

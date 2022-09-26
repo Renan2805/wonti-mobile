@@ -9,7 +9,7 @@ import Loader from '../components/Loader/Loader'
 import Carousel from 'react-native-snap-carousel'
 import useWindowDimensions from '../hooks/useWindowDimension'
 
-const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
+const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   
   const [user, setUser] = useState(auth.currentUser)
   const [isLoading, setIsLoading] = useState(true)
@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'Home'>) => {
   if(!isLoading)
   return (
     <View style={style.safeView}>
-      <ExpoStatusBar.StatusBar translucent={true} backgroundColor={''}/>
+      <ExpoStatusBar.StatusBar translucent={true} style={'dark'}/>
       <HomeHeader />
       <ScrollView
         contentContainerStyle={style.content}

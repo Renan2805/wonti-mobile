@@ -4,7 +4,7 @@ import { Bookmark, People, Location, TimeCircle, Wallet } from 'react-native-ico
 import { useNavigation } from '@react-navigation/native'
 import Loader from '../Loader/Loader'
 import { db, storage } from '../../config/firebase'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, DocumentData, getDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 
 type Props = {
@@ -42,7 +42,6 @@ const CardRecommended = ({
   const [data, setData] = useState<Job>()
   const [isLoading, setIsLoading] = useState(true)
 
-
   const primaryColor   = theme ? '#FFF' : '#000'
   const secondaryColor = theme ? '#000' : '#FFF'
   
@@ -53,7 +52,7 @@ const CardRecommended = ({
       if(doc.exists()) {
         // @ts-ignore
         setData(doc.data())
-        data && getImage(data.HirerUid)
+        getImage(doc.data().HirerUid)
       }
     })
 
@@ -62,25 +61,17 @@ const CardRecommended = ({
 
   const getImage = async (uid: string) => {
     // Fetch the profile image url of the hirer
-    await getDownloadURL(ref(storage, `Users/${uid}/Profile`))
-    .then((url) => {
-      setImage(url)
-    })
-    .catch((error) => {
-      console.error('Error: ', error)
-    })
+    setIsLoading(true)
+    const url = await getDownloadURL(ref(storage, `Users/${uid}/Profile`))
+    setImage(url)
   }
 
   useEffect(() => {
-    let isSub = true
-    isSub && getData().then(() => {
+    getData().then(() => {
       setIsLoading(false)
     })
     .catch(e => console.error(e))
-    return () => {
-      isSub = false
-    }
-  }, [data])
+  }, [])
 
 
   if(!isLoading && data)

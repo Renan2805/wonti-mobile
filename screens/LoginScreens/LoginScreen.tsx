@@ -19,7 +19,7 @@ function LoginScreen({navigation}: Props) {
   const [email, setEmail]       = useState("")
   const [password, setPassword] = useState("")
 
-  const [error, setError]       = useState('')
+  const [error, setError]       = useState<string>()
 
   const handleError = (err: AuthError) => {
     switch(err.code) {
@@ -86,11 +86,9 @@ function LoginScreen({navigation}: Props) {
             <Text style={!active ? styles.ceTextActive : styles.ceText} onPress={() => setActive(false)}>Empresa</Text>
           </View>
           {
-            error != ''
-            ?
+            error
+            &&
             <Text style={styles.erro}>{error}</Text>
-            :
-            <></>
           }
           <View style={styles.inputs}>
             <TextInput 

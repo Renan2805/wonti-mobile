@@ -129,7 +129,7 @@ export default function App() {
         logged 
         ?
         <BottomTab.Navigator
-          initialRouteName="Home"
+          initialRouteName="HomeTab"
           screenOptions={{
             tabBarActiveTintColor: '#FF0356',
             tabBarInactiveTintColor: '#000000',
@@ -147,7 +147,7 @@ export default function App() {
         >
         
           <BottomTab.Screen
-            name="Home"
+            name="HomeTab"
             component={HomeStack}
             options={() => ({
               tabBarIcon: ({ color, focused }) => focused ? <Home primaryColor={color} set="bold" size={'large'}/> : <Home primaryColor={color} size={'large'}/>,
