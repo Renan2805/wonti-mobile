@@ -1,12 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { ScrollView, Text, StyleSheet, View, Image ,TouchableOpacity, ImageBackground, StatusBar, Alert, ActivityIndicator, Platform } from 'react-native'
+import { ScrollView, Text, StyleSheet, View, Image ,TouchableOpacity, ImageBackground, StatusBar, Alert, ActivityIndicator, Platform, Modal } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import DocumentPicker, { types } from 'react-native-document-picker'
 import * as ImagePicker from 'expo-image-picker'
 import { FontAwesome } from '@expo/vector-icons';
 import { ConfigStackScreenProps } from '../../types'
-import { auth, storage } from '../../config/firebase';
+import { auth, db, storage } from '../../config/firebase';
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable, UploadTask } from 'firebase/storage';
+import { addDoc, collection } from 'firebase/firestore'
 
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { useCallback, useState, useEffect } from 'react';
@@ -138,7 +139,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
       >
         <View style={style.header}>
           <AntDesign name="arrowleft" size={35} color="white" onPress={() => navigation.goBack()}/>
-          <Entypo name="dots-three-vertical" size={25} color="white" onPress={() => navigation.navigate('ConfigConta')}/>
+          <AntDesign name="edit" size={25} color="white" onPress={() => navigation.navigate('ConfigConta')}/>
         </View>
         <TouchableOpacity style={style.profilePictureWrapper} onPress={() => {}}>
           <Image 
@@ -150,9 +151,29 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
         <Text style={style.name}>{user?.displayName}</Text>
 
       </ImageBackground>
-      {
-        isOptionsOpen 
-        &&
+      <TouchableOpacity onPress={async () => {
+        const docRef = await addDoc(collection(db, 'Jobs'), {
+          Competitors: 91,
+          Description: "Desenvolvedor Front End",
+          Hirer: "Facebook",
+          HirerUid: "L62Jf6O02ZguvJClvf1aPhgBVaG3",
+          Place: "São Paulo",
+          Posted: 3,
+          Salary: 3000,
+          Time: "Integral",
+          Title: "Dev. Front End",
+          Type: "Remoto"
+        })
+        console.log('Job ID: ', docRef.id)
+      }}>
+        <Text>Teste</Text>
+      </TouchableOpacity>
+      <Modal
+        visible={isOptionsOpen}
+        animationType={'slide'}
+        onRequestClose={() => setIsOptionsOpen(false)}
+        transparent={true}
+      >
         <View style={style.options}>
           <TouchableOpacity style={style.optionsRow} onPress={() => status == 'granted' ? pickImage() : askPermision()}>
             <FontAwesome name="camera" size={24} color="black" />
@@ -170,7 +191,8 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
             <Text style={style.optionsText}>Trocar Foto de Perfil</Text>
           </TouchableOpacity>
         </View>
-      }
+      </Modal>
+      
       {
         maybeRenderUploadingOverlay()
       }

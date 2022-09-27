@@ -12,9 +12,9 @@ interface Props {
 const SearchBar = ({ _onPressS, _onPressF, _onChangeText}: Props) => {
   return (
     <View style={styles.bar}>
-      <Search set="light" size="medium" color="black" onPress={_onPressS}/>
+      <Search set="light" size="medium" color="black" onPress={_onPressS} />
       <TextInput placeholder="Procurar Vagas" style={styles.input} onChangeText={_onChangeText}/>
-      <Filter set="light" size="medium" color="black" onPress={_onPressF}/>
+      <Filter set="bold" size="medium" color="black" onPress={_onPressF}/>
     </View>
   )
 }
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   input: {
-    width: '70%',
+    width: '80%',
     fontFamily: 'Montserrat_300Light',
-    fontSize: 16
+    fontSize: 18
   }
 })
 

@@ -8,6 +8,8 @@ import { auth } from '../config/firebase'
 import Loader from '../components/Loader/Loader'
 import Carousel from 'react-native-snap-carousel'
 import useWindowDimensions from '../hooks/useWindowDimension'
+import { getData } from '../hooks/useAsyncStorage'
+import { useNavigation } from '@react-navigation/native'
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   
@@ -33,7 +35,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   // @ts-ignore
   const _renderItem = ({item}) => (
     <CardRecommended
-      theme={true}
+      theme={false}
       full={true}
       jobId={item.id}
        
@@ -98,17 +100,20 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
 }
 
 const HomeHeader = () => {
+
+  const navigation = useNavigation()
+
   return (
-    <View style={{height: '10%', width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10}}>
+    <View style={{height: '10%', width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10}}>
       <Image 
         source={require('../assets/images/logoWonti.png')}
         style={{height: 30, width: 100}}
       />
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={() => navigation.navigate('DetailScreen')}>
         <Image
           // @ts-ignore
           source={{uri: auth.currentUser?.photoURL}}
-          style={{height: '100%', aspectRatio: 1, borderRadius: 100}}
+          style={{height: '80%', aspectRatio: 1, borderRadius: 100}}
         />
       </TouchableOpacity>
     </View>

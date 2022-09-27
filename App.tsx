@@ -49,21 +49,23 @@ import { Numans_400Regular } from '@expo-google-fonts/numans'
 
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ConfigStackParamList, RootStackParamList, RootTabParamList, HomeStackScreenProps, HomeStackparamList } from './types';
-import HomeScreen from './screens/HomeScreen';
+import { ConfigStackParamList, RootStackParamList, RootTabParamList, HomeStackScreenProps, HomeStackparamList, VagasStackParamList } from './types';
 import { Home, Work, Chat, Setting } from 'react-native-iconly';
+import Loader from './components/Loader/Loader';
+import { auth } from './config/firebase';
+
+import HomeScreen from './screens/HomeScreen';
 import ChatScreen from './screens/ChatScreen';
 import ConfigScreen from './screens/ConfigScreen';
 import VagasScreen from './screens/VagasScreen';
-import SignIn_1 from './screens/SignInScreens/SignIn_1';
 
-import * as SignInCandidate from './screens/SignInScreens/Candidate'
+import SignIn_1 from './screens/SignInScreens/SignIn_1';
 import SignIn_2 from './screens/SignInScreens/Hirer/SignIn_2';
+import * as SignInCandidate from './screens/SignInScreens/Candidate'
 import DetalhesDaConta from './screens/DetalhesConta/DetalhesDaConta';
-import Loader from './components/Loader/Loader';
-import { auth } from './config/firebase';
 import RecoverPasswordScreen from './screens/RecoverPasswordScreen/RecoverPasswordScreen';
 import ConfiguracoesConta from './screens/ConfiguracoesConta/ConfiguracoesConta';
+import { JobDetail } from './screens/JobDetail';
 
 export default function App() {
 
@@ -155,7 +157,7 @@ export default function App() {
           />
           <BottomTab.Screen
             name="Vagas"
-            component={VagasScreen}
+            component={VagasStack}
             options={() => ({
               tabBarIcon: ({ color, focused }) => focused ? <Work primaryColor={color} set="bold" size={'large'}/> : <Work primaryColor={color} size={'large'}/>,
             })}
@@ -227,6 +229,17 @@ const HomeStack = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name={'Home'} component={HomeScreen}/>
       <Stack.Screen name={'Job'} component={ConfigScreen}/>
+    </Stack.Navigator>
+  )
+}
+
+const VagasStack = () => {
+  const Stack = createNativeStackNavigator<VagasStackParamList>()
+
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name={'Vagas'} component={VagasScreen}/>
+      <Stack.Screen name={'Job'} component={JobDetail}/>
     </Stack.Navigator>
   )
 }

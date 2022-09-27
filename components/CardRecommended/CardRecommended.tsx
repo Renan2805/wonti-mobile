@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ViewStyle } from 'reac
 import { Bookmark, People, Location, TimeCircle, Wallet } from 'react-native-iconly'
 import { useNavigation } from '@react-navigation/native'
 import Loader from '../Loader/Loader'
-import { db, storage } from '../../config/firebase'
+import { db, storage, auth } from '../../config/firebase'
 import { doc, DocumentData, getDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 
@@ -40,6 +40,8 @@ const CardRecommended = ({
   const [saved, setSaved] = useState(false)
   const [image, setImage] = useState<string>()
   const [data, setData] = useState<Job>()
+  const [vagas, setVagas] = useState<string[]>()
+  const [id, setId] = useState<string>()
   const [isLoading, setIsLoading] = useState(true)
 
   const primaryColor   = theme ? '#FFF' : '#000'
@@ -50,6 +52,7 @@ const CardRecommended = ({
     const docRef = doc(db, `Jobs/${jobId}`)
     await getDoc(docRef).then((doc) => {
       if(doc.exists()) {
+        setId(doc.id)
         // @ts-ignore
         setData(doc.data())
         getImage(doc.data().HirerUid)
@@ -66,8 +69,28 @@ const CardRecommended = ({
     setImage(url)
   }
 
+  const getVagas = async () => {
+    // @ts-ignore
+    const ref = doc(db, `Users/${auth.currentUser.uid}`)
+    await getDoc(ref)
+    .then(snapshot => {
+      if(snapshot.exists()) {
+        setVagas(snapshot.data().Vagas_Salvas)
+      }
+    })
+    .catch(e => console.error(e))
+  }
+
+  const checkSaved = () => {
+    if(vagas && vagas.includes(jobId)) {
+      setSaved(true)
+    }
+  }
+
   useEffect(() => {
     getData().then(() => {
+      getVagas()
+      checkSaved()
       setIsLoading(false)
     })
     .catch(e => console.error(e))
@@ -78,7 +101,7 @@ const CardRecommended = ({
   return (
     <View style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 120}]}>
       {/* @ts-ignore */}
-      <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('Job', {id: jobId})}>
+      <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('Job', {id: id})}>
           <Image 
             // @ts-ignore
             source={image != undefined ? {uri: image} : require('../../assets/images/DefaultProfile.png')}
@@ -95,7 +118,7 @@ const CardRecommended = ({
           </TouchableOpacity>
       </TouchableOpacity>
       {
-        full ? 
+        full && 
         <>
           <View style={style.section2}>
             <Text style={[style.description, {color: primaryColor}]}>{data.Description}</Text>
@@ -126,9 +149,9 @@ const CardRecommended = ({
               <Text style={[style.info, {color: primaryColor}]}>{'R$' + data.Salary}</Text>
             </View>
           </View>
-        </>:<></>
-        }
-      <View style={[style.divider, { backgroundColor: theme ? 'rgba(255, 255, 255, 0.12)' : 'rgba(152, 152, 152, 0.12)' }]}></View>
+        </>
+      }
+      <View style={[style.divider, { backgroundColor: theme ? 'rgba(255, 255, 255, 0.22)' : 'rgba(0, 0, 0, 0.22)' }]}></View>
       <View style={style.section4}>
         <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
           <People set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
@@ -167,7 +190,7 @@ const CardRecommended = ({
 const style = StyleSheet.create({
   card: {
     width: '100%',
-    padding: 20,
+    padding: 10,
     borderRadius: 15,
   },
   section1: {
@@ -181,7 +204,7 @@ const style = StyleSheet.create({
   image: {
     width: 40,
     height: 40,
-    borderRadius: 100
+    borderRadius: 10
   },
   title: {
     fontFamily: 'Poppins_700Bold',
@@ -221,7 +244,7 @@ const style = StyleSheet.create({
   section4: {
     width: '100%',
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
   }
 })
 

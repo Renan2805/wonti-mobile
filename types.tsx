@@ -66,6 +66,18 @@ export type HomeStackScreenProps<Screen extends keyof HomeStackparamList> = Nati
   Screen
 >
 
+export type VagasStackParamList = {
+  Vagas: undefined;
+  Job: {
+    id: string
+  }
+}
+
+export type VagasStackScreenProps<Screen extends keyof VagasStackParamList> = NativeStackScreenProps<
+  VagasStackParamList,
+  Screen  
+>
+
 export type ConfigStackParamList = {
   ConfigScreen: undefined;
   DetailScreen: undefined;

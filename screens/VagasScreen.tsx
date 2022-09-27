@@ -70,7 +70,7 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
                 key={index}
                 jobId={job}
                 theme={false}
-                full={true}
+                full={false}
                 _style={{marginVertical: 10}}
               />
             ))
@@ -97,7 +97,7 @@ const style = StyleSheet.create({
     alignItems: 'center'
   },
   cardWrapper: {
-    width: '80%'
+    width: '95%'
   }
 })
 

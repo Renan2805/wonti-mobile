@@ -10,7 +10,8 @@ import {
   ScrollView,
   Platform,
   ActivityIndicator,
-  Alert
+  Alert,
+  Modal
 } from 'react-native'
 
 import { AntDesign, FontAwesome } from '@expo/vector-icons'
@@ -23,6 +24,7 @@ import * as ExpoStatusBar from 'expo-status-bar'
 import { auth, storage } from '../../config/firebase'
 import { updateProfile } from 'firebase/auth'
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { storeData } from '../../hooks/useAsyncStorage'
 
 const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
   
@@ -107,22 +109,15 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
 
     const fileRef = ref(storage, `Users/${auth.currentUser?.uid}/Profile`);
     // @ts-ignore
-    const result = uploadBytesResumable(fileRef, blob);
-    result.on('state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        setProgress(progress)
-      },
-      (error) => {
-        setError(error.message)
-        console.error(error)
-      },
-      () => {
-        setIsUploading(false)
-        // @ts-ignore
-        // We're done with the blob, close and release it
-        blob.close();
-      })
+    const result = uploadBytes(fileRef, blob);
+    result.finally(() => {
+      setIsUploading(false)
+    })
+
+    // @ts-ignore 
+    // We're done with the blob, close and release it
+    blob.close();
+  
 
     return await getDownloadURL(fileRef);
   }
@@ -226,23 +221,26 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
         }
       </View>
     </ScrollView>
-    {
-      isOptionsOpen &&
-      <View style={{width: '100%', height: '100%', position: 'absolute', backgroundColor: 'rgba(0, 0, 0, .1)'}}>
-        <TouchableOpacity style={{width: '100%', height: '83%'}} onPress={() => setIsOptionsOpen(false)}/>
-        <View style={styles.options}>
-          <TouchableOpacity style={[styles.optionsRow, {borderBottomWidth: 1, borderBottomColor: 'rgba(0, 0, 0, .3)'}]} onPress={() => status == 'granted' ? takePhoto() : askPermision()}>
-            <FontAwesome name="camera" size={24} color="black" />
-            <Text style={styles.optionsText}>Tirar Foto</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.optionsRow} onPress={() => status == 'granted' ? pickImage() : askPermision()}>
-            <FontAwesome name="folder" size={24} color="black" />
-            <Text style={styles.optionsText}>Escolher Foto da Galeria</Text>
-          </TouchableOpacity>
-        </View>
+    <Modal
+      visible={isOptionsOpen}
+      animationType={'slide'}
+      onRequestClose={() => setIsOptionsOpen(false)}
+      transparent={true}
+    >
+      <TouchableOpacity onPress={() => setIsOptionsOpen(false)} style={{height: '100%', width: '100%'}}/>
+      <View style={styles.options}>
+        <TouchableOpacity style={[styles.optionsRow, {borderBottomWidth: 1, borderBottomColor: 'rgba(0, 0, 0, .3)'}]} onPress={() => status == 'granted' ? takePhoto() : askPermision()}>
+          <FontAwesome name="camera" size={24} color="black" />
+          <Text style={styles.optionsText}>Tirar Foto</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.optionsRow} onPress={() => status == 'granted' ? pickImage() : askPermision()}>
+          <FontAwesome name="folder" size={24} color="black" />
+          <Text style={styles.optionsText}>Escolher Foto da Galeria</Text>
+        </TouchableOpacity>
       </View>
-    }
+    </Modal>
+    
     {
       maybeRenderUploadingOverlay()
     }
@@ -337,7 +335,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '17%',
+    height: '20%',
     backgroundColor: 'white',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
