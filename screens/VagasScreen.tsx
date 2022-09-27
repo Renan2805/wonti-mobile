@@ -1,12 +1,12 @@
 import { Job, RootStackScreenProps } from '../types'
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, StyleSheet, StatusBar, SafeAreaView } from 'react-native'
+import { ScrollView, View, Text, StyleSheet, StatusBar, SafeAreaView, TextInput, TouchableOpacity } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
-import SearchBar from '../components/SearchBar/SearchBar'
 import { auth, db } from '../config/firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import Loader from '../components/Loader/Loader'
+import { Search, Filter } from "react-native-iconly"
 
 const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
 
@@ -45,22 +45,34 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
     })
 
   }, [])
+
+  const SearchBar = () => {
+    return (
+      <View style={style.searchBar}>
+        <View style={style.search}>
+          <Search set={'light'} size={'medium'} color={'black'}/>
+          <TextInput 
+            style={style.input} 
+            placeholder={'Procurar Vagas'}
+          />
+        </View>
+        <TouchableOpacity style={style.filter}>
+          <Filter set={'bold'} size={'medium'} color={'white'}/>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   if(!isLoading)
   return (
     <SafeAreaView style={style.safeView}>
-      <View style={{flex:1, padding:20, alignItems:'center', marginBottom:30}}>
+      <View style={{padding:20, alignItems:'center'}}>
         <Text style={{fontSize:25, fontWeight:'bold'}}>Procurar vagas</Text>
       </View>
       <ExpoStatusBar.StatusBar translucent={true}/>
       <ScrollView contentContainerStyle={style.content} showsVerticalScrollIndicator={false} stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true} >
         <View style={{width: '100%', alignItems: 'center'}}>
-          <SearchBar _onPressS={function (): void {
-              throw new Error('Function not implemented.')
-            } } _onPressF={function (): void {
-              throw new Error('Function not implemented.')
-            } } _onChangeText={function (text: string): void {
-              throw new Error('Function not implemented.')
-            } } />
+          <SearchBar />
         </View>
         {/*<Text>{user?.uid}</Text>*/}
         <View style={style.cardWrapper}>
@@ -98,7 +110,30 @@ const style = StyleSheet.create({
   },
   cardWrapper: {
     width: '95%'
+  },
+  searchBar: {
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  search: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    width: '85%'
+  },
+  input: {
+    width: '80%'
+  },
+  filter: {
+    backgroundColor: 'black',
+    borderRadius: 10,
+    padding: 10,
   }
+
 })
 
 export default VagasScreen

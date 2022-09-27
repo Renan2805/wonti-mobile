@@ -55,7 +55,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
       id: 'CQg7xkDZSrZBi6z6mYg2'
     },
     {
-      id: 'dAcbFWzeQFClwHpEC5bB'
+      id: 'CQg7xkDZSrZBi6z6mYg2'
     },
     {
       id: 'CQg7xkDZSrZBi6z6mYg2'

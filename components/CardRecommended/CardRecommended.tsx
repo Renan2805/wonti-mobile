@@ -99,7 +99,7 @@ const CardRecommended = ({
 
   if(!isLoading && data)
   return (
-    <View style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 120}]}>
+    <View style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 140}]}>
       {/* @ts-ignore */}
       <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('Job', {id: id})}>
           <Image 
@@ -202,8 +202,8 @@ const style = StyleSheet.create({
     padding:5
   },
   image: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 10
   },
   title: {
