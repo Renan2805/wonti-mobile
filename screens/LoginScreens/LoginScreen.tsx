@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, StatusBar, KeyboardAvoidingView, Alert } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../types'
-import Header from '../../components/Header'
 import { auth, storage } from '../../config/firebase'
 import { signInWithEmailAndPassword, UserCredential, AuthError, signOut, sendPasswordResetEmail } from 'firebase/auth'
 import { getData, storeData } from '../../hooks/useAsyncStorage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import Header from '../../components/Header'
 import Loader from '../../components/Loader/Loader'
 
 type Props = NativeStackScreenProps<RootStackParamList>
@@ -16,10 +17,10 @@ function LoginScreen({navigation}: Props) {
   const [active, setActive]       = useState(true)
   const [isLoading, setIsLoading] = useState(true)
 
-  const [email, setEmail]       = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail]         = useState<string>()
+  const [password, setPassword]   = useState<string>()
 
-  const [error, setError]       = useState<string>()
+  const [error, setError]         = useState<string>()
 
   const handleError = (err: AuthError) => {
     switch(err.code) {
@@ -39,9 +40,6 @@ function LoginScreen({navigation}: Props) {
         setError(err.code)
         break
     }
-
-    console.log(err)
-    
   }
 
   const loginFirebase = () => {
@@ -65,8 +63,8 @@ function LoginScreen({navigation}: Props) {
   useEffect(() => {
     setIsLoading(true)
     signOut(auth)
-    .then(() => {
-      setIsLoading(false)
+      .then(() => {
+        setIsLoading(false)
       })
       .catch(e => setError(e))
   }, [])
