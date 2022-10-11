@@ -163,15 +163,6 @@ export default function App() {
             })}
           />
           <BottomTab.Screen
-            name="Chat"
-
-            component={ChatScreen}
-            options={() => ({
-              tabBarIcon: ({ color, focused }) => focused ? <Chat primaryColor={color} set="bold" size={'large'}/> : <Chat primaryColor={color} size={'large'}/>,
-              
-            })}
-          />
-          <BottomTab.Screen
             name="Config"
             component={ConfigStack}
             options={() => ({
@@ -189,17 +180,17 @@ export default function App() {
           <Stack.Screen name={'LoginScreen'} component={LoginScreen}/> 
           <Stack.Screen name={'RecoverPasswordScreen'} component={RecoverPasswordScreen}/> 
           <Stack.Group>
-            {/* <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
+            <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
             <Stack.Screen name={'SignIn_2c'} component={SignInCandidate.SignIn_2}/>
-            <Stack.Screen name={'SignIn_3c'} component={SignInCandidate.SignIn_3}/>
-            <Stack.Screen name={'SignIn_4c'} component={SignInCandidate.SignIn_4}/>
+            {/* <Stack.Screen name={'SignIn_3c'} component={SignInCandidate.SignIn_3}/> Inutil */} 
+            {/* <Stack.Screen name={'SignIn_4c'} component={SignInCandidate.SignIn_4}/> Inutil  */}
             <Stack.Screen name={'SignIn_5c'} component={SignInCandidate.SignIn_5}/>
             <Stack.Screen name={'SignIn_6c'} component={SignInCandidate.SignIn_6}/>
             <Stack.Screen name={'SignIn_7c'} component={SignInCandidate.SignIn_7}/>
             <Stack.Screen name={'SignIn_8c'} component={SignInCandidate.SignIn_8}/>
-            <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/> */}
+            <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/>
             
-            {/* <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/> */}
+            <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
           </Stack.Group>
         </Stack.Navigator>
       }
@@ -228,7 +219,7 @@ const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name={'Home'} component={HomeScreen}/>
-      <Stack.Screen name={'Job'} component={ConfigScreen}/>
+      <Stack.Screen name={'Job'} component={JobDetail}/>
     </Stack.Navigator>
   )
 }

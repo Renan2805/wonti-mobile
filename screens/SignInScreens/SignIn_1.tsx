@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Button } from "react-native"
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal } from "react-native"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import { FontAwesome } from '@expo/vector-icons'
 import Header from "../../components/Header"
@@ -11,20 +11,48 @@ import { storeData, getData } from '../../hooks/useAsyncStorage'
 const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
 
   const [conditionsRead, setConditionsRead] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isUser, setIsUser] = useState(route.params.isUser)
 
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
   
   const [isLoading, setIsLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState<string>()
   const [teste, setTeste] = useState('')
-  
+
   const goNext = () => {
     storeData('email', user)
     storeData('password', password)
 
     if (isUser) navigation.navigate('SignIn_2c')
     else navigation.navigate('SignIn_2e')
+  }
+
+  const checkEmail = (email: string) => {
+    const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    return validRegex.test(email)
+  }
+
+  const checkPassword = (password: string) => {
+    if(password.length < 6) return false
+    else return true
+  }
+
+  const _validate = () => {
+    if(!checkEmail(user)) {
+      setErrorMessage('Email Inválido')
+      return
+    }
+    if(!checkPassword(password)) {
+      setErrorMessage('A senha deve ter mais do que 6 caracteres')
+      return
+    }
+    if(!conditionsRead) {
+      setErrorMessage('Aceite os termos de uso antes de continuar')
+      return
+    }
+    goNext()
   }
 
   return (
@@ -47,7 +75,8 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
     <Header />
     <View style={styles.container}>
       <View style={styles.section_1}>
-        <Text style={styles.title}>Cadastre-se {teste}</Text>
+        <Text style={styles.title}>Cadastre-se </Text>
+        <Text style={{fontFamily: 'WorkSans_600SemiBold', fontSize: 14, color: 'red', textAlign: 'left'}}>{errorMessage}</Text>
         <View style={[styles.inputs, { minHeight: 110}]}>
           <TextInput 
             placeholder={ 'Email' }
@@ -65,7 +94,8 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
           justifyContent: 'flex-end',
         }}>
           <BouncyCheckbox 
-            onPress={(isChecked: boolean) => setConditionsRead(isChecked)} 
+            onPress={(isChecked: boolean) => !isChecked ? setConditionsRead(false) : setIsModalOpen(true)} 
+            isChecked={conditionsRead}
             text={'Aceito os termos de uso'}
             textStyle={{fontFamily: 'WorkSans_600SemiBold', fontSize: 14, color: '#4A4949', textDecorationLine: 'none', textAlign: 'right', width: '100%'}}
             style={{ justifyContent: 'flex-end', marginTop: 10  }}
@@ -74,8 +104,8 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
             iconStyle={{ borderRadius: 6}}
             useNativeDriver={false}
           />
-          <NextButton _onPress={() => goNext()}/>
         </View>
+        <NextButton _onPress={() => _validate()}/>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center', height: '10%', marginVertical: 20}}>
         <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
@@ -114,9 +144,9 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
           }}>
             Continue Com Facebook
           </Text>
-          <View style={{width: 10}}></View>
+          <View style={{width: 10}}/>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {} }>
+        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen') }>
           <Text style={{fontFamily: 'WorkSans_400Regular', maxWidth: '30%', textAlign: 'center'}}>
             Já possui conta?
             Faça 
@@ -127,6 +157,25 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
         </TouchableOpacity>
       </View>
     </View>
+
+    <Modal
+      visible={isModalOpen}
+      animationType={'slide'}
+      transparent={false}
+    >
+      <View style={styles.modal}>
+        <Text>Teste</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            setConditionsRead(true)
+            setIsModalOpen(false)
+          }}
+        >
+          <Text style={styles.buttonText}>Aceito os termos</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
     </View>
   )
 }
@@ -202,6 +251,9 @@ const styles = StyleSheet.create({
   icon: {
     position: 'absolute',
     left: 0
+  },
+  modal: {
+    padding: 10
   }
 })
 

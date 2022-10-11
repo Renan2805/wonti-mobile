@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { StyleSheet, View, Text, Image, TextInput } from "react-native"
+import { StyleSheet, View, Text, Image, TextInput, Alert } from "react-native"
 import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
@@ -47,19 +47,29 @@ const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
     navigation.navigate('SignIn_9c')
   }
 
+  const validate = (array: string[], value: string) => {
+    if(array.length < 3) {
+     if(value) array.push(value) 
+     else Alert.alert('Insira um texto válido') 
+
+    } else Alert.alert('Maximo de 3 itens')
+    
+  }
+
   const addTo = (key: string, value: string) => {
+    
     switch (key) {
       case 'idioma':
-        // @ts-ignore
-        setIdiomas(current => [...current, value])
+        validate(idiomas, value)
+        setIdioma('')
         break
       case 'certificado':
-         // @ts-ignore
-        setCertificados(current => [...current, value])
+        validate(certificados, value)
+        setCertificado('')
         break
       case 'aptidao':
-         // @ts-ignore
-        setAptidoes(current => [...current, value])
+        validate(aptidoes, value)
+        setAptidao('')
         break
       default:
         break
@@ -85,22 +95,20 @@ const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
             <Text style={styles.subTitle}>
               Idiomas
             </Text>
-            {
-              idiomas ? 
-              <View style={{flex: 0, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 15}}>
+            <View style={{flex: 0, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 10}}>
                 {
                   idiomas.map((idioma, index) => (
                     <Text key={index} style={styles.listItem}>{idioma}</Text>
                   ))
                 }
-              </View> :
-              <></>
-            }
+                <Text style={[styles.listItem, { backgroundColor: 'transparent'}]}>{''}</Text>
+              </View>
             <View style={styles.inputPlusWrapper}>
               <TextInput 
                 placeholder={'Ex: Português - BR'}
                 style={styles.input}
                 onChangeText={text => setIdioma(text)}
+                value={idioma}
               /> 
               <AntDesign name="plus" size={24} color="black" onPress={() => addTo('idioma', idioma)}/>         
             </View>
@@ -109,22 +117,20 @@ const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
             <Text style={styles.subTitle}>
               Certificados
             </Text>
-            {
-              certificados ? 
-              <View style={{flex: 0, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 15}}>
-                {
-                  certificados.map((certificado, index) => (
-                    <Text key={index} style={styles.listItem}>{certificado}</Text>
-                  ))
-                }
-              </View> :
-              <></>
-            }
+            <View style={{flex: 0, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 10}}>
+              {
+                certificados.map((certificado, index) => (
+                  <Text key={index} style={styles.listItem}>{certificado}</Text>
+                ))
+              }
+              <Text style={[styles.listItem, { backgroundColor: 'transparent'}]}>{''}</Text>
+            </View>
             <View style={styles.inputPlusWrapper}>
               <TextInput 
                 placeholder={'Ex: LPI Linux Essentials'}
                 style={styles.input}
                 onChangeText={text => setCertificado(text)}
+                value={certificado}
               /> 
               <AntDesign name="plus" size={24} color="black" onPress={() => addTo('certificado', certificado)}/>         
             </View>
@@ -133,22 +139,20 @@ const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
             <Text style={styles.subTitle}>
               Aptidões
             </Text>
-            {
-              aptidoes ? 
-                <View style={{flex: 0, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 15}}>
-                  {
-                    aptidoes.map((aptidao, index) => (
-                      <Text key={index} style={styles.listItem}>{aptidao}</Text>
-                    ))
-                  }
-                </View> :
-                <></>
-            }
+            <View style={{flex: 0, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 10}}>
+              {
+                aptidoes.map((aptidao, index) => (
+                  <Text key={index} style={styles.listItem}>{aptidao}</Text>
+                ))
+              }
+              <Text style={[styles.listItem, { backgroundColor: 'transparent'}]}>{''}</Text>
+            </View>
             <View style={styles.inputPlusWrapper}>
               <TextInput 
                 placeholder={'Ex: Criatividade'}
                 style={styles.input}
                 onChangeText={text => setAptidao(text)}
+                value={aptidao}
               /> 
               <AntDesign name="plus" size={24} color="black" onPress={() => addTo('aptidao', aptidao)}/>         
             </View>

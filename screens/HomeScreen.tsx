@@ -35,10 +35,10 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   // @ts-ignore
   const _renderItem = ({item}) => (
     <CardRecommended
-      theme={false}
+      theme={true}
       full={true}
       jobId={item.id}
-       
+      _style={{marginVertical: 15}}
     />
   )
 
@@ -145,7 +145,7 @@ const style = StyleSheet.create({
   },
   carouselWrapper: {
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 })
 

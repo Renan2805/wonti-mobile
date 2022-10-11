@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { StyleSheet, View, Text, Image, TextInput } from "react-native"
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from "react-native"
+import Axios from 'axios'
 import SelectDropDown from 'react-native-select-dropdown'
+import { FontAwesome } from '@expo/vector-icons';
 import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
@@ -20,13 +22,15 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
     uf: string
   }
 
+  const [cep, setCep] = useState('')
   const [rua, setRua] = useState('')
   const [numero, setNumero] = useState('')
   const [complemento, setComplemento] = useState('')
   const [bairro, setBairro] = useState('')
-  const [cep, setCep] = useState('')
   const [cidade, setCidade] = useState('')
   const [uf, setUf] = useState('')
+
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const listaUf = [
     'AC', 'AL', 'AP',
@@ -58,6 +62,35 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
     navigation.navigate('SignIn_6c')
   }
 
+  const checkCep = (CEP: string) => {
+    const reg = /^[0-9]{8}$/
+    return reg.test(CEP)
+  }
+
+  const buscaCep = async () => {
+    setErrorMessage('')
+    if(!checkCep(cep)) {
+      setErrorMessage('Cep inválido')
+      return
+    }
+    await Axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+      .then((res) => {
+        if(res.data.erro == true) setErrorMessage('Erro ao pesquisar CEP')
+        console.log(res.data)
+        setRua(res.data.logradouro)
+        setBairro(res.data.bairro)
+        setCidade(res.data.localidade)
+        setUf(res.data.uf)
+      })
+      .catch(e => {
+        setErrorMessage('Erro ao pesquisar o CEP')
+      })
+  }
+
+  const _validate = () => {
+    
+  }
+
   return (
     <View style={{height: '100%'}}>
       <Header/>
@@ -69,11 +102,33 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
         <Text style={styles.title}>
           Endereço
         </Text>
+        <Text>{errorMessage}</Text>
         <View style={styles.inputs}>
+          <View style={styles.cepWrapper}> 
+            <TextInput 
+              placeholder={'CEP'}
+              style={{
+                fontFamily: 'WorkSans_300Light',
+                fontSize: 18,
+                color: '#848484',
+                marginLeft: 7,
+                maxWidth: '80%'
+              }}
+              onChangeText={text => setCep(text)}
+              keyboardType={'numeric'}
+            />
+            <TouchableOpacity
+              style={{backgroundColor: 'black', borderRadius: 20, justifyContent: 'center', paddingHorizontal: 20}}
+              onPress={() => buscaCep()}
+            >
+              <FontAwesome name="search" size={12} color="white" />
+            </TouchableOpacity>
+          </View>
           <TextInput 
             placeholder={'Rua'}
             style={styles.input}
-            onChangeText={text => setRua(text)}
+            editable={false}
+            value={rua}
           />
           <View style={styles.inputsHorizontal}>
             <TextInput 
@@ -91,34 +146,33 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
           <TextInput 
             placeholder={'Bairro'}
             style={styles.input}
-            onChangeText={text => setBairro(text)}
-          />
-          <TextInput 
-            placeholder={'CEP'}
-            style={styles.input}
-            onChangeText={text => setCep(text)}
+            editable={false}
+            value={bairro}
           />
           <View style={styles.inputsHorizontal}>
             <TextInput 
               placeholder={'Cidade'}
               style={[styles.input, {maxWidth: '65%'}]}
-              onChangeText={text => setCidade(text)}
+              editable={false}
+              value={cidade}
             />
             <SelectDropDown
-            data={listaUf}
-            rowTextForSelection={(item) => item}
-            defaultButtonText={'UF'}
-            buttonTextAfterSelection={(item) => item}
-            onSelect={item => setUf(item)}
-            buttonStyle={{maxWidth: '30%', borderWidth: 1, borderRadius: 30, borderColor: '#848484'}}
-            buttonTextStyle={{width: '100%', fontFamily: 'WorkSans_300Light', fontSize: 18, color: '#848484'}}
-            dropdownStyle={{borderRadius: 30}}
-          />
+              data={listaUf}
+              disabled={true}
+              defaultValue={uf}
+              rowTextForSelection={(item) => item}
+              defaultButtonText={'UF'}
+              buttonTextAfterSelection={(item) => item}
+              onSelect={item => setUf(item)}
+              buttonStyle={{maxWidth: '30%', borderWidth: 1, borderRadius: 30, borderColor: '#848484'}}
+              buttonTextStyle={{width: '100%', fontFamily: 'WorkSans_300Light', fontSize: 18, color: '#848484'}}
+              dropdownStyle={{borderRadius: 30}}
+            />
           
           </View>
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => goNext()}/>
+          <NextButton _onPress={() => _validate()}/>
         </View>
         <Footer />
       </View>
@@ -165,6 +219,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 17,
     width: '100%'
+  },
+  cepWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#848484',
+    paddingVertical: 10,
+    paddingHorizontal: 10
   }
 })
 

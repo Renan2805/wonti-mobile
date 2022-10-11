@@ -69,7 +69,7 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
       <View style={{padding:20, alignItems:'center'}}>
         <Text style={{fontSize:25, fontWeight:'bold'}}>Procurar vagas</Text>
       </View>
-      <ExpoStatusBar.StatusBar translucent={true}/>
+      <ExpoStatusBar.StatusBar/>
       <ScrollView contentContainerStyle={style.content} showsVerticalScrollIndicator={false} stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true} >
         <View style={{width: '100%', alignItems: 'center'}}>
           <SearchBar />
@@ -109,7 +109,8 @@ const style = StyleSheet.create({
     alignItems: 'center'
   },
   cardWrapper: {
-    width: '95%'
+    width: '100%',
+    paddingHorizontal: 20
   },
   searchBar: {
     width: '90%',

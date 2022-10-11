@@ -99,24 +99,105 @@ const CardRecommended = ({
 
   if(!isLoading && data)
   return (
-    <View style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 140}]}>
-      {/* @ts-ignore */}
-      <TouchableOpacity style={style.section1} onPress={() => navigation.navigate('Job', {id: id})}>
-          <Image 
-            // @ts-ignore
-            source={image != undefined ? {uri: image} : require('../../assets/images/DefaultProfile.png')}
-            style={style.image}  
-          />
-          <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-evenly', paddingHorizontal: 10}}>
-            <Text style={[style.title, {color: primaryColor}]}>{data.Title}</Text>
-            <Text style={[style.hirer, {color: primaryColor}]}>{data.Hirer}</Text>
-          </View>
-          <TouchableOpacity onPress={() => {
-              setSaved(!saved)
-            }}>
-            <Bookmark size={'medium'} set={saved ? 'bold' : 'light'} primaryColor={primaryColor} />
-          </TouchableOpacity>
-      </TouchableOpacity>
+    // @ts-ignore
+    // <TouchableOpacity style={[_style, style.card, { backgroundColor: secondaryColor, height: full ? 200 : 140}]} onPress={() => navigation.navigate('Job', {id: id})}>
+    //   <View style={style.section1}>
+    //       <Image 
+    //         source={image != undefined ? {uri: image} : require('../../assets/images/DefaultProfile.png')}
+    //         style={style.image}  
+    //       />
+    //       <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-evenly', paddingHorizontal: 10}}>
+    //         <Text style={[style.title, {color: primaryColor}]}>{data.Title}</Text>
+    //         <Text style={[style.hirer, {color: primaryColor}]}>{data.Hirer}</Text>
+    //       </View>
+    //       <TouchableOpacity onPress={() => {
+    //           setSaved(!saved)
+    //         }}>
+    //         <Bookmark size={'medium'} set={saved ? 'bold' : 'light'} primaryColor={primaryColor} />
+    //       </TouchableOpacity>
+    //   </View>
+    //   {
+    //     full && 
+    //     <>
+    //       <View style={style.section2}>
+    //         <Text style={[style.description, {color: primaryColor}]}>{data.Description}</Text>
+    //       </View>
+    //       <View style={style.section3}>
+    //         <View style={{
+    //           backgroundColor: theme ? 'rgba(255, 255, 255, 0.12)' : 'rgba(152, 152, 152, 0.12)',
+    //           width: '30%',
+    //           borderRadius: 2,
+    //           justifyContent: 'center'
+    //         }}>
+    //           <Text style={[style.info, {color: primaryColor}]}>{data.Time}</Text>
+    //         </View>
+    //         <View style={{
+    //           backgroundColor: theme ? 'rgba(255, 255, 255, 0.12)' : 'rgba(152, 152, 152, 0.12)',
+    //           width: '30%',
+    //           borderRadius: 2,
+    //           justifyContent: 'center'
+    //         }}>
+    //           <Text style={[style.info, {color: primaryColor}]}>{data.Type}</Text>
+    //         </View>
+    //         <View style={{
+    //           backgroundColor: theme ? 'rgba(255, 255, 255, 0.12)' : 'rgba(152, 152, 152, 0.12)',
+    //           width: '30%',
+    //           borderRadius: 2,
+    //           justifyContent: 'center'
+    //         }}>
+    //           <Text style={[style.info, {color: primaryColor}]}>{'R$' + data.Salary}</Text>
+    //         </View>
+    //       </View>
+    //     </>
+    //   }
+    //   <View style={[style.divider, { backgroundColor: theme ? 'rgba(255, 255, 255, 0.22)' : 'rgba(0, 0, 0, 0.22)' }]}></View>
+    //   <View style={style.section4}>
+    //     <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+    //       <People set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
+    //       <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Competitors}</Text>
+    //     </View>
+    //     {
+    //       full ?
+    //         <>
+    //           <View style={{ width: '45%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+    //             <Location set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
+    //             <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Place}</Text>
+    //           </View>
+    //         </>
+    //       :
+    //         <>
+    //           <View style={{ width: '45%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+    //             <Wallet set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
+    //             <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{'R$' + data.Salary}</Text>
+    //           </View>
+    //         </>
+
+    //     }
+        
+    //     <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
+    //       <TimeCircle set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
+    //       <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Posted + ' Dias'}</Text>
+    //     </View> 
+    //   </View>
+    // </TouchableOpacity>
+    <TouchableOpacity style={[_style, style.card, { backgroundColor: secondaryColor}]} onPress={() => navigation.navigate('Job', {id: id})}>
+      <View style={style.section1}>
+        <Image 
+          style={style.image}
+          source={image != undefined ? {uri: image} : require('../../assets/images/DefaultProfile.png')}
+        />
+        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-evenly', paddingHorizontal: 10}}>
+          <Text style={[style.title, {color: primaryColor}]}>{data.Title}</Text>
+          <Text style={[style.hirer, {color: primaryColor}]}>{data.Hirer}</Text>
+        </View>
+        <TouchableOpacity onPress={() => {
+            setSaved(!saved)
+          }}
+          style={{alignSelf: 'flex-start'}}
+        >
+          <Bookmark size={'medium'} set={saved ? 'bold' : 'light'} primaryColor={primaryColor} />
+        </TouchableOpacity>
+      </View>
       {
         full && 
         <>
@@ -153,34 +234,34 @@ const CardRecommended = ({
       }
       <View style={[style.divider, { backgroundColor: theme ? 'rgba(255, 255, 255, 0.22)' : 'rgba(0, 0, 0, 0.22)' }]}></View>
       <View style={style.section4}>
-        <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-          <People set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-          <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Competitors}</Text>
-        </View>
-        {
-          full ?
+         <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+           <People set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
+           <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Competitors}</Text>
+         </View>
+         {
+           full ?
             <>
-              <View style={{ width: '45%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                <Location set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-                <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Place}</Text>
-              </View>
-            </>
-          :
-            <>
-              <View style={{ width: '45%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                <Wallet set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-                <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{'R$' + data.Salary}</Text>
-              </View>
-            </>
+               <View style={{ width: '45%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                 <Location set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
+                 <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Place}</Text>
+               </View>
+             </>
+           :
+             <>
+               <View style={{ width: '45%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                 <Wallet set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
+                 <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{'R$' + data.Salary}</Text>
+               </View>
+             </>
 
-        }
+         }
         
-        <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
-          <TimeCircle set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-          <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Posted + ' Dias'}</Text>
-        </View> 
-      </View>
-    </View>
+         <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
+           <TimeCircle set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
+           <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Posted + ' Dias'}</Text>
+         </View> 
+       </View>
+    </TouchableOpacity>
   )
   else return (
     <Loader />
@@ -190,16 +271,23 @@ const CardRecommended = ({
 const style = StyleSheet.create({
   card: {
     width: '100%',
-    padding: 10,
+    padding: 15,
     borderRadius: 15,
+
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity:  1,
+    shadowRadius: 2,
+    elevation: 8
   },
   section1: {
     width: '100%',
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding:5
   },
   image: {
     width: 50,
@@ -216,7 +304,6 @@ const style = StyleSheet.create({
     fontSize: 14,
   },
   section2: {
-    padding:5,
     width: '100%',
   },
   description: {
@@ -235,9 +322,10 @@ const style = StyleSheet.create({
     fontFamily: 'Poppins_500Medium',
     fontSize: 15,
     textAlign: 'center',
+    paddingVertical: 5
   },
   divider: {
-    width: '100%',
+    minWidth: '100%',
     height: 1,
     marginVertical: 10
   },
