@@ -11,13 +11,18 @@ import useWindowDimensions from '../hooks/useWindowDimension'
 import { getData } from '../hooks/useAsyncStorage'
 import { useNavigation } from '@react-navigation/native'
 import { updateProfile } from 'firebase/auth'
-import { doc, getDoc, getDocs, onSnapshot } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot } from 'firebase/firestore'
+import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
+import { async } from '@firebase/util'
+
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   
   const [user, setUser] = useState(auth.currentUser)
   const [isLoading, setIsLoading] = useState(true)
   const [carousel, setCarousel] = useState({})
+
+  const [vagasRecom, setVagasRecom] = useState([])
 
   const [test, setTest] = useState('')
 
@@ -30,6 +35,8 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
       }else {
       setIsLoading(true)
     }
+
+    getDados()
 
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault()
@@ -66,7 +73,23 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
       id: 'CQg7xkDZSrZBi6z6mYg2'
     },
   ]
+    const getDados = async() => {
+      try {
+        const q = query(collection(db, "Jobs"), orderBy('Competitors', 'desc'), limit(10));
+  
+        await getDocs(q).then(doc => {
+          console.log(doc.forEach(doc => {
+            console.log(doc.id)
+            // @ts-ignore
+            setVagasRecom(vagas => [...vagas, doc.id])
+          }))
 
+        })
+        console.log('Vagas: ', vagasRecom);
+      } catch (e) {
+        console.log(e)
+      }
+    }
   if(!isLoading)
   return (
     <View style={style.safeView}>
@@ -86,17 +109,33 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
           <Text style={[style.title]}>Recomendados</Text>
           
           <View style={style.carouselWrapper}>
-            <Carousel 
-              data={DATA}
-              renderItem={(item) => _renderItem(item)}
-              ref={c => c && setCarousel(c)}
-              sliderWidth={Dimensions.get('screen').width}
-              itemWidth={(Dimensions.get('screen').width * 80) / 100}
+            <ScrollView style={{flexDirection:'column'}}>
+              <Carousel 
+               data={DATA}
+               renderItem={(item) => _renderItem(item)}
+                ref={c => c && setCarousel(c)}
+                sliderWidth={Dimensions.get('screen').width}
+                itemWidth={(Dimensions.get('screen').width * 80) / 100}
               
-            />
+              />
+              </ScrollView>
           </View>
         </View>
+        <View style={style.sectionPopulares}>
+          <Text style={[style.title2]}>Populares</Text>
+          {
+            vagasRecom && vagasRecom.map(idVaga => (
+              <CardRecommended 
+                jobId={idVaga}
+                theme={false}
+                full={false}
+                _style={{marginBottom:10, maxWidth:'95%'}}
+              />
+            ))
+          }
+        </View>
       </ScrollView>
+   
     </View>
   )
   else return (
@@ -146,11 +185,22 @@ const style = StyleSheet.create({
   sectionRecomendados: {
     minWidth: '100%',
     alignItems: 'center',
-    marginTop: 20
+    marginTop: 20,
+  },
+  sectionPopulares: {
+    marginHorizontal: 10,
+    textAlign:'center',
+    alignItems:'center'
   },
   carouselWrapper: {
     width: '100%',
     alignItems: 'center',
+  },
+  title2: {
+    marginLeft:6,
+    fontFamily: 'Poppins_700Bold',
+    fontSize: 22,
+    minWidth: '95%'
   }
 })
 
