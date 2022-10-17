@@ -133,8 +133,8 @@ const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
           style={styles.image}
         />
         <Text style={styles.title}>
-          Formação Academica
-          
+          Formação{'\n'}
+          Academica
         </Text>
 
         <View style={styles.inputs}>
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     width: 130
   },
   title: {
-    width: '35%',
+    width: '100%',
     textAlign: 'center',
     fontFamily: 'Montserrat_700Bold',
     fontSize: 24

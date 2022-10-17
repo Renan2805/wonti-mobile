@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     width: 130
   },
   title: {
-    width: '30%',
+    width: '100%',
     textAlign: 'center',
     fontFamily: 'Montserrat_700Bold',
     fontSize: 24

@@ -89,7 +89,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
             onPress={() => navigation.navigate('DetailScreen')}  
           >
             <Image 
-              source={{uri: profileImage}}
+              source={profileImage ? {uri: profileImage} : require('../assets/images/DefaultProfile.png')}
               style={style.image}
             />
             <View style={{width: '65%'}}>
