@@ -19,116 +19,17 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
   const [user, setUser] = useState(auth.currentUser)
   const [profileImage, setProfileImage] = useState('')
 
+  const [isLoading, setIsLoading] = useState(true)
   const [isOptionsOpen, setIsOptionsOpen] = useState(false)
   const [error, setError] = useState('')
-
-  const [isUploading, setIsUploading] = useState(false)
-  const [status, setStatus] = useState('')
-
-  const askPermision = async () => {
-    if (Platform.OS !== "web") {
-      const {
-        status,
-      } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        alert("Precisamos de permição para mudar a foto de perfil");
-      } else setStatus(status)
-    }
-  }
-
-  const takePhoto = async () => {
-    let pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-    });
-
-    handleImagePicked(pickerResult);
-  };
-
-  const pickImage = async () => {
-    let pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-    });
-
-    
-    (pickerResult)
-  }
-
-  const handleImagePicked = async (pickerResult: ImagePicker.ImagePickerResult) => {
-    try {
-      setIsUploading(true)
-
-      if (!pickerResult.cancelled) {
-        const uploadUrl = await uploadImageAsync(pickerResult.uri);
-        console.log('URL:', uploadUrl)
-        if(auth.currentUser) updateProfile(auth.currentUser, {
-          photoURL: uploadUrl
-        })
-        setProfileImage(uploadUrl)
-        console.log('User: ', auth.currentUser)
-      }
-    } catch (e) {
-      console.log(e);
-      if(typeof e === 'string') setError(e)
-    } finally {
-      setIsUploading(false)
-    }
-    }
-
-  
-    const uploadImageAsync = async (uri: string) => {
-    // Why are we using XMLHttpRequest? See:
-    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function (e) {
-        console.log(e);
-        reject(new TypeError("Network request failed"));
-      };
-      xhr.responseType = "blob";
-      xhr.open("GET", uri, true);
-      xhr.send(null);
-    });
-
-    const fileRef = ref(storage, `Users/${user?.uid}/Profile`);
-    // @ts-ignore
-    const result = await uploadBytes(fileRef, blob);
-    
-    // @ts-ignore
-    // We're done with the blob, close and release it
-    blob.close();
-
-    return await getDownloadURL(fileRef);
-  }
-
-  const maybeRenderUploadingOverlay = () => {
-    if (isUploading) {
-      return (
-        <View
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              backgroundColor: "rgba(0,0,0,0.4)",
-              alignItems: "center",
-              justifyContent: "center",
-            },
-          ]}
-        >
-          <ActivityIndicator animating size="large" />
-        </View>
-      )
-    }
-  }
-
   
   useEffect(() => {
-    if(auth.currentUser?.photoURL) setProfileImage(auth.currentUser?.photoURL)
+    if(auth.currentUser) {
+      setIsLoading(false)
+    } else setIsLoading(true)
   }, [auth.currentUser])
 
+  if(!isLoading)
   return (
     <ScrollView contentContainerStyle={style.content}>
       <ExpoStatusBar.StatusBar translucent={true} style={'light'}/>
@@ -144,7 +45,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
         <TouchableOpacity style={style.profilePictureWrapper} onPress={() => {}}>
           <Image 
             // @ts-ignore
-            source={{uri: profileImage}}
+            source={auth.currentUser?.photoURL === undefined ? require('../../assets/images/DefaultProfile.png') : {uri: auth.currentUser?.photoURL}}
             style={style.profilePicture}
           />
         </TouchableOpacity>
@@ -168,35 +69,10 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
       }}>
         <Text>Teste</Text>
       </TouchableOpacity>
-      <Modal
-        visible={isOptionsOpen}
-        animationType={'slide'}
-        onRequestClose={() => setIsOptionsOpen(false)}
-        transparent={true}
-      >
-        <View style={style.options}>
-          <TouchableOpacity style={style.optionsRow} onPress={() => status == 'granted' ? pickImage() : askPermision()}>
-            <FontAwesome name="camera" size={24} color="black" />
-            <Text style={style.optionsText}>Trocar Foto de Perfil</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={style.optionsRow} onPress={() => status == 'granted' ? takePhoto() : askPermision()}>
-            <FontAwesome name="camera" size={24} color="black" />
-            <Text style={style.optionsText}>Trocar Foto de Perfil</Text>
-          </TouchableOpacity>
-          
-
-          <TouchableOpacity style={[style.optionsRow, {borderBottomWidth: 0}]} onPress={() => {}}>
-            <FontAwesome name="google" size={24} color="black" />
-            <Text style={style.optionsText}>Trocar Foto de Perfil</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      
-      {
-        maybeRenderUploadingOverlay()
-      }
     </ScrollView>
+  )
+  else return (
+    <Text>Loading...</Text>
   )
 }
 

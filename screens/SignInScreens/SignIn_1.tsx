@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal } from "react-native"
+import { auth } from '../../config/firebase'
+import { AuthError, fetchSignInMethodsForEmail } from '@firebase/auth'
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import { FontAwesome } from '@expo/vector-icons'
 import Header from "../../components/Header"
 
 import NextButton from './NextButton'
 import { RootStackScreenProps } from '../../types'
-import { storeData, getData } from '../../hooks/useAsyncStorage'
+import { storeData } from '../../hooks/useAsyncStorage'
 
 const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
 
@@ -17,7 +19,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
   
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string>()
   const [teste, setTeste] = useState('')
 
@@ -39,19 +41,42 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
     else return true
   }
 
-  const _validate = () => {
+  const checkIfEmailIsUsed = async (email: string) => {
+    try {
+      const methods = await fetchSignInMethodsForEmail(auth, email)
+      if(methods) {
+        console.log('Methods: ', methods)
+        if(methods.length > 0) return true
+        else return false
+      }
+    } catch(e: AuthError | any) {
+      setErrorMessage('Erro por favor tente novamente mais tarde')
+    }
+  }
+
+  const _validate = async () => {
+    setIsLoading(true)
     if(!checkEmail(user)) {
       setErrorMessage('Email Inválido')
+      setIsLoading(false)
+      return
+    }
+    if(await checkIfEmailIsUsed(user)) {
+      setErrorMessage('Email já em uso')
+      setIsLoading(false)
       return
     }
     if(!checkPassword(password)) {
       setErrorMessage('A senha deve ter mais do que 6 caracteres')
+      setIsLoading(false)
       return
     }
     if(!conditionsRead) {
       setErrorMessage('Aceite os termos de uso antes de continuar')
+      setIsLoading(false)
       return
     }
+    setIsLoading(false)
     goNext()
   }
 
@@ -76,7 +101,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
     <View style={styles.container}>
       <View style={styles.section_1}>
         <Text style={styles.title}>Cadastre-se </Text>
-        <Text style={{fontFamily: 'WorkSans_600SemiBold', fontSize: 14, color: 'red', textAlign: 'left'}}>{errorMessage}</Text>
+        <Text style={{fontFamily: 'WorkSans_600SemiBold', fontSize: 14, color: 'red', textAlign: 'right'}}>{errorMessage}</Text>
         <View style={[styles.inputs, { minHeight: 110}]}>
           <TextInput 
             placeholder={ 'Email' }
@@ -105,7 +130,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
             useNativeDriver={false}
           />
         </View>
-        <NextButton _onPress={() => _validate()}/>
+        <NextButton _onPress={() => _validate()} _isLoading={isLoading}/>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center', height: '10%', marginVertical: 20}}>
         <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />

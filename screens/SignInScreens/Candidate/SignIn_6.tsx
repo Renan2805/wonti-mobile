@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, TextInput } from "react-native"
 import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
-import { storeData } from '../../../hooks/useAsyncStorage'
+import { getData, storeData } from '../../../hooks/useAsyncStorage'
 import { RootStackScreenProps } from '../../../types'
 
 
@@ -13,12 +13,35 @@ const SignIn_6 = ({navigation}: RootStackScreenProps<'SignIn_6c'>) => {
   const [nivel, setNivel] = useState('')
   const [qualificacao, setQualificacao] = useState('')
 
+  const [errorMessage, setErrorMessage] = useState('')
+  const [fieldsInError, setFieldsInError] = useState<string[]>([])
+
   const goNext = () => {
     navigation.navigate('SignIn_7c', {
       instituicao: instituicao,
       nivel: nivel,
       qualificacao: qualificacao
     })
+  }
+
+  const _validate = () => {
+    setFieldsInError([])
+    if(instituicao === '') {
+      setFieldsInError(fields => [...fields, 'inst'])
+      setErrorMessage('Instituição inválida')
+      return
+    }
+    if(nivel === '') {
+      setFieldsInError(fields => [...fields, 'nivel'])
+      setErrorMessage('Nível acadêmico inválido')
+      return
+    }
+    if(qualificacao === '') {
+      setFieldsInError(fields => [...fields, 'quali'])
+      setErrorMessage('Qualificção inválida')
+      return
+    }
+    goNext()
   }
 
   return (
@@ -32,14 +55,14 @@ const SignIn_6 = ({navigation}: RootStackScreenProps<'SignIn_6c'>) => {
         <Text style={styles.title}>
           Formação Academica
         </Text>
-
+        <Text style={{fontFamily: 'WorkSans_500Medium', color: 'red', fontSize: 16}}>{errorMessage}</Text>
         <View style={styles.inputs}>
           <Text style={styles.subTitle}>
             Instituição de ensino
           </Text>
           <TextInput 
             placeholder={'Ex: ETEC'}
-            style={styles.input}
+            style={[styles.input, {borderColor: fieldsInError.includes('inst') ? 'red' : '#848484'}]}
             onChangeText={text => setInstituicao(text)}
           />
           <Text style={styles.subTitle}>
@@ -47,7 +70,7 @@ const SignIn_6 = ({navigation}: RootStackScreenProps<'SignIn_6c'>) => {
           </Text>
           <TextInput 
             placeholder={'Ex: Ensino Médio'}
-            style={styles.input}
+            style={[styles.input, {borderColor: fieldsInError.includes('nivel') ? 'red' : '#848484'}]}
             onChangeText={text => setNivel(text)}
           />
           <Text style={styles.subTitle}>
@@ -55,13 +78,13 @@ const SignIn_6 = ({navigation}: RootStackScreenProps<'SignIn_6c'>) => {
           </Text>
           <TextInput 
             placeholder={'Ex: Informática'}
-            style={styles.input}
+            style={[styles.input, {borderColor: fieldsInError.includes('quali') ? 'red' : '#848484'}]}
             onChangeText={text => setQualificacao(text)}
           />
           
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => goNext()}/>
+          <NextButton _onPress={() => _validate()}/>
         </View>
         <Footer />
       </View>

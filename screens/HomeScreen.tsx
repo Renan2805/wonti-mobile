@@ -4,12 +4,14 @@ import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
 import { RootTabScreenProps } from '../types'
-import { auth } from '../config/firebase'
+import { auth, db } from '../config/firebase'
 import Loader from '../components/Loader/Loader'
 import Carousel from 'react-native-snap-carousel'
 import useWindowDimensions from '../hooks/useWindowDimension'
 import { getData } from '../hooks/useAsyncStorage'
 import { useNavigation } from '@react-navigation/native'
+import { updateProfile } from 'firebase/auth'
+import { doc, getDoc, getDocs, onSnapshot } from 'firebase/firestore'
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   
@@ -20,17 +22,20 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   const [test, setTest] = useState('')
 
   useEffect(() => {
-    if(user === null) {
+    if(auth.currentUser) {
+      updateProfile(auth?.currentUser, {
+        photoURL: undefined
+      })
+        setIsLoading(false)
+      }else {
       setIsLoading(true)
-    }else {
-      setIsLoading(false)
     }
 
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault()
     })
 
-  }, [user])
+  }, [])
 
   // @ts-ignore
   const _renderItem = ({item}) => (
@@ -112,7 +117,7 @@ const HomeHeader = () => {
       <TouchableOpacity onPress={() => navigation.navigate('DetailScreen')}>
         <Image
           // @ts-ignore
-          source={{uri: auth.currentUser?.photoURL}}
+          source={auth.currentUser?.photoURL === undefined ? require('../assets/images/DefaultProfile.png') : {uri: auth.currentUser?.photoURL}}
           style={{height: '80%', aspectRatio: 1, borderRadius: 100}}
         />
       </TouchableOpacity>

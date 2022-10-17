@@ -4,8 +4,11 @@ import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 import { RootStackScreenProps } from "../../../types"
-import { storeData } from "../../../hooks/useAsyncStorage"
+import { getData, storeData } from "../../../hooks/useAsyncStorage"
 import { AntDesign } from '@expo/vector-icons';
+import { createUserWithEmailAndPassword, updateCurrentUser, updateProfile } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
+import { auth, db } from '../../../config/firebase'
 
 const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
 
@@ -54,6 +57,50 @@ const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
 
     } else Alert.alert('Maximo de 3 itens')
     
+  }
+
+  const validateSignIn = async () => {
+    const email = await getData('email')
+    // @ts-ignore
+    const password = await getData('password')
+    // @ts-ignore
+    const endereco = await JSON.parse(await getData('endereco'))
+    // @ts-ignore
+    const dados = JSON.parse(await getData('dadosPessoais'))
+    
+    const formacao: Formacao = {
+      instituicao: route.params.instituicao,
+      nivel: route.params.nivel,
+      qualificacao: route.params.qualificacao,
+      dataInicio: route.params.dataInicio,
+      dataTermino: route.params.dataTermino,
+      idiomas: idiomas,
+      certificados: certificados,
+      aptidoes: aptidoes
+    }
+    
+    if(endereco|| dados) {
+      // @ts-ignore
+      const usuario = {
+        email: email,
+        endereco: endereco,
+        dados_pessoais: dados,
+        formacao: formacao
+      }
+      console.log(usuario)
+
+      // @ts-ignore
+      await createUserWithEmailAndPassword(auth, usuario.email, password).then(async (userCredential) => {
+        updateProfile(userCredential.user, {
+          displayName: usuario.dados_pessoais.nome + ' ' + usuario.dados_pessoais.sobrenome
+        })
+        const dc = doc(db, 'Users', userCredential.user.uid)
+        await setDoc(dc, usuario)
+      })
+      .catch(e => console.log(e))
+
+    }
+
   }
 
   const addTo = (key: string, value: string) => {
@@ -159,7 +206,7 @@ const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
           </View>
         </View>
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => goNext()}/>
+          <NextButton _onPress={() => validateSignIn()}/>
         </View>
         <Footer />
       </View>

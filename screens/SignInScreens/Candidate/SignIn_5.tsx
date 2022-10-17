@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from "react-native"
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator } from "react-native"
 import Axios from 'axios'
 import SelectDropDown from 'react-native-select-dropdown'
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 import React from "react"
-import { storeData } from '../../../hooks/useAsyncStorage'
+import { getData, storeData } from '../../../hooks/useAsyncStorage'
 import { RootStackScreenProps } from '../../../types'
 
 const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
@@ -31,6 +31,8 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
   const [uf, setUf] = useState('')
 
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [fieldsInError, setFieldsInError] = useState<string[]>([])
+  const [buscandoCep, setBuscandoCep] = useState<boolean>(false)
 
   const listaUf = [
     'AC', 'AL', 'AP',
@@ -67,20 +69,30 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
     return reg.test(CEP)
   }
 
+  const mascaraCep = (cep: string) => {
+    const reg = /(\d{5})(\d{3})/
+    cep = cep.replace(reg, '$1-$2')
+    return cep
+  }
+
   const buscaCep = async () => {
+    setBuscandoCep(true)
     setErrorMessage('')
     if(!checkCep(cep)) {
       setErrorMessage('Cep inválido')
+      setBuscandoCep(false)
       return
     }
     await Axios.get(`https://viacep.com.br/ws/${cep}/json/`)
       .then((res) => {
         if(res.data.erro == true) setErrorMessage('Erro ao pesquisar CEP')
-        console.log(res.data)
         setRua(res.data.logradouro)
         setBairro(res.data.bairro)
         setCidade(res.data.localidade)
         setUf(res.data.uf)
+      })
+      .finally(() => {
+        setBuscandoCep(false)
       })
       .catch(e => {
         setErrorMessage('Erro ao pesquisar o CEP')
@@ -88,7 +100,18 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
   }
 
   const _validate = () => {
-    
+    setFieldsInError([])
+    if(rua === '') {
+      setFieldsInError(fields => [...fields, 'rua'])
+      setErrorMessage('Endereço inválido')
+      return
+    }
+    if(numero == '') {
+      setFieldsInError(fields => [...fields, 'numero'])
+      setErrorMessage('Número inválido')
+      return
+    }
+    goNext()
   }
 
   return (
@@ -102,7 +125,7 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
         <Text style={styles.title}>
           Endereço
         </Text>
-        <Text>{errorMessage}</Text>
+        <Text style={{fontFamily: 'WorkSans_500Medium', color: 'red', fontSize: 16}}>{errorMessage}</Text>
         <View style={styles.inputs}>
           <View style={styles.cepWrapper}> 
             <TextInput 
@@ -112,28 +135,34 @@ const SignIn_5 = ({navigation}: RootStackScreenProps<'SignIn_5c'>) => {
                 fontSize: 18,
                 color: '#848484',
                 marginLeft: 7,
-                maxWidth: '80%'
+                width: '80%',
               }}
               onChangeText={text => setCep(text)}
+              value={mascaraCep(cep)}
               keyboardType={'numeric'}
             />
             <TouchableOpacity
               style={{backgroundColor: 'black', borderRadius: 20, justifyContent: 'center', paddingHorizontal: 20}}
               onPress={() => buscaCep()}
             >
-              <FontAwesome name="search" size={12} color="white" />
+              {
+                buscandoCep ?
+                  <ActivityIndicator size={'small'} color={'white'}/>
+                  :
+                  <FontAwesome name="search" size={12} color="white" />
+              }
             </TouchableOpacity>
           </View>
           <TextInput 
             placeholder={'Rua'}
-            style={styles.input}
+            style={[styles.input, {borderColor: fieldsInError.includes('rua') ? 'red' : '#848484'}]}
             editable={false}
             value={rua}
           />
           <View style={styles.inputsHorizontal}>
             <TextInput 
               placeholder={'Nº'}
-              style={[styles.input, {maxWidth: '40%'}]}
+              style={[styles.input, {maxWidth: '40%', borderColor: fieldsInError.includes('numero') ? 'red' : '#848484'}]}
               onChangeText={text => setNumero(text)}
             />
             <TextInput 

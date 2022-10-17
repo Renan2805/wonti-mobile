@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react' 
-import { StyleSheet, View, Text, Image, TextInput } from "react-native"
+import React, { useState, useEffect, SetStateAction } from 'react' 
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from "react-native"
 import { validate } from 'gerador-validador-cpf'
 import { RootStackScreenProps } from "../../../types"
 import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 import { storeData } from '../../../hooks/useAsyncStorage'
+import { Ionicons } from '@expo/vector-icons'
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import { BsArrowsAngleExpand } from 'react-icons/bs'
 
 const SignIn_2 = ({ navigation }: RootStackScreenProps<'SignIn_2c'>) => {
 
@@ -13,6 +16,9 @@ const SignIn_2 = ({ navigation }: RootStackScreenProps<'SignIn_2c'>) => {
   const [sobrenome, setSobrenome] = useState('')
   const [rg, setRg] = useState('')
   const [cpf, setCpf] = useState('')
+
+  const [date, setDate] = useState<Date>(new Date())
+  const [show, setShow] = useState(false)
 
   const [fieldsInError, setFieldsInError] = useState<string[]>([])
 
@@ -22,7 +28,8 @@ const SignIn_2 = ({ navigation }: RootStackScreenProps<'SignIn_2c'>) => {
       nome: nome,
       sobrenome: sobrenome,
       rg: rg,
-      cpf: cpf
+      cpf: cpf,
+      dataDeNascimento: date
     }
 
     storeData('dadosPessoais', JSON.stringify(dadosPessoais))
@@ -46,27 +53,53 @@ const SignIn_2 = ({ navigation }: RootStackScreenProps<'SignIn_2c'>) => {
   const mascaraCpf = (strCPF: string) => {
     strCPF = strCPF.replace(/\D/g,"")
     strCPF = strCPF.replace(/(\d{3})(\d)/,"$1.$2")
+    
     strCPF = strCPF.replace(/(\d{3})(\d)/,"$1.$2")
     strCPF = strCPF.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
     return strCPF
   }
 
-  const _validate = () => {
+  const onChange = (event: DateTimePickerEvent, selectedDate: SetStateAction<Date> | undefined) => {
+    const currentDate = selectedDate
+    // @ts-ignore
+    setDate(currentDate)
+    setShow(false)
+  };
+
+  const checkDate = (date: Date) => {
+    const today = new Date()
+    const birthDate = date
+    var age = today.getFullYear() - birthDate.getFullYear()
+    const m = today.getMonth() - birthDate.getMonth()
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--
+    }
+    console.log('Age:', age)
+    if(age < 18) return false
+    else return true
+    
+  }
+
+   const _validate = () => {
     setFieldsInError([])
     if(!checkNome(nome)) {
-      if(!fieldsInError?.includes('name')) setFieldsInError(fields => [...fields, 'name'])
+      setFieldsInError(fields => [...fields, 'name'])
       return
     }
     if(!checkNome(sobrenome)) {
-      if(!fieldsInError?.includes('sobrenome')) setFieldsInError(fields => [...fields, 'sobrenome'])
+      setFieldsInError(fields => [...fields, 'sobrenome'])
       return
     }
     if(rg.length < 9 || rg.length > 9) {
-      if(!fieldsInError?.includes('rg')) setFieldsInError(fields => [...fields, 'rg'])
+      setFieldsInError(fields => [...fields, 'rg'])
       return
     }
     if(!validate(cpf)) {
-      if(!fieldsInError?.includes('cpf')) setFieldsInError(fields => [...fields, 'cpf'])
+      setFieldsInError(fields => [...fields, 'cpf'])
+      return
+    }
+    if(!checkDate(date)) {
+      setFieldsInError(fields => [...fields, 'date'])
       return
     }
     goNext()
@@ -81,13 +114,13 @@ const SignIn_2 = ({ navigation }: RootStackScreenProps<'SignIn_2c'>) => {
           style={styles.image}
         />
         <Text style={styles.title}>
-          Dados Pessoais {'\n'}
-          {mascaraRg('393945418')}
+          Dados{'\n'}
+          Pessoais
         </Text>
         <View style={styles.inputs}>
           <TextInput 
             placeholder={'Nome'}
-            style={[styles.input, {borderColor: fieldsInError.includes('name') ? 'red' : '#848484'}]}
+            style={[styles.input, {borderColor: fieldsInError?.includes('name') ? 'red' : '#848484'}]}
             onChangeText={text => setNome(text)}
           />
           <TextInput 
@@ -107,6 +140,41 @@ const SignIn_2 = ({ navigation }: RootStackScreenProps<'SignIn_2c'>) => {
             onChangeText={text => setCpf(text)}
             value={mascaraCpf(cpf)}
           />
+          <View
+            style={[styles.input, {
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              borderColor: fieldsInError?.includes('date') ? 'red' : '#848484'
+            }]}
+          >
+            <Text style={{
+              fontFamily: 'WorkSans_300Light',
+              fontSize: 18,
+              color: '#848484',
+            }}>
+              {
+                date == undefined ?
+                'Data de nascimento'
+                :
+                date.toLocaleDateString('pt-BR')
+              }              
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setShow(!show)
+              }}
+            >
+              <Ionicons name="ios-arrow-down" size={24} color="black" />
+            </TouchableOpacity>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={'date'}
+                onChange={(event, date) => onChange(event, date)}
+              />
+            )}
+          </View>
         </View>
         <View style={{width: '90%'}}>
           <NextButton _onPress={() => _validate()}/>

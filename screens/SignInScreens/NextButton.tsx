@@ -1,15 +1,24 @@
-import { TouchableOpacity, Text, StyleSheet } from "react-native"
+import { TouchableOpacity, Text, ActivityIndicator, StyleSheet } from "react-native"
 interface NextButtonProps {
-  _onPress: () => void
+  _onPress: () => void,
+  _isLoading?: boolean
 }  
 
-const NextButton = ({ _onPress }: NextButtonProps) => {
+const NextButton = ({ _onPress, _isLoading }: NextButtonProps) => {
 
   return (
-    <TouchableOpacity style={styles.button} onPress={_onPress}>
-      <Text style={styles.text}>
-        {'Próximo'}
-      </Text>
+    <TouchableOpacity style={styles.button} onPress={_onPress} disabled={_isLoading}>
+      {
+        _isLoading ?
+        <ActivityIndicator
+          color={'white'}
+          size={'small'}
+        />
+        :
+        <Text style={styles.text}>
+          {'Próximo'}
+        </Text>
+      }
     </TouchableOpacity>
   )
 }
