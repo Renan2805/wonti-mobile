@@ -70,6 +70,7 @@
     "@expo/webpack-config": "^0.16.24",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.66.13",
+    "cpf-cnpj-validator": "^1.0.3",
     "gerador-validador-cpf": "^5.0.2",
     "jest": "^26.6.3",
     "jest-expo": "~45.0.0",

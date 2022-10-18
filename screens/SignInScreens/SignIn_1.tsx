@@ -131,7 +131,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
           </View>
         </View>
         <View style={{
-          justifyContent: 'flex-end',
+          justifyContent: 'center',
         }}>
           <BouncyCheckbox 
             onPress={(isChecked: boolean) => !isChecked ? setConditionsRead(false) : setIsModalOpen(true)} 
@@ -187,8 +187,8 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
           <View style={{width: 10}}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('LoginScreen') }>
-          <Text style={{fontFamily: 'WorkSans_400Regular', maxWidth: '30%', textAlign: 'center'}}>
-            Já possui conta?
+          <Text style={{fontFamily: 'WorkSans_400Regular', maxWidth: '110%', textAlign: 'center'}}>
+            Já possui conta?{'\n'}
             Faça 
             <Text style={{color: '#CA0747', fontFamily: 'WorkSans_600SemiBold'}}>
               {' login'}

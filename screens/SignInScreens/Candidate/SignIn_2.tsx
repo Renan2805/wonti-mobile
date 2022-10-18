@@ -1,6 +1,7 @@
 import React, { useState, useEffect, SetStateAction } from 'react' 
 import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from "react-native"
 import { validate } from 'gerador-validador-cpf'
+import { cnpj } from 'cpf-cnpj-validator'
 import { RootStackScreenProps } from "../../../types"
 import Footer from "../Footer"
 import Header from "../../../components/Header"
