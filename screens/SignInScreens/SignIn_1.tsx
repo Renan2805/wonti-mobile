@@ -4,6 +4,7 @@ import { auth } from '../../config/firebase'
 import { AuthError, fetchSignInMethodsForEmail } from '@firebase/auth'
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import { FontAwesome } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons';
 import Header from "../../components/Header"
 
 import NextButton from './NextButton'
@@ -14,6 +15,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
 
   const [conditionsRead, setConditionsRead] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const [isUser, setIsUser] = useState(route.params.isUser)
 
   const [user, setUser] = useState('')
@@ -39,6 +41,11 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
   const checkPassword = (password: string) => {
     if(password.length < 6) return false
     else return true
+  }
+
+  const mascaraSenha = () => {
+    const reg = /./g
+    return password.replace(reg, '•')
   }
 
   const checkIfEmailIsUsed = async (email: string) => {
@@ -109,11 +116,19 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
             onChangeText={(text) => setUser(text)}
           />
           <View style={{maxHeight: 10, minHeight: 5}}/>
-          <TextInput 
-            placeholder={'Senha'}
-            style={styles.input}
-            onChangeText={(text) => setPassword(text)}
-          />
+          <View
+            style={[styles.input, {flexDirection: 'row', justifyContent: 'space-between'}]}
+          >
+            <TextInput 
+              style={{fontFamily: 'WorkSans_300Light', fontSize: 18, color: '#848484', width: '80%'}}
+              placeholder={'Senha'}
+              secureTextEntry={showPassword}
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+
+            />
+            <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={24} color="black" onPress={() => setShowPassword(!showPassword)}/>
+          </View>
         </View>
         <View style={{
           justifyContent: 'flex-end',

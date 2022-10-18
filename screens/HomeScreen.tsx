@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, StatusBar, SafeAreaView, FlatList, Alert, Dimensions, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, Image, StyleSheet, StatusBar, Alert, Dimensions, TouchableOpacity } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -7,13 +7,9 @@ import { RootTabScreenProps } from '../types'
 import { auth, db } from '../config/firebase'
 import Loader from '../components/Loader/Loader'
 import Carousel from 'react-native-snap-carousel'
-import useWindowDimensions from '../hooks/useWindowDimension'
-import { getData } from '../hooks/useAsyncStorage'
 import { useNavigation } from '@react-navigation/native'
 import { updateProfile } from 'firebase/auth'
-import { doc, getDoc, onSnapshot } from 'firebase/firestore'
-import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
-import { async } from '@firebase/util'
+import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
 
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
@@ -36,7 +32,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
       setIsLoading(true)
     }
 
-    getDados()
+    fetchtVagasRecomendadas()
 
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault()
@@ -73,19 +69,17 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
       id: 'CQg7xkDZSrZBi6z6mYg2'
     },
   ]
-    const getDados = async() => {
+    const fetchtVagasRecomendadas = async() => {
       try {
         const q = query(collection(db, "Jobs"), orderBy('Competitors', 'desc'), limit(10));
   
         await getDocs(q).then(doc => {
           console.log(doc.forEach(doc => {
-            console.log(doc.id)
             // @ts-ignore
             setVagasRecom(vagas => [...vagas, doc.id])
           }))
 
         })
-        console.log('Vagas: ', vagasRecom);
       } catch (e) {
         console.log(e)
       }
@@ -122,14 +116,14 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
           </View>
         </View>
         <View style={style.sectionPopulares}>
-          <Text style={[style.title2]}>Populares</Text>
+          <Text style={[style.title]}>Populares</Text>
           {
             vagasRecom && vagasRecom.map(idVaga => (
               <CardRecommended 
                 jobId={idVaga}
                 theme={false}
                 full={false}
-                _style={{marginBottom:10, maxWidth:'95%'}}
+                _style={{marginBottom:10, maxWidth: '90%'}}
               />
             ))
           }
@@ -145,7 +139,15 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
 
 const HomeHeader = () => {
 
+  const [profileImage, setProfileImage] = useState('')
+
   const navigation = useNavigation()
+
+  useEffect(() => {
+    if(auth.currentUser) {
+      if(auth.currentUser.photoURL) setProfileImage(auth.currentUser?.photoURL)
+    }
+  }, [auth.currentUser])
 
   return (
     <View style={{height: '10%', width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10}}>
@@ -156,7 +158,7 @@ const HomeHeader = () => {
       <TouchableOpacity onPress={() => navigation.navigate('DetailScreen')}>
         <Image
           // @ts-ignore
-          source={auth.currentUser?.photoURL === undefined ? require('../assets/images/DefaultProfile.png') : {uri: auth.currentUser?.photoURL}}
+          source={profileImage ? {uri: profileImage} : require('../assets/images/DefaultProfile.png')}
           style={{height: '80%', aspectRatio: 1, borderRadius: 100}}
         />
       </TouchableOpacity>
@@ -188,6 +190,7 @@ const style = StyleSheet.create({
     marginTop: 20,
   },
   sectionPopulares: {
+    width: '100%',
     marginHorizontal: 10,
     textAlign:'center',
     alignItems:'center'
@@ -196,12 +199,6 @@ const style = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  title2: {
-    marginLeft:6,
-    fontFamily: 'Poppins_700Bold',
-    fontSize: 22,
-    minWidth: '95%'
-  }
 })
 
 export default HomeScreen

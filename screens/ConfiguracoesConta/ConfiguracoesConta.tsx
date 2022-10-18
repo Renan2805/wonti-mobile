@@ -187,7 +187,7 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
         <View style={styles.imageWrapper}>
           <Image 
             // @ts-ignore
-            source={{uri: auth.currentUser?.photoURL}}
+            source={auth.currentUser?.photoURL ? {uri: auth.currentUser?.photoURL} : require('../../assets/images/DefaultProfile.png')}
             style={styles.image}
           />
           <TouchableOpacity style={styles.cameraButton} onPress={() => setIsOptionsOpen(!isOptionsOpen)}>

@@ -25,6 +25,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
   
   useEffect(() => {
     if(auth.currentUser) {
+      if(auth.currentUser.photoURL) setProfileImage(auth.currentUser?.photoURL)
       setIsLoading(false)
     } else setIsLoading(true)
   }, [auth.currentUser])
@@ -45,7 +46,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
         <TouchableOpacity style={style.profilePictureWrapper} onPress={() => {}}>
           <Image 
             // @ts-ignore
-            source={auth.currentUser?.photoURL === undefined ? require('../../assets/images/DefaultProfile.png') : {uri: auth.currentUser?.photoURL}}
+            source={profileImage ? {uri: profileImage} : require('../../assets/images/DefaultProfile.png')}
             style={style.profilePicture}
           />
         </TouchableOpacity>

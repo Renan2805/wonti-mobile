@@ -96,8 +96,8 @@ const CardRecommended = ({
     checkSaved(id)
   }
 
-  const checkSaved = async (id: string) => {
-    if(vagas?.includes(id)) setSaved(true)
+  const checkSaved = async (id: string | undefined) => {
+    if(id && vagas?.includes(id)) setSaved(true)
     else setSaved(false)
   }
 

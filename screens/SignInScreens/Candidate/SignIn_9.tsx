@@ -4,69 +4,55 @@ import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 import { useEffect, useState } from "react"
 import { getData, getMultipleData } from "../../../hooks/useAsyncStorage"
-import { auth, storage } from "../../../config/firebase"
+import { auth, db, storage } from "../../../config/firebase"
 import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth"
 import { RootStackScreenProps } from "../../../types"
 import { User } from "react-native-iconly"
+import { doc, setDoc } from "firebase/firestore"
 
 
 const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
 
-  const [dados, setDados] = useState({
-    email: '',
-    password: '',
-    dadosPessoais: {
-      nome: '',
-      sobrenome: ''
-    },
-    contato: {},
-    endereco: {},
-    formacao: {}
-  })
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  
-  const fetchData = async () => {
-    setIsLoading(true)
-    
+  const validateSignIn = async () => {
     const email = await getData('email')
-    const senha = await getData('password')
-    const dadosPessoais = await getData('dadosPessoais')
-    const contato = await getData('contato')
-    const endereco = await getData('endereco')
-    const formacao = await getData('formacao')
+    // @ts-ignore
+    const password = await getData('password')
+    // @ts-ignore
+    const endereco = await JSON.parse(await getData('endereco'))
+    // @ts-ignore
+    const dados = JSON.parse(await getData('dadosPessoais'))
+    // @ts-ignore
+    const formacao = JSON.parse(await getData('formacao'))
+    
+    if(endereco|| dados) {
+      // @ts-ignore
+      const usuario = {
+        email: email,
+        endereco: endereco,
+        dados_pessoais: dados,
+        formacao: formacao
+      }
+      console.log(usuario)
 
-    const data = {
-      email: email,
-      password: senha,
       // @ts-ignore
-      dadosPessoais: JSON.parse(dadosPessoais),
-      // @ts-ignore
-      contato: JSON.parse(contato),
-      // @ts-ignore
-      endereco: JSON.parse(endereco),
-      // @ts-ignore
-      formacao: JSON.parse(formacao)
+      await createUserWithEmailAndPassword(auth, usuario.email, password).then(async (userCredential) => {
+        updateProfile(userCredential.user, {
+          displayName: usuario.dados_pessoais.nome + ' ' + usuario.dados_pessoais.sobrenome
+        })
+        const dc = doc(db, 'Users', userCredential.user.uid)
+        await setDoc(dc, usuario)
+      })
+      .catch(e => console.log(e))
+
     }
 
-    // @ts-ignore
-    setDados(data)
-
-  }
-
-  const doSignUp = () => {
-    createUserWithEmailAndPassword(auth, dados.email, dados.password).then(userCredential => {
-      setIsLoading(true)
-      const user = userCredential.user
-      updateProfile(user, {
-        displayName: dados.dadosPessoais.nome + ' ' + dados.dadosPessoais.sobrenome
-      })
-    }).catch(e => {setError(e)})
   }
   
   useEffect(() => {
-    fetchData().then(() => setIsLoading(false)).catch(e => console.log(e))
+    
   }, [])
 
   if(!isLoading)
@@ -94,7 +80,7 @@ const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
         </Text>
 
         <View style={{width: '90%'}}>
-          <NextButton _onPress={() => doSignUp()}/>
+          <NextButton _onPress={() => validateSignIn()}/>
           <Text>{error.toString()}</Text>
         </View>
         <Footer />

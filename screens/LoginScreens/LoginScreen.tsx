@@ -43,6 +43,7 @@ function LoginScreen({navigation}: Props) {
   }
 
   const loginFirebase = () => {
+    // @ts-ignore
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential: UserCredential) => {
       const userStr = JSON.stringify(userCredential.user)
