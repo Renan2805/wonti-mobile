@@ -111,9 +111,12 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
         <Text style={{fontFamily: 'WorkSans_600SemiBold', fontSize: 14, color: 'red', textAlign: 'right'}}>{errorMessage}</Text>
         <View style={[styles.inputs, { minHeight: 110}]}>
           <TextInput 
+            keyboardType={'email-address'}
+            autoCapitalize={'none'}
             placeholder={ 'Email' }
             style={styles.input}
             onChangeText={(text) => setUser(text)}
+            value={user}
           />
           <View style={{maxHeight: 10, minHeight: 5}}/>
           <View

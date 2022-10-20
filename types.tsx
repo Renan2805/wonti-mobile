@@ -50,6 +50,7 @@ export type RootStackParamList = {
   SignIn_9c: undefined;
 
   SignIn_2e: undefined;
+  SignIn_3e: undefined;
   DetailScreen: undefined;
 };
 

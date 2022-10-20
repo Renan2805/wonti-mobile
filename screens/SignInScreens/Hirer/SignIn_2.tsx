@@ -6,6 +6,7 @@ import Footer from "../Footer"
 import Header from "../../../components/Header"
 import NextButton from "../NextButton"
 import { useState } from "react"
+import { storeData } from "../../../hooks/useAsyncStorage"
 
 
 
@@ -13,8 +14,21 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
 
   const [nome, setNome] = useState<string>('')
   const [cnpj, setCnpj] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
 
   const [errorMessage, setErrorMessage] = useState<string>()
+  const [fieldsInError, setFieldsInError] = useState<string[]>([])
+
+  const goNext = () => {
+    const data = {
+      nome: nome,
+      cnpj: cnpj,
+      desc: description
+    }
+
+    storeData('dados-empresariais', JSON.stringify(data))
+    navigation.navigate('SignIn_3e')
+  }
 
   const checkNome = (name: string) => {
     const reg: RegExp = /[a-zA-Z]/
@@ -29,20 +43,37 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
   const mascaraCnpj = (c: string) => {
     let reg = /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/
     c = c.replace(/\D/g, '')
-    c = c.replace(reg, "$1.$2.$3/$4-$5")
+    c = c.replace(/(\d{2})(\d)/, '$1.$2')
+    c = c.replace(/(\d{3})(\d)/, '$1.$2')
+    c = c.replace(/(\d{3})(\d)/, '$1/$2')
+    c = c.replace(/(\d{4})(\d)/, '$1-$2')
     return c
+  }
+
+  const checkDesc = (d: string) => {
+    if(d.length < 50 || d.length > 140) return false
+    else return true
   }
 
   const _validate = () => {
     setErrorMessage('')
+    setFieldsInError([])
     if(!checkNome(nome)) {
       setErrorMessage('Nome Inválido')
+      setFieldsInError(fields => [...fields, 'nome'])
       return
     }
     if(!checkCnpj(cnpj)) {
       setErrorMessage('CNPJ Inválido')
+      setFieldsInError(fields => [...fields, 'cnpj'])
       return
     }
+    if(!checkDesc(description)) {
+      setErrorMessage('Descrição deve ter no minimo 50 caracteres')
+      setFieldsInError(fields => [...fields, 'desc'])
+      return
+    }
+    goNext()
   }
 
   return (
@@ -57,31 +88,34 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
           Informações{'\n'}
           da Empresa
         </Text>
-        <Text>{errorMessage}</Text>
+        <Text style={styles.error}>{errorMessage}</Text>
         <View style={styles.inputs}>
           <TextInput 
             placeholder={'Nome da Empresa'}
-            style={styles.input}
+            style={[styles.input, { borderColor: fieldsInError.includes('nome') ? 'red' : '#848484'}]}
             onChangeText={setNome}
             value={nome}
           />
           <TextInput 
             placeholder={'CNPJ'}
-            style={[styles.input, {textAlign: 'justify'}]}
+            style={[styles.input, { borderColor: fieldsInError.includes('cnpj') ? 'red' : '#848484'}]}
             onChangeText={setCnpj}
             value={mascaraCnpj(cnpj)}
           />
-          <TextInput 
-            placeholder={'Descrição'}
-            numberOfLines={3}
-            multiline={true}
-            maxLength={140}
-            style={styles.input}
-          />
-          <TextInput 
-            placeholder={'Endereço'}
-            style={styles.input}
-          />
+          <View
+            style={[styles.input, { borderColor: fieldsInError.includes('desc') ? 'red' : '#848484'}]}
+          >
+            <TextInput 
+              placeholder={'Descrição'}
+              numberOfLines={4}
+              multiline={true}
+              maxLength={140}
+              style={{textAlignVertical: 'top', fontFamily: 'WorkSans_300Light', fontSize: 18, color: '#848484', margin: 0}}
+              onChangeText={setDescription}
+              value={description}
+            />
+            <Text style={{alignSelf: 'flex-end', color: description.length == 140 ? 'red' : '#848484'}}>{description.length}/140</Text>
+          </View>
         </View>
         <View style={{width: '90%'}}>
           <NextButton _onPress={() => _validate()}/>                                                                                                                                                                                                           
@@ -108,6 +142,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center'
   },
+  error: {
+    fontFamily: 'WorkSans_600SemiBold',
+    color: 'red'
+  },
   inputs: {
     width: '100%',
     flex: 1,
@@ -125,7 +163,7 @@ const styles = StyleSheet.create({
 
     paddingVertical: 14,
     paddingHorizontal: 17,
-    width: '100%'
+    width: '100%'  
   }
 })
 

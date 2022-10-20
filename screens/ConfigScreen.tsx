@@ -175,7 +175,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
           <TouchableOpacity style={style.botaoSairModal} onPress={sairButton} />
           <View style={style.viewModal}>
             <Text style={style.modalTitle}>Vagas Salvas</Text>
-            <ScrollView style={style.modalContent}>
+            <ScrollView style={style.modalContent} contentContainerStyle={{alignItems: 'center'}}>
               {
                 vagas ? vagas.map((jobId, index) => (
                   <CardRecommended 
@@ -183,7 +183,7 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
                     jobId={jobId}
                     theme={false}
                     full={false}
-                    _style={{marginVertical: 5}}
+                    _style={{marginVertical: 5, maxWidth: '90%'}}
                   />
                 ))
 
@@ -289,7 +289,7 @@ const style = StyleSheet.create({
     alignItems: 'center'
   },
   modalContent: {
-    width: '90%'
+    width: '100%'
   },
   ModalText: {
     width:'100%',

@@ -118,8 +118,9 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
         <View style={style.sectionPopulares}>
           <Text style={[style.title]}>Populares</Text>
           {
-            vagasRecom && vagasRecom.map(idVaga => (
+            vagasRecom && vagasRecom.map((idVaga, index) => (
               <CardRecommended 
+                key={index}
                 jobId={idVaga}
                 theme={false}
                 full={false}
