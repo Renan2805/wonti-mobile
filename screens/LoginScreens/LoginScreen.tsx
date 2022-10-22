@@ -117,6 +117,7 @@ function LoginScreen({navigation}: Props) {
           <Text style={{fontFamily: 'WorkSans_600SemiBold', color: '#CA0747'}} onPress={() => navigation.navigate('SignIn_1', {isUser: active})}> Cadastre-se</Text>
         </Text>
       </View>
+      <TouchableOpacity style={{width:'80%', height:40, backgroundColor:'blue'}} onPress={() => navigation.navigate('cadastro1')}/>
     </KeyboardAvoidingView>
   )
   else return (

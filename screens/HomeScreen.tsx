@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, StatusBar, Alert, Dimensions, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, Image, StyleSheet, StatusBar, Alert, Dimensions, TouchableOpacity, TextInput } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -11,7 +11,6 @@ import { useNavigation } from '@react-navigation/native'
 import { updateProfile } from 'firebase/auth'
 import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
 
-
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   
   const [user, setUser] = useState(auth.currentUser)
@@ -21,6 +20,8 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   const [vagasRecom, setVagasRecom] = useState([])
 
   const [test, setTest] = useState('')
+
+  const [busca, setBusca] = useState('')
 
   useEffect(() => {
     if(auth.currentUser) {
@@ -48,14 +49,13 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
       jobId={item.id}
       _style={{marginVertical: 15}}
     />
-  )
+  ) 
 
   const doSearch = () => {
-    Alert.alert('teste')
-  }
 
+  }
   const filter = () => {
-    Alert.alert('teste 2')
+    
   }
 
   const DATA = [
@@ -104,14 +104,14 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
           
           <View style={style.carouselWrapper}>
             <ScrollView style={{flexDirection:'column'}}>
-              <Carousel 
+              {/* <Carousel 
                data={DATA}
                renderItem={(item) => _renderItem(item)}
                 ref={c => c && setCarousel(c)}
                 sliderWidth={Dimensions.get('screen').width}
                 itemWidth={(Dimensions.get('screen').width * 80) / 100}
               
-              />
+              /> */}
               </ScrollView>
           </View>
         </View>
@@ -183,6 +183,21 @@ const style = StyleSheet.create({
     fontFamily: 'Poppins_700Bold',
     fontSize: 22,
     minWidth: '95%'
+  },
+  SearchBar: {
+    width: '80%',
+    minHeight: 25,
+    maxHeight: 25,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderBottomRightRadius:0,
+    borderTopRightRadius:0,
+    paddingHorizontal: 14,
+    paddingVertical: 16,
+    marginBottom: 10,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   sectionRecomendados: {
     minWidth: '100%',

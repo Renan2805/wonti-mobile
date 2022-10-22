@@ -67,6 +67,11 @@ import RecoverPasswordScreen from './screens/RecoverPasswordScreen/RecoverPasswo
 import ConfiguracoesConta from './screens/ConfiguracoesConta/ConfiguracoesConta';
 import { JobDetail } from './screens/JobDetail';
 
+import Cadastro1 from './screens/SignInScreens/Empresa/cadastro1';
+import Cadastro2  from './screens/SignInScreens/Empresa/cadastro2';
+import Cadastro3  from './screens/SignInScreens/Empresa/cadastro3';
+import Finalizar  from './screens/SignInScreens/Empresa/finalizar';
+
 export default function App() {
 
   const [fontsLoaded] = Font.useFonts({
@@ -191,6 +196,11 @@ export default function App() {
             <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/>
             
             <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
+
+            <Stack.Screen name={'cadastro1'} component={Cadastro1}/>
+            <Stack.Screen name={'cadastro2'} component={Cadastro2}/>
+            <Stack.Screen name={'cadastro3'} component={Cadastro3}/>
+            <Stack.Screen name={'finalizar'} component={Finalizar}/>
           </Stack.Group>
         </Stack.Navigator>
       }
