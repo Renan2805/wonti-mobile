@@ -67,6 +67,7 @@ import RecoverPasswordScreen from './screens/RecoverPasswordScreen/RecoverPasswo
 import ConfiguracoesConta from './screens/ConfiguracoesConta/ConfiguracoesConta';
 import { JobDetail } from './screens/JobDetail';
 import SignIn_3 from './screens/SignInScreens/Hirer/SignIn_3';
+import SignIn_4 from './screens/SignInScreens/Hirer/SignIn_4';
 
 export default function App() {
 
@@ -193,6 +194,7 @@ export default function App() {
             
             <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
             <Stack.Screen name={'SignIn_3e'} component={SignIn_3}/>
+            <Stack.Screen name={'SignIn_4e'} component={SignIn_4}/>
           </Stack.Group>
         </Stack.Navigator>
       }

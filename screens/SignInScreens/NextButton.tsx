@@ -1,10 +1,11 @@
 import { TouchableOpacity, Text, ActivityIndicator, StyleSheet } from "react-native"
 interface NextButtonProps {
   _onPress: () => void,
-  _isLoading?: boolean
+  _isLoading?: boolean,
+  text?: string
 }  
 
-const NextButton = ({ _onPress, _isLoading }: NextButtonProps) => {
+const NextButton = ({ _onPress, _isLoading, text = 'Próximo' }: NextButtonProps) => {
 
   return (
     <TouchableOpacity style={styles.button} onPress={_onPress} disabled={_isLoading}>
@@ -16,7 +17,7 @@ const NextButton = ({ _onPress, _isLoading }: NextButtonProps) => {
         />
         :
         <Text style={styles.text}>
-          {'Próximo'}
+          {text}
         </Text>
       }
     </TouchableOpacity>

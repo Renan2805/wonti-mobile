@@ -14,6 +14,7 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
 
   const [nome, setNome] = useState<string>('')
   const [cnpj, setCnpj] = useState<string>('')
+  const [number, setNumber] = useState<string>('')
   const [description, setDescription] = useState<string>('')
 
   const [errorMessage, setErrorMessage] = useState<string>()
@@ -23,6 +24,7 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
     const data = {
       nome: nome,
       cnpj: cnpj,
+      wpp: number,
       desc: description
     }
 
@@ -41,7 +43,6 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
   }
 
   const mascaraCnpj = (c: string) => {
-    let reg = /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/
     c = c.replace(/\D/g, '')
     c = c.replace(/(\d{2})(\d)/, '$1.$2')
     c = c.replace(/(\d{3})(\d)/, '$1.$2')
@@ -54,6 +55,14 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
     if(d.length < 50 || d.length > 140) return false
     else return true
   }
+
+  const mascaraNumber = (n: string) => {
+    n = n.replace(/\D/g, '')
+    n = n.replace(/(\d{2})(\d)/, '($1) $2')
+    n = n.replace(/(\d{5})(\d)/, '$1-$2')
+    return n
+  }
+
 
   const _validate = () => {
     setErrorMessage('')
@@ -101,6 +110,12 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
             style={[styles.input, { borderColor: fieldsInError.includes('cnpj') ? 'red' : '#848484'}]}
             onChangeText={setCnpj}
             value={mascaraCnpj(cnpj)}
+          />
+          <TextInput 
+            placeholder={'WhatsApp'}
+            style={[styles.input, { borderColor: fieldsInError.includes('cnpj') ? 'red' : '#848484'}]}
+            onChangeText={setNumber}
+            value={mascaraNumber(number)}
           />
           <View
             style={[styles.input, { borderColor: fieldsInError.includes('desc') ? 'red' : '#848484'}]}
