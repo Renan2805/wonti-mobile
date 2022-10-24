@@ -53,6 +53,11 @@ export type RootStackParamList = {
   SignIn_3e: undefined;
   SignIn_4e: undefined;
   DetailScreen: undefined;
+
+  cadastro1:undefined;
+  cadastro2:undefined;
+  cadastro3:undefined;
+  finalizar:undefined;
 };
 
 export type HomeStackparamList = {
