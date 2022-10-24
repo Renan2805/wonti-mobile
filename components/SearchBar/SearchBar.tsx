@@ -21,7 +21,7 @@ const SearchBar = ({ _onPressS, _onPressF, _onChangeText}: Props) => {
 
 const styles = StyleSheet.create({
   bar: {
-    width: '90%',
+    width: '100%',
     minHeight: 55,
     maxHeight: 55,
     backgroundColor: 'white',

@@ -83,8 +83,7 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
         setProfileImage(uploadUrl)
       }
     } catch (e) {
-      if(typeof e === 'string') setError(e)
-      Alert.alert(error)
+      console.log(e)
     } finally {
       setIsUploading(false)
     }

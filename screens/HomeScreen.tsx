@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, StatusBar, Alert, Dimensions, TouchableOpacity, TextInput } from 'react-native'
+import { ScrollView, View, Text, Image, StyleSheet, StatusBar, Alert, Dimensions, TouchableOpacity, TextInput, Modal } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import CardRecommended from '../components/CardRecommended/CardRecommended'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -9,19 +9,20 @@ import Loader from '../components/Loader/Loader'
 import Carousel from 'react-native-snap-carousel'
 import { useNavigation } from '@react-navigation/native'
 import { updateProfile } from 'firebase/auth'
-import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
+import { collection, query, getDocs, orderBy, limit, getDoc, doc } from "firebase/firestore";
+import { FontAwesome } from '@expo/vector-icons'
+import ModalBusca from '../components/ModalBusca/ModalBusca'
 
 const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   
-  const [user, setUser] = useState(auth.currentUser)
   const [isLoading, setIsLoading] = useState(true)
   const [carousel, setCarousel] = useState({})
 
   const [vagasRecom, setVagasRecom] = useState([])
 
-  const [test, setTest] = useState('')
-
-  const [busca, setBusca] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [modalSearch, setModalSearch] = useState<Modal | null>()
+  const [modalVisible, setModalVisible] = useState(false)
 
   useEffect(() => {
     if(auth.currentUser) {
@@ -51,8 +52,15 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
     />
   ) 
 
-  const doSearch = () => {
-
+  const doSearch = async () => {
+    setModalVisible(true)
+    try {
+      await getDocs(collection(db, 'Jobs')).then(doc => {
+        doc.docs.map(doc => console.log(doc.data()))
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
   const filter = () => {
     
@@ -95,7 +103,10 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
         stickyHeaderHiddenOnScroll={true}
       >
         <SearchBar 
-          _onChangeText={(text) => setTest(text)}
+          _onChangeText={(text) => {
+            setSearchTerm(text)
+            doSearch()
+          }}
           _onPressS={() => doSearch()}
           _onPressF={() => filter()}
         />
@@ -104,15 +115,15 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
           
           <View style={style.carouselWrapper}>
             <ScrollView style={{flexDirection:'column'}}>
-              {/* <Carousel 
-               data={DATA}
-               renderItem={(item) => _renderItem(item)}
+              <Carousel 
+                data={DATA}
+                renderItem={(item) => _renderItem(item)}
                 ref={c => c && setCarousel(c)}
                 sliderWidth={Dimensions.get('screen').width}
                 itemWidth={(Dimensions.get('screen').width * 80) / 100}
               
-              /> */}
-              </ScrollView>
+              />
+            </ScrollView>
           </View>
         </View>
         <View style={style.sectionPopulares}>
@@ -130,7 +141,15 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
           }
         </View>
       </ScrollView>
-   
+      <Modal
+        animationType={'slide'}
+        ref={c => setModalSearch(c)}
+        visible={modalVisible}
+        style={{maxHeight: 100}}
+
+      >
+        <ModalBusca searchTerm={searchTerm} onClose={() => setModalVisible(false)}/>
+      </Modal>
     </View>
   )
   else return (

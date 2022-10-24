@@ -50,12 +50,11 @@ import { Numans_400Regular } from '@expo-google-fonts/numans'
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ConfigStackParamList, RootStackParamList, RootTabParamList, HomeStackScreenProps, HomeStackparamList, VagasStackParamList } from './types';
-import { Home, Work, Chat, Setting } from 'react-native-iconly';
+import { Home, Work, Setting } from 'react-native-iconly';
 import Loader from './components/Loader/Loader';
 import { auth } from './config/firebase';
 
 import HomeScreen from './screens/HomeScreen';
-import ChatScreen from './screens/ChatScreen';
 import ConfigScreen from './screens/ConfigScreen';
 import VagasScreen from './screens/VagasScreen';
 
@@ -188,21 +187,17 @@ export default function App() {
           <Stack.Screen name={'RecoverPasswordScreen'} component={RecoverPasswordScreen}/> 
           <Stack.Group>
             <Stack.Screen name={'SignIn_1'} component={SignIn_1}/>
+            
+            {/* Telas cadastro pessoa */}
             <Stack.Screen name={'SignIn_2c'} component={SignInCandidate.SignIn_2}/>
-            {/* <Stack.Screen name={'SignIn_3c'} component={SignInCandidate.SignIn_3}/> Inutil */} 
-            {/* <Stack.Screen name={'SignIn_4c'} component={SignInCandidate.SignIn_4}/> Inutil */}
             <Stack.Screen name={'SignIn_5c'} component={SignInCandidate.SignIn_5}/>
             <Stack.Screen name={'SignIn_6c'} component={SignInCandidate.SignIn_6}/>
             <Stack.Screen name={'SignIn_7c'} component={SignInCandidate.SignIn_7}/>
             <Stack.Screen name={'SignIn_8c'} component={SignInCandidate.SignIn_8}/>
             <Stack.Screen name={'SignIn_9c'} component={SignInCandidate.SignIn_9}/>
             
+            {/* Telas cadastro de empresa */}
             <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
-
-            <Stack.Screen name={'cadastro1'} component={Cadastro1}/>
-            <Stack.Screen name={'cadastro2'} component={Cadastro2}/>
-            <Stack.Screen name={'cadastro3'} component={Cadastro3}/>
-            <Stack.Screen name={'finalizar'} component={Finalizar}/>
             <Stack.Screen name={'SignIn_3e'} component={SignIn_3}/>
             <Stack.Screen name={'SignIn_4e'} component={SignIn_4}/>
           </Stack.Group>
