@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { View, Text, Image, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet, StatusBar, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import { db, storage } from '../../config/firebase'
 import { doc, getDoc } from 'firebase/firestore'
@@ -41,16 +41,39 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
       .catch(e => console.error(e))
   }
 
-  const renderPage = () =>{
-    const teste = [
-      'fodase',
-      'cu',
-      'caralho'
-    ]
-
-    if(page === 0) return teste.map((teste, index) => (
-      <Text key={index}>{teste}</Text>
-    ))
+  const renderPage = (page:number) =>{
+    if(page === 0) return (
+      <FlatList style={styles.flatList}
+              data={[
+                {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
+                {key: 'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
+                {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
+                {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
+              ]}
+              
+           renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
+    )
+    else if(page === 1) return(
+      <FlatList style={styles.flatList}
+              data={[
+                {key: 'Escrever código limpo, de fácil manutenção, utilizando as melhores práticas de desenvolvimento de software;'},
+                {key: 'Procurar sempre criar para os produtos Goggle a melhor experiencia de uso para o usuário final, trabalhando de perto com os especialistas em UX;'},
+                {key: 'Atuar como um team-player, comprometendo-se em harmonia com todos;'}
+              ]}
+              
+           renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
+    )
+    else if(page === 2) return(
+      <FlatList style={styles.flatList}
+              data={[
+                {key: 'Um problema não é realmente resolvido até que seja resolvido para todos.'},
+                {key: 'Os Googlers criam produtos que ajudam a criar oportunidades para todos, seja na rua ou em todo o mundo'},
+                {key: 'Traga sua visão, imaginação e um saudável desrespeito pelo impossivel'},
+                {key: 'Traga tudo o que o torna único, juntos, podemos construir para'},
+              ]}
+              
+           renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
+    )
   }
 
   useEffect(() => {
@@ -98,11 +121,12 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
               <Text style={[styles.pageText, page === 2 && {color: 'white'}]}>Empresa</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.page}>
+          <ScrollView style={styles.page}>
             {
-              renderPage()
+              renderPage(page)
             }
-          </View>
+
+          </ScrollView>
         </View>
       </View>
     </View>
@@ -148,25 +172,38 @@ const styles = StyleSheet.create({
   divider: {
     width: '90%',
     height: .5,
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    marginTop:8
   },
   pages: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '90%'
+    width: '90%',
+    marginTop:10
   },
   pageButton: {
     backgroundColor: 'rgba(0, 0, 0, .05)',
     paddingVertical: 8,
     paddingHorizontal: 10,
-    borderRadius: 20
+    borderRadius: 20,
   },
   pageText: {
-    fontFamily: 'Poppins_300Light'
+    fontFamily: 'Poppins_300Light',
+
+  },
+  flatList: {
+    paddingHorizontal:8,
+   
+  },
+  textFlat: {
+    fontSize:16,
+    marginVertical:6,
+    textAlign:"justify"
   },
   page: {
-    width: '100%'
+    width: '100%',
+    padding:20
   }
 })
 
