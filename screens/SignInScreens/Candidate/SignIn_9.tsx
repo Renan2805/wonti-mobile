@@ -33,7 +33,8 @@ const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
         email: email,
         endereco: endereco,
         dados_pessoais: dados,
-        formacao: formacao
+        formacao: formacao,
+        isUser: true
       }
       console.log(usuario)
 
