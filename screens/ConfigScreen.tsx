@@ -135,7 +135,8 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
             </TouchableOpacity>
             <TouchableOpacity 
               style={style.button}
-              onPress={() => {}}
+              // @ts-ignore
+              onPress={() => navigation.navigate('Seguranca')}
             >
               <View style={[style.iconWrapper, {backgroundColor: 'rgba(65, 188, 70, .15)'}]}>
                 <MaterialIcons name="security" size={30} color="#41BC46" />
@@ -145,7 +146,8 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
             </TouchableOpacity>
             <TouchableOpacity 
               style={style.button}
-              onPress={() => {}}
+              // @ts-ignore
+              onPress={() => navigation.navigate('Suporte')}
             >
               <View style={[style.iconWrapper, {backgroundColor: 'rgba(255, 122, 0, .15)'}]}>
                 <Entypo name="help" size={30} color="#FF7A00" />

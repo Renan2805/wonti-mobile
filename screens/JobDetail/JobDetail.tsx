@@ -42,7 +42,7 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
   }
 
   const renderPage = (page:number) =>{
-    if(page === 0) return (
+    if(page === 0) { return (
       <FlatList style={styles.flatList}
               data={[
                 {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
@@ -52,8 +52,9 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
               ]}
               
            renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
-    )
-    else if(page === 1) return(
+      )
+}
+      else if(page === 1) { return(
       <FlatList style={styles.flatList}
               data={[
                 {key: 'Escrever código limpo, de fácil manutenção, utilizando as melhores práticas de desenvolvimento de software;'},
@@ -62,8 +63,9 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
               ]}
               
            renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
-    )
-    else if(page === 2) return(
+      )
+  }
+     if(page === 2) { return(
       <FlatList style={styles.flatList}
               data={[
                 {key: 'Um problema não é realmente resolvido até que seja resolvido para todos.'},
@@ -73,18 +75,26 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
               ]}
               
            renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
-    )
+     )
+    } else if(page) {
+      return true
+    }
   }
 
   useEffect(() => {
     getJob()
   }, [])
 
+  const testButton = () => {
+    alert('Enviado')
+  }
   return (
     <View style={styles.content}>
       <ExpoStatusBar.StatusBar translucent={true}/>
       <View style={styles.header}>
-        <ArrowLeft set={'light'} color={'black'} size={36} onPress={() => navigation.goBack()}/>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <ArrowLeft set={'light'} color={'black'} size={36}/>
+        </TouchableOpacity>
         <Text style={styles.title}>Detalhes da vaga</Text>
         <Entypo name="dots-three-vertical" size={24} color="black" />
       </View>
@@ -125,8 +135,13 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
             {
               renderPage(page)
             }
-
           </ScrollView>
+          <View style={styles.viewConfirmar}>
+            <TouchableOpacity style={styles.buttonConfirmar} onPress={() => testButton()}>
+              <Text style={{fontSize:20,  color: 'white' }}>Enviar curriculo</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
     </View>
@@ -155,6 +170,22 @@ const styles = StyleSheet.create({
   section2: {
     width: '100%',
     alignItems: 'center'
+  },
+  buttonConfirmar: {
+    width:'80%',
+    padding:8,
+    height:50,
+    position:'absolute',
+    backgroundColor: '#FF0356',
+    borderRadius:25,
+  },
+  viewConfirmar: {
+    width:'100%',
+    padding:5,
+    height:110,
+    textAlign:'center',
+    justifyContent:'center',
+    alignItems:'center'
   },
   image: {
     height: 100,
