@@ -64,7 +64,8 @@
     "react-native-web": "0.17.7",
     "react-navigation": "^4.4.4",
     "react-navigation-tabs": "^2.11.2",
-    "save": "^2.5.0"
+    "save": "^2.5.0",
+    "toggle-switch-react-native": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

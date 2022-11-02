@@ -54,10 +54,6 @@ export type RootStackParamList = {
   SignIn_4e: undefined;
   DetailScreen: undefined;
 
-  cadastro1:undefined;
-  cadastro2:undefined;
-  cadastro3:undefined;
-  finalizar:undefined;
 };
 
 export type HomeStackparamList = {
@@ -89,6 +85,8 @@ export type ConfigStackParamList = {
   ConfigScreen: undefined;
   DetailScreen: undefined;
   ConfigConta:  undefined;
+  Suporte: undefined;
+  Seguranca: undefined;
 };
 
 export type ConfigStackScreenProps<Screen extends keyof ConfigStackParamList> = NativeStackScreenProps<

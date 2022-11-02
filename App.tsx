@@ -68,6 +68,9 @@ import { JobDetail } from './screens/JobDetail';
 import SignIn_3 from './screens/SignInScreens/Hirer/SignIn_3';
 import SignIn_4 from './screens/SignInScreens/Hirer/SignIn_4';
 
+import Suporte from './screens/Suporte/Suporte';
+import Seguranca from './screens/Seguranca/Seguranca';
+
 export default function App() {
 
   const [fontsLoaded] = Font.useFonts({
@@ -195,6 +198,7 @@ export default function App() {
             <Stack.Screen name={'SignIn_2e'} component={SignIn_2}/>
             <Stack.Screen name={'SignIn_3e'} component={SignIn_3}/>
             <Stack.Screen name={'SignIn_4e'} component={SignIn_4}/>
+
           </Stack.Group>
         </Stack.Navigator>
       }
@@ -213,6 +217,8 @@ const ConfigStack = () => {
       <Stack.Screen name={'ConfigScreen'} component={ConfigScreen}/>
       <Stack.Screen name={'DetailScreen'} component={DetalhesDaConta}/>
       <Stack.Screen name={'ConfigConta'}  component={ConfiguracoesConta}/>
+      <Stack.Screen name={'Suporte'} component={Suporte}/>
+      <Stack.Screen name={'Seguranca'} component={Seguranca}/>
     </Stack.Navigator>
   )
 }

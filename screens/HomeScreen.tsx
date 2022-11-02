@@ -115,14 +115,14 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
           
           <View style={style.carouselWrapper}>
             <ScrollView style={{flexDirection:'column'}}>
-              <Carousel 
+              {/* <Carousel 
                 data={DATA}
                 renderItem={(item) => _renderItem(item)}
                 ref={c => c && setCarousel(c)}
                 sliderWidth={Dimensions.get('screen').width}
                 itemWidth={(Dimensions.get('screen').width * 80) / 100}
               
-              />
+              /> */}
             </ScrollView>
           </View>
         </View>

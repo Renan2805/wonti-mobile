@@ -145,7 +145,8 @@ const SignIn_3 = ({navigation}: RootStackScreenProps<'SignIn_3e'>) => {
             setDoc(dc, {
               email: email,
               dados_empresariais: dataJson,
-              endereco: enderecoObj
+              endereco: enderecoObj,
+              isUser: false
             })
           })
           .finally(() => setIsLoading(false))

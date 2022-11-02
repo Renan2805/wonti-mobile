@@ -125,7 +125,7 @@ const SignIn_1 = ({navigation, route}: RootStackScreenProps<'SignIn_1'>) => {
             <TextInput 
               style={{fontFamily: 'WorkSans_300Light', fontSize: 18, color: '#848484', width: '80%'}}
               placeholder={'Senha'}
-              secureTextEntry={showPassword}
+              secureTextEntry={!showPassword}
               onChangeText={(text) => setPassword(text)}
               value={password}
 
