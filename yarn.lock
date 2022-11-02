@@ -11567,10 +11567,22 @@
   "resolved" "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-2.16.0.tgz"
   "version" "2.16.0"
 
+<<<<<<< HEAD
+react-native-unordered-list@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-unordered-list/-/react-native-unordered-list-1.0.4.tgz#7ee48968e6da9ad0fcb8cfddfa2bea4c943ea57b"
+  integrity sha512-fLQxuE0xVeqxNiJMWIU1owpshZUJHmvgUF0z50qVjKZ8O8e9jiHPdr7us3SVghWYNws0qd/InGJCsz3VrNBu5w==
+
+react-native-web@0.17.7:
+  version "0.17.7"
+  resolved "https://registry.npmjs.org/react-native-web/-/react-native-web-0.17.7.tgz"
+  integrity sha512-4OOU/QjyRySOXyHfTvljEMS4VXKn42Qs3y9uHDPMwaCUFjwg0oasR/j706OaVgan9kF4Ipa2vJ3F6Z/Xqy8KeQ==
+=======
 "react-native-web@0.17.7":
   "integrity" "sha512-4OOU/QjyRySOXyHfTvljEMS4VXKn42Qs3y9uHDPMwaCUFjwg0oasR/j706OaVgan9kF4Ipa2vJ3F6Z/Xqy8KeQ=="
   "resolved" "https://registry.npmjs.org/react-native-web/-/react-native-web-0.17.7.tgz"
   "version" "0.17.7"
+>>>>>>> 1995e14dd81c19680a3ff5ba5cf75a666a80c6b1
   dependencies:
     "array-find-index" "^1.0.2"
     "create-react-class" "^15.7.0"

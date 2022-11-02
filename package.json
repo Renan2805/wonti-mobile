@@ -60,6 +60,7 @@
     "react-native-select-dropdown": "^2.0.4",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.3.0",
+    "react-native-unordered-list": "^1.0.4",
     "react-native-web": "0.17.7",
     "react-navigation": "^4.4.4",
     "react-navigation-tabs": "^2.11.2",

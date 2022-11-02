@@ -21,7 +21,6 @@ const SearchBar = ({ _onPressS, _onPressF, _onChangeText}: Props) => {
 
 const styles = StyleSheet.create({
   bar: {
-    width: '100%',
     minHeight: 55,
     maxHeight: 55,
     backgroundColor: 'white',
@@ -31,7 +30,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity:  1,
+    shadowRadius: 2,
+    elevation: 2
   },
   input: {
     width: '80%',

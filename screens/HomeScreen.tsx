@@ -43,14 +43,16 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
   }, [])
 
   // @ts-ignore
-  const _renderItem = ({item}) => (
-    <CardRecommended
-      theme={true}
-      full={true}
-      jobId={item.id}
-      _style={{marginVertical: 15}}
-    />
-  ) 
+  const _renderItem = ({item}) => {
+    return (
+      <CardRecommended
+        theme={true}
+        full={true}
+        jobId={item}
+        _style={{marginVertical: 15}}
+      />
+    )
+  }
 
   const doSearch = async () => {
     setModalVisible(true)
@@ -78,6 +80,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
     },
   ]
     const fetchtVagasRecomendadas = async() => {
+      setVagasRecom([])
       try {
         const q = query(collection(db, "Jobs"), orderBy('Competitors', 'desc'), limit(10));
   
@@ -115,14 +118,14 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
           
           <View style={style.carouselWrapper}>
             <ScrollView style={{flexDirection:'column'}}>
-              {/* <Carousel 
-                data={DATA}
+              <Carousel 
+                data={vagasRecom}
                 renderItem={(item) => _renderItem(item)}
                 ref={c => c && setCarousel(c)}
                 sliderWidth={Dimensions.get('screen').width}
                 itemWidth={(Dimensions.get('screen').width * 80) / 100}
               
-              /> */}
+              />
             </ScrollView>
           </View>
         </View>
@@ -148,7 +151,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
         style={{maxHeight: 100}}
 
       >
-        <ModalBusca searchTerm={searchTerm} onClose={() => setModalVisible(false)}/>
+        <ModalBusca searchTerm={searchTerm} onClose={() =>  {}}/>
       </Modal>
     </View>
   )
@@ -187,7 +190,7 @@ const HomeHeader = () => {
 }
 
 const style = StyleSheet.create({
-  safeView :{
+  safeView: {
     paddingTop: StatusBar.currentHeight,
     width: '100%',
     height: '100%',
