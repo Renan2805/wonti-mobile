@@ -115,7 +115,36 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   NativeStackScreenProps<RootStackParamList>
 >;
 
-
+export type User = {
+  dados_pessoais: {
+    cpf: string,
+    dataDeNascimento: string,
+    nome: string,
+    sobrenome: string,
+    rg: string,
+    numero: string,
+    github: string
+  },
+  email: string,
+  endereco: {
+    bairro: string,
+    cep: string,
+    cidade: string,
+    complemento: string,
+    numero: string,
+    rua: string,
+    uf: string
+  },
+  formacao: {
+    aptidoes: string[],
+    certificados: string[],
+    idiomas: string[],
+    instituicao: string,
+    nivel: string,
+    qualificacao: string
+  },
+  informacoes: string[]
+}
 
 export type Job = {
   Hirer: string,

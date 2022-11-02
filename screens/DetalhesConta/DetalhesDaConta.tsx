@@ -1,38 +1,55 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { ScrollView, Text, StyleSheet, View, Image ,TouchableOpacity, ImageBackground, StatusBar, Alert, ActivityIndicator, Platform, Modal } from 'react-native'
+import { ScrollView, Text, StyleSheet, View, Image ,TouchableOpacity, ImageBackground, StatusBar, Alert, ActivityIndicator, Platform, Modal, Linking, Touchable } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
-import DocumentPicker, { types } from 'react-native-document-picker'
-import * as ImagePicker from 'expo-image-picker'
-import { FontAwesome } from '@expo/vector-icons';
-import { ConfigStackScreenProps } from '../../types'
-import { auth, db, storage } from '../../config/firebase';
-import { getDownloadURL, ref, uploadBytes, uploadBytesResumable, UploadTask } from 'firebase/storage';
-import { addDoc, collection } from 'firebase/firestore'
+import { ConfigStackScreenProps, User } from '../../types'
+import { auth, db } from '../../config/firebase';
+import { addDoc, collection, getDoc, doc, DocumentData } from 'firebase/firestore'
+import Unorderedlist from 'react-native-unordered-list';
 
-import { AntDesign, Entypo } from '@expo/vector-icons';
-import { useCallback, useState, useEffect } from 'react';
-import Header from '../../components/Header';
-import { setPersistence, updateProfile } from '@firebase/auth';
+import { Location } from 'react-native-iconly';
+import { AntDesign, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useState, useEffect } from 'react';;
 
 const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>) => {
 
   const [user, setUser] = useState(auth.currentUser)
+  const [userData, setUserData] = useState<User>()
   const [profileImage, setProfileImage] = useState('')
 
   const [isLoading, setIsLoading] = useState(true)
   const [isOptionsOpen, setIsOptionsOpen] = useState(false)
   const [error, setError] = useState('')
   
+  const getUserData = async () => {
+    try {
+      const docRef = doc(db, `Users/${user && user?.uid}`)
+      const docSnap   = await getDoc(docRef)
+      if(docSnap.exists()) {
+        // @ts-ignore
+        setUserData(docSnap.data())
+        setIsLoading(false)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const mascaraNumero = (n: string) => {
+    n = n.replace(/\D/, '')
+    if(n.length == 11) n = n.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+    else if(n.length == 12) n = n.replace(/(\d{2})(\d{6})(\d{4})/, '($1) $2-$3')
+    return n
+  }
+
   useEffect(() => {
     if(auth.currentUser) {
+      getUserData()
       if(auth.currentUser.photoURL) setProfileImage(auth.currentUser?.photoURL)
-      setIsLoading(false)
     } else setIsLoading(true)
   }, [auth.currentUser])
 
-  if(!isLoading)
+  if(!isLoading && userData)
   return (
-    <ScrollView contentContainerStyle={style.content}>
+    <View style={style.content}>
       <ExpoStatusBar.StatusBar translucent={true} style={'light'}/>
       <ImageBackground
         source={require('../../assets/images/FundoVideo.png')}
@@ -51,28 +68,78 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
           />
         </TouchableOpacity>
         <Text style={style.name}>{user?.displayName}</Text>
-
+        <Text style={[style.infoText, {fontSize: 20}]}>{userData?.formacao.qualificacao}</Text>
+        <View
+          style={{flexDirection: 'row', width: '100%', justifyContent: 'space-evenly', alignItems: 'center'}}
+        >
+          <View
+            style={{flexDirection: 'row'}}
+          >
+            <Location set="light" color={'#fff'}/>
+            <Text style={style.infoText}>{userData?.endereco.cidade}</Text>
+          </View>
+          <View
+            style={{flexDirection: 'row'}}
+          >
+            <MaterialCommunityIcons name="certificate" size={24} color="white" />
+            <Text style={style.infoText}>{userData?.formacao.instituicao}</Text>
+          </View>
+        </View>
       </ImageBackground>
-      <TouchableOpacity onPress={async () => {
-        const docRef = await addDoc(collection(db, 'Jobs'), {
-          Competitors: 91,
-          Description: "Desenvolvedor Front End",
-          Hirer: "Facebook",
-          HirerUid: "L62Jf6O02ZguvJClvf1aPhgBVaG3",
-          Place: "São Paulo",
-          Posted: 3,
-          Salary: 3000,
-          Time: "Integral",
-          Title: "Dev. Front End",
-          Type: "Remoto"
-        })
-        console.log('Job ID: ', docRef.id)
-      }}>
-        <Text>Teste</Text>
-      </TouchableOpacity>
-    </ScrollView>
+      <View style={style.mainSection}>
+        <View style={style.aboutSection}>
+          <Text style={[style.title, {alignSelf: 'flex-start', marginBottom: 15}]}>Sobre</Text>
+          <View style={{width: '90%', alignItems: 'center'}}>
+            {
+              userData.informacoes.length === 0 ?
+              <Text>Nada aqui</Text>
+              :
+              userData.informacoes.map((item, index) => (
+                <Unorderedlist key={index} style={{fontSize: 18}}>
+                  <Text 
+                    style={{fontSize: 18, fontFamily: 'Poppins_300Light', textAlign: 'justify'}}
+                  >
+                    {item}
+                  </Text>
+                </Unorderedlist>
+              ))
+            }
+          </View>
+        </View>
+        <View style={style.infos}>
+          <View style={style.infoRow}>
+            <AntDesign name="download" size={30} color="rgba(0, 0, 0, .5)" />
+            <View style={{marginHorizontal: 10}}>
+              <Text style={style.infoRowTitle}>Currículo</Text>
+              <Text style={style.infoRowText}>PDF</Text>
+            </View>
+          </View>
+          <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`https://github.com/${userData.dados_pessoais.github}`)}>
+            <AntDesign name="github" size={30} color="rgba(0, 0, 0, .5)" />
+            <View style={{marginHorizontal: 10}}>
+              <Text style={style.infoRowTitle}>Github</Text>
+              <Text style={style.infoRowText}>github.com/Renan2805</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`whatsapp://send?phone=+55${userData.dados_pessoais.numero}`)}>
+            <FontAwesome name="whatsapp" size={30} color="rgba(0, 0, 0, .5)" />
+            <View style={{marginHorizontal: 10}}>
+              <Text style={style.infoRowTitle}>WhatsApp</Text>
+              <Text style={style.infoRowText}>{mascaraNumero(userData.dados_pessoais.numero)}</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`mailto:${userData.email}`)}>
+            <MaterialCommunityIcons name="email" size={30} color="rgba(0, 0, 0, .5)" />
+            <View style={{marginHorizontal: 10}}>
+              <Text style={style.infoRowTitle}>Email</Text>
+              <Text style={style.infoRowText}>{userData.email}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   )
-  else return (
+  else return(
     <Text>Loading...</Text>
   )
 }
@@ -81,6 +148,20 @@ const style = StyleSheet.create({
   content: {
     flex: 1,
     height: '100%'
+  },
+  mainSection: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+  aboutSection: {
+    padding: 22,
+    alignItems: 'center',
+    flex: 1
+  },
+  title: {
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 22
   },
   fundo: {
     minWidth: '100%',
@@ -133,6 +214,32 @@ const style = StyleSheet.create({
   optionsText: {
     fontFamily: 'Montserrat_600SemiBold',
     fontSize: 24
+  },
+  infoText: {
+    fontFamily: 'Poppins_300Light',
+    fontSize: 18,
+    color: '#fff',
+    marginHorizontal: 5
+  },
+  infos: {
+    paddingHorizontal: 15,
+  },
+  infoRow: {
+    borderTopWidth: 1,
+    borderColor: 'rgba(0, 0, 0, .2)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10
+
+  },
+  infoRowTitle: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: 'rgba(0, 0, 0, .5)'
+  },
+  infoRowText: {
+    fontFamily: 'Poppins_500Medium',
+    fontSize: 13,
   }
 })
 

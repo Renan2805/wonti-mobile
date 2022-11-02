@@ -148,7 +148,7 @@ const HomeScreen = ({ navigation, route }: RootTabScreenProps<'HomeTab'>) => {
         style={{maxHeight: 100}}
 
       >
-        <ModalBusca searchTerm={searchTerm} onClose={() => setModalVisible(false)}/>
+        <ModalBusca searchTerm={searchTerm} onClose={() =>  {}}/>
       </Modal>
     </View>
   )
@@ -187,7 +187,7 @@ const HomeHeader = () => {
 }
 
 const style = StyleSheet.create({
-  safeView :{
+  safeView: {
     paddingTop: StatusBar.currentHeight,
     width: '100%',
     height: '100%',
