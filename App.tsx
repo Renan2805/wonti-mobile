@@ -68,8 +68,8 @@ import { JobDetail } from './screens/JobDetail';
 import SignIn_3 from './screens/SignInScreens/Hirer/SignIn_3';
 import SignIn_4 from './screens/SignInScreens/Hirer/SignIn_4';
 
-import Suporte from './screens/Suporte/Suporte';
-import Seguranca from './screens/Seguranca/Seguranca';
+// import Suporte from './screens/Suporte/Suporte';
+// import Seguranca from './screens/Seguranca/Seguranca';
 
 export default function App() {
 
@@ -217,8 +217,8 @@ const ConfigStack = () => {
       <Stack.Screen name={'ConfigScreen'} component={ConfigScreen}/>
       <Stack.Screen name={'DetailScreen'} component={DetalhesDaConta}/>
       <Stack.Screen name={'ConfigConta'}  component={ConfiguracoesConta}/>
-      <Stack.Screen name={'Suporte'} component={Suporte}/>
-      <Stack.Screen name={'Seguranca'} component={Seguranca}/>
+      {/* <Stack.Screen name={'Suporte'} component={Suporte}/>
+      <Stack.Screen name={'Seguranca'} component={Seguranca}/> */}
     </Stack.Navigator>
   )
 }
