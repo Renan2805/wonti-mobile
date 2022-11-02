@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { View, Text, Image, StyleSheet, StatusBar, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { View, Text, Image, StyleSheet, StatusBar, TouchableOpacity, FlatList, ScrollView, Modal, Button, Share } from 'react-native'
 import * as ExpoStatusBar from 'expo-status-bar'
 import { db, storage } from '../../config/firebase'
 import { doc, getDoc } from 'firebase/firestore'
@@ -16,6 +16,8 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
   const [imageUrl, setImageUrl] = useState<string>()
 
   const [page, setPage] = useState<number>(0)
+
+  const [modal, setModal] = useState(false)
 
   const getImage = async (uid: string) => {
     const storageRef = ref(storage, `Users/${uid}/Profile`)
@@ -48,13 +50,14 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
                 {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
                 {key: 'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
                 {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
-                {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
+                {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'}
               ]}
               
            renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
       )
 }
-      else if(page === 1) { return(
+      else if(page === 1) {  
+      return(
       <FlatList style={styles.flatList}
               data={[
                 {key: 'Escrever código limpo, de fácil manutenção, utilizando as melhores práticas de desenvolvimento de software;'},
@@ -65,13 +68,15 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
            renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
       )
   }
-     if(page === 2) { return(
+     if(page === 2) { 
+      setPage(2)
+      return(
       <FlatList style={styles.flatList}
               data={[
                 {key: 'Um problema não é realmente resolvido até que seja resolvido para todos.'},
                 {key: 'Os Googlers criam produtos que ajudam a criar oportunidades para todos, seja na rua ou em todo o mundo'},
                 {key: 'Traga sua visão, imaginação e um saudável desrespeito pelo impossivel'},
-                {key: 'Traga tudo o que o torna único, juntos, podemos construir para'},
+                {key: 'Traga tudo o que o torna único, juntos, podemos construir para'}
               ]}
               
            renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
@@ -88,6 +93,55 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
   const testButton = () => {
     alert('Enviado')
   }
+  const modalActive = () => {
+    if(modal) {
+      return (
+          <Modal
+            animationType='none'
+            transparent={true}
+            visible={modal}
+            style={{maxHeight:50, backgroundColor:'transparent'}}
+            >
+            <View style={{width:'100%', maxHeight:100, backgroundColor:'gray'}}>
+              <TouchableOpacity style={{width:'100%', height:50, padding:3, alignItems:'center', justifyContent:'center', borderBottomWidth:1, flexDirection:'row'}}>
+                <Entypo name="heart" size={21} color="black" />
+                <Text style={{marginHorizontal:10, fontSize:19, fontFamily:'Poppins_600SemiBold'}}>Salvar vaga</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => onShare()}style={{width:'100%', height:50, padding:3, alignItems:'center', justifyContent:'center', borderBottomWidth:1, flexDirection:'row'}}>
+               <Entypo name="share" size={21} color="black" />
+                <Text style={{marginHorizontal:10, fontSize:19, fontFamily:'Poppins_600SemiBold'}}>Compartilhar</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{height:'80%', width:'100%'}}>
+              <TouchableOpacity onPress={() => setModal(false)} style={{height:'100%', width:'100%'}}/>
+            </View>
+          </Modal>
+      )
+    }else {
+      return false
+    }
+  } 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        title:'Won diz: ',
+        message:'Compartilhe vagas de empregos para seus amigos'
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      //@ts-ignore
+      alert(error);
+    }
+  };
+
   return (
     <View style={styles.content}>
       <ExpoStatusBar.StatusBar translucent={true}/>
@@ -96,7 +150,9 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
             <ArrowLeft set={'light'} color={'black'} size={36}/>
         </TouchableOpacity>
         <Text style={styles.title}>Detalhes da vaga</Text>
-        <Entypo name="dots-three-vertical" size={24} color="black" />
+        <TouchableOpacity onPress={() => setModal(true)}>
+          <Entypo name="dots-three-vertical" size={24} color="black" />
+        </TouchableOpacity>
       </View>
       <View style={styles.info}>
         <View style={styles.section1}>
@@ -141,9 +197,11 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
               <Text style={{fontSize:20,  color: 'white' }}>Enviar curriculo</Text>
             </TouchableOpacity>
           </View>
-
         </View>
       </View>
+        {
+          modalActive()
+        }
     </View>
   )
 }
