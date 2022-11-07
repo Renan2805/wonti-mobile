@@ -121,7 +121,6 @@ export type User = {
     nome: string,
     sobrenome: string,
     rg: string,
-    numero: string,
     github: string
   },
   email: string,
@@ -142,7 +141,8 @@ export type User = {
     nivel: string,
     qualificacao: string
   },
-  informacoes: string[]
+  informacoes: string[],
+  numero_cel: string
 }
 
 export type Job = {

@@ -30,6 +30,9 @@ function LoginScreen({navigation}: Props) {
       case 'auth/wrong-password':
         setError('Senha Incorreta')
         break
+      case 'auth/user-not-found':
+        setError('Usuario não encontrado')
+        break
       case 'auth/too-many-requests':
         setError('Muitas tentativas, tente novamente mais tarde')
         break

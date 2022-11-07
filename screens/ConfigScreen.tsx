@@ -37,7 +37,6 @@ const ConfigScreen = ({ navigation }: RootTabScreenProps<'Config'>) => {
         onPress: () => signOut(auth).catch(e => console.error(e))
       }
     ])
-       signOut(auth).catch(e => console.error(e))
   }
   // const fetchData = async () => {
   //   // @ts-ignore
