@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { View, Text, TextInput, Image, Alert, StyleSheet, TouchableOpacity, StatusBar, ActivityIndicator } from "react-native"
+import { View, Text, TextInput, Image, Alert, StyleSheet, TouchableOpacity, StatusBar, ActivityIndicator, Modal } from "react-native"
 import { sendPasswordResetEmail } from "firebase/auth"
 import { auth } from "../../config/firebase"
 import Header from "../../components/Header"
@@ -9,9 +9,13 @@ const RecoverPasswordScreen = () => {
 
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
+  const [modal, setModal] = useState(false)
   const sendPasswordEmail = async () => {
     setIsLoading(true)
+    if(email == '') {
+      setIsLoading(false)
+      setModal(true)
+    }
     if(email) {
       await sendPasswordResetEmail(auth, email)
         .then(() => {
@@ -43,23 +47,40 @@ const RecoverPasswordScreen = () => {
     <View style={{height: '100%', width: '100%', justifyContent: 'flex-start'}}>
     <Header />
     <View style={styles.container}>
-      <Text style={styles.title}>Recuperar Senha</Text>
       <Image source={require('../../assets/images/resetPassword.png')} style={styles.image}/>
+      <View style={styles.viewTexts}>
+        <Text style={{fontSize:25, marginVertical:10,fontFamily: 'WorkSans_600SemiBold',color: '#FF0356'}}>Esqueceu sua senha?</Text>
+        <Text style={{fontFamily:'WorkSans_600SemiBold', fontSize:17, paddingBottom:5}}>Enviaremos um e-mail com instruções de como redefinir sua senha.</Text>
+        <Text style={{ fontSize:17, paddingTop:10}}>
+        E-mail
+      </Text>
+      </View>
       <TextInput 
         keyboardType="email-address"
-        placeholder="Email"
         placeholderTextColor={'black'}
         style={styles.input}
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
-      <TouchableOpacity style={styles.button} onPress={() => sendPasswordEmail()}>
-        <Text style={styles.buttonText}>Enviar email</Text>
-      </TouchableOpacity>
+      <View style={styles.viewButton}>
+        <TouchableOpacity style={styles.button} onPress={() => sendPasswordEmail()}>
+          <Text style={styles.buttonText}>Enviar email</Text>
+        </TouchableOpacity>
+      </View>
     </View>
     {
       maybeRenderLoadingOverlay()
     }
+    <View style={{width:'100%'}}>
+      <Modal
+          animationType='none'
+          transparent={false}
+          visible={modal}
+          style={{maxHeight:50, backgroundColor:'transparent'}}
+          >
+            <Text>Por favor </Text>
+          </Modal>
+     </View>   
     </View>
   )
 }
@@ -70,7 +91,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    maxHeight: '70%',
+    maxHeight: '75%',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20
@@ -82,29 +103,36 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   image: {
-    width: 500,
-    height: 400,
+    maxWidth:400,
+    maxHeight: 300,
+  },
+  viewButton: {
+    width:'100%',
+    marginTop:15
   },
   input: {
-    width: '100%',
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: 'black',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    fontSize: 26,
-    fontFamily: 'Poppins_300Light',
-    textAlign: 'center'
+   width:'100%',
+   height:50,
+   borderWidth:1,
+   padding:5,
+   fontSize:20,
+   textAlign:'center',
+   borderRadius:30
   },
   button: {
-    width: '90%',
+    width: '100%',
+    borderRadius:30,
     paddingVertical: 8,
-    borderRadius: 100,
-    backgroundColor: '#FF0356'
+    backgroundColor: '#FF0356',
+    paddingTop:10
+  },
+  viewTexts: {
+    width:'100%',
+    paddingVertical:5
   },
   buttonText: {
     textAlign: 'center',
-    fontSize: 26,
+    fontSize: 20,
     fontFamily: 'WorkSans_500Medium',
     color: 'white'
   }
