@@ -36,6 +36,9 @@ function LoginScreen({navigation}: Props) {
       case 'auth/internal-error':
         setError('Erro Interno, tente novamente mais tarde')
         break
+      case 'auth/user-not-found':
+        setError('Usuario não encontrado')
+        break
       default:
         setError(err.code)
         break

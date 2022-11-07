@@ -204,12 +204,12 @@ const ConfiguracoesConta = ({navigation}: RootStackScreenProps<'App'>) => {
               <View style={styles.labeledInput}>
                 <Text style={styles.label}>Local em que reside</Text>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <TextInput value={'Nome'} onChangeText={() => {}} style={[styles.input, {width: '65%'}]}/>
-                  <TextInput value={'Nome'} onChangeText={() => {}} style={[styles.input, {width: '30%'}]}/>
+                  <TextInput placeholder={'Cidade'} onChangeText={() => {}} style={[styles.input, {width: '65%'}]}/>
+                  <TextInput placeholder={'UF'} onChangeText={() => {}} style={[styles.input, {width: '30%'}]} maxLength={2}/>
                 </View>
               </View>
               <View style={styles.labeledInput}>
-                <Text style={styles.label}>Nome de Usuário</Text>
+                <Text style={styles.label}>Instituição em que estudou</Text>
                 <TextInput value={'Nome'} onChangeText={() => {}} style={styles.input}/>
               </View>
             </View>

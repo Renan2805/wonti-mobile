@@ -6,12 +6,12 @@ import { useEffect, useState } from "react"
 import { getData, getMultipleData } from "../../../hooks/useAsyncStorage"
 import { auth, db, storage } from "../../../config/firebase"
 import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth"
-import { RootStackScreenProps } from "../../../types"
+import * as Types from "../../../types"
 import { User } from "react-native-iconly"
 import { doc, setDoc } from "firebase/firestore"
 
 
-const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
+const SignIn_9 = ({navigation}: Types.RootStackScreenProps<'SignIn_9c'>) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -28,12 +28,15 @@ const SignIn_9 = ({navigation}: RootStackScreenProps<'SignIn_9c'>) => {
     const formacao = JSON.parse(await getData('formacao'))
     
     if(endereco|| dados) {
-      // @ts-ignore
-      const usuario = {
+      const usuario: Types.User = {
+        // @ts-ignore
         email: email,
         endereco: endereco,
         dados_pessoais: dados,
+        github: '',
+        numero_cel: '',
         formacao: formacao,
+        informacoes: new Array(),
         isUser: true
       }
       console.log(usuario)

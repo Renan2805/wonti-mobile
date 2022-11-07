@@ -131,12 +131,14 @@ const SignIn_2 = ({ navigation }: RootStackScreenProps<'SignIn_2c'>) => {
             />
           <TextInput 
             placeholder={'RG'}
+            keyboardType={'number-pad'}
             style={[styles.input, {borderColor: fieldsInError?.includes('rg') ? 'red' : '#848484'}]}
             onChangeText={text => setRg(text)}
             value={mascaraRg(rg)}
           />
           <TextInput 
             placeholder={'CPF'}
+            keyboardType={'number-pad'}
             style={[styles.input, {borderColor: fieldsInError?.includes('cpf') ? 'red' : '#848484'}]}
             onChangeText={text => setCpf(text)}
             value={mascaraCpf(cpf)}

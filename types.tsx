@@ -119,11 +119,11 @@ export type User = {
     dataDeNascimento: string,
     nome: string,
     sobrenome: string,
-    rg: string,
-    numero: string,
-    github: string
+    rg: string
   },
   email: string,
+  numero_cel: string,
+  github: string,
   endereco: {
     bairro: string,
     cep: string,

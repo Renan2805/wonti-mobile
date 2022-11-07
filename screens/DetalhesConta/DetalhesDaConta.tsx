@@ -91,6 +91,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
           <Text style={[style.title, {alignSelf: 'flex-start', marginBottom: 15}]}>Sobre</Text>
           <View style={{width: '90%', alignItems: 'center'}}>
             {
+              
               userData.informacoes.length === 0 ?
               <Text>Nada aqui</Text>
               :
@@ -114,18 +115,18 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
               <Text style={style.infoRowText}>PDF</Text>
             </View>
           </View>
-          <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`https://github.com/${userData.dados_pessoais.github}`)}>
+          <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`https://github.com/${userData.github}`)}>
             <AntDesign name="github" size={30} color="rgba(0, 0, 0, .5)" />
             <View style={{marginHorizontal: 10}}>
               <Text style={style.infoRowTitle}>Github</Text>
-              <Text style={style.infoRowText}>github.com/Renan2805</Text>
+              <Text style={style.infoRowText}>{userData.github ? userData.github : 'Não informado'}</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`whatsapp://send?phone=+55${userData.dados_pessoais.numero}`)}>
+          <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`whatsapp://send?phone=+55${userData.numero_cel}`)}>
             <FontAwesome name="whatsapp" size={30} color="rgba(0, 0, 0, .5)" />
             <View style={{marginHorizontal: 10}}>
               <Text style={style.infoRowTitle}>WhatsApp</Text>
-              <Text style={style.infoRowText}>{mascaraNumero(userData.dados_pessoais.numero)}</Text>
+              <Text style={style.infoRowText}>{userData.numero_cel ? mascaraNumero(userData.numero_cel) : 'Não Informado'}</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`mailto:${userData.email}`)}>
