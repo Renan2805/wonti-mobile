@@ -7,7 +7,8 @@ import Unorderedlist from 'react-native-unordered-list';
 
 import { Location } from 'react-native-iconly';
 import { AntDesign, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState, useEffect } from 'react';;
+import { useState, useEffect } from 'react';import { getData } from '../../hooks/useAsyncStorage';
+;
 
 const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>) => {
 
@@ -21,15 +22,14 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
   
   const getUserData = async () => {
     try {
-      const docRef = doc(db, `Users/${user && user?.uid}`)
-      const docSnap   = await getDoc(docRef)
-      if(docSnap.exists()) {
-        // @ts-ignore
-        setUserData(docSnap.data())
-        setIsLoading(false)
+      const data = await getData('user_data')
+      if(typeof data == 'string') {
+        const dataJson = JSON.parse(data)
+        setUserData(dataJson)
       }
+
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -41,11 +41,15 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
   }
 
   useEffect(() => {
+    setIsLoading(true)
     if(auth.currentUser) {
+      // @ts-ignore
       getUserData()
+      console.log(userData)
       if(auth.currentUser.photoURL) setProfileImage(auth.currentUser?.photoURL)
+      setIsLoading(false)
     } else setIsLoading(true)
-  }, [auth.currentUser])
+  }, [])
 
   if(!isLoading && userData)
   return (
@@ -89,7 +93,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
       <View style={style.mainSection}>
         <View style={style.aboutSection}>
           <Text style={[style.title, {alignSelf: 'flex-start', marginBottom: 15}]}>Sobre</Text>
-          <View style={{width: '90%', alignItems: 'center'}}>
+          <ScrollView contentContainerStyle={{alignItems: 'center', width: '90%'}}>
             {
               
               userData.informacoes.length === 0 ?
@@ -105,7 +109,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
                 </Unorderedlist>
               ))
             }
-          </View>
+          </ScrollView>
         </View>
         <View style={style.infos}>
           <View style={style.infoRow}>
@@ -141,7 +145,9 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
     </View>
   )
   else return(
-    <Text>Loading...</Text>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Loading...</Text>
+    </View>
   )
 }
 

@@ -57,9 +57,9 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
   }
 
   const mascaraNumber = (n: string) => {
-    n = n.replace(/\D/g, '')
-    n = n.replace(/(\d{2})(\d)/, '($1) $2')
-    n = n.replace(/(\d{5})(\d)/, '$1-$2')
+    n = n.replace(/\D/, '')
+    if(n.length == 11) n = n.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+    else if(n.length == 12) n = n.replace(/(\d{2})(\d{6})(\d{4})/, '($1) $2-$3')
     return n
   }
 
@@ -110,12 +110,15 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
             style={[styles.input, { borderColor: fieldsInError.includes('cnpj') ? 'red' : '#848484'}]}
             onChangeText={setCnpj}
             value={mascaraCnpj(cnpj)}
+            maxLength={18}
+            keyboardType={'number-pad'}
           />
           <TextInput 
             placeholder={'WhatsApp'}
             style={[styles.input, { borderColor: fieldsInError.includes('cnpj') ? 'red' : '#848484'}]}
-            onChangeText={setNumber}
+            onChangeText={text => setNumber(text.replace(/\D/g, ''))}
             value={mascaraNumber(number)}
+            keyboardType={'number-pad'}
           />
           <View
             style={[styles.input, { borderColor: fieldsInError.includes('desc') ? 'red' : '#848484'}]}
@@ -135,21 +138,21 @@ const SignIn_2 = ({navigation, route}: RootStackScreenProps<'SignIn_2e'>) => {
         <View style={{width: '90%'}}>
           <NextButton _onPress={() => _validate()}/>                                                                                                                                                                                                           
         </View>
-        <Footer />
       </View>
+      <Footer />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   content: {
-    height: '90%',
+    height: '100%',
     alignItems: 'center',
     paddingHorizontal: 30
   },
   image: {
-    height: 130,
-    width: 130
+    height: 100,
+    width: 100
   },
   title: {
     maxWidth: '100%',

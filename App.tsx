@@ -49,10 +49,10 @@ import { Numans_400Regular } from '@expo-google-fonts/numans'
 
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ConfigStackParamList, RootStackParamList, RootTabParamList, HomeStackScreenProps, HomeStackparamList, VagasStackParamList } from './types';
+import { ConfigStackParamList, RootStackParamList, RootTabParamList, HomeStackScreenProps, HomeStackparamList, VagasStackParamList, User } from './types';
 import { Home, Work, Setting } from 'react-native-iconly';
 import Loader from './components/Loader/Loader';
-import { auth } from './config/firebase';
+import { auth, db } from './config/firebase';
 
 import HomeScreen from './screens/HomeScreen';
 import ConfigScreen from './screens/ConfigScreen';
@@ -67,6 +67,8 @@ import ConfiguracoesConta from './screens/ConfiguracoesConta/ConfiguracoesConta'
 import { JobDetail } from './screens/JobDetail';
 import SignIn_3 from './screens/SignInScreens/Hirer/SignIn_3';
 import SignIn_4 from './screens/SignInScreens/Hirer/SignIn_4';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { storeData } from './hooks/useAsyncStorage';
 
 // import Suporte from './screens/Suporte/Suporte';
 // import Seguranca from './screens/Seguranca/Seguranca';
@@ -110,23 +112,39 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   const [logged, setLogged] = useState(false)
-  const [user, setUser] = useState(auth.currentUser)
+  const [userData, setUserData] = useState<User>()
 
   const Stack = createNativeStackNavigator<RootStackParamList>()
   const BottomTab = createBottomTabNavigator<RootTabParamList>()
 
+  const getUserData = async (userUid: string) => {
+    try {
+      const docRef = doc(db, `Users/${userUid}`)
+      onSnapshot(docRef, (doc) => {
+        if(doc.exists()) {
+          // @ts-ignore
+          setUserData(doc.data())
+        }
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        // @ts-ignore
+        getUserData(user.uid)
+        storeData('user_data', JSON.stringify(userData))
         setLogged(true)
         setIsLoading(false)
-        setUser(user)
       } else {
         setLogged(false)
         setIsLoading(false)
       }
     })
-  }, [user])
+  }, [])
 
   if(fontsLoaded && !isLoading) return (
     <NavigationContainer>

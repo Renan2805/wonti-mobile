@@ -13,12 +13,12 @@ const Footer = () => {
       fontFamily: 'WorkSans_400Regular', 
       fontSize: 17, 
       textAlign: 'center', 
-      width: 200,
+      width: '100%',
       position: 'absolute',
       bottom: '4%'
     }}
     >
-      Precisando de ajuda? 
+      Precisando de ajuda? {'\n'}
       Entre em <Text style={{fontFamily: 'WorkSans_600SemiBold', color: '#CA0747'}}>contato</Text>
     </Text>
   )

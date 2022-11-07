@@ -59,7 +59,7 @@ const SignIn_8 = ({navigation, route}: RootStackScreenProps<'SignIn_8c'>) => {
     
   }
 
-  const addTo = (key: string, value: string) => {
+  const addTo = (key: 'idioma' | 'certificado' | 'aptidao', value: string) => {
     
     switch (key) {
       case 'idioma':
