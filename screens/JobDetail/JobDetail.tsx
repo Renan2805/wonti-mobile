@@ -1,131 +1,170 @@
-import { useState, useEffect } from 'react'
-import { View, Text, Image, StyleSheet, StatusBar, TouchableOpacity, FlatList, ScrollView, Modal, Button, Share } from 'react-native'
-import * as ExpoStatusBar from 'expo-status-bar'
-import { db, storage } from '../../config/firebase'
-import { doc, getDoc } from 'firebase/firestore'
-import { getDownloadURL, ref } from 'firebase/storage'
-import { Job, VagasStackScreenProps } from '../../types'
-import { ArrowLeft } from 'react-native-iconly'
-import { Entypo } from '@expo/vector-icons';
+import { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+  Modal,
+  Button,
+  Share,
+} from "react-native";
+import * as ExpoStatusBar from "expo-status-bar";
+import Unorderedlist from 'react-native-unordered-list';
+import { db, storage } from "../../config/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+import { Job, VagasStackScreenProps } from "../../types";
+import { ArrowLeft } from "react-native-iconly";
+import { Entypo } from "@expo/vector-icons";
 
-const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
-  
-  const id = route.params.id
-  
-  const [job, setJob] = useState<Job>()
-  const [imageUrl, setImageUrl] = useState<string>()
+const JobDetail = ({ navigation, route }: VagasStackScreenProps<"Job">) => {
+  const id = route.params.id;
 
-  const [page, setPage] = useState<number>(0)
+  const [job, setJob] = useState<Job>();
+  const [imageUrl, setImageUrl] = useState<string>();
 
-  const [modal, setModal] = useState(false)
+  const [page, setPage] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [modal, setModal] = useState(false);
 
   const getImage = async (uid: string) => {
-    const storageRef = ref(storage, `Users/${uid}/Profile`)
-    await getDownloadURL(storageRef)
-      .then((url) => {
-        setImageUrl(url)
+    const storageRef = ref(storage, `Users/${uid}/Profile`);
+    await getDownloadURL(storageRef).then(
+      (url) => {
+        setImageUrl(url);
       },
-      () => {
-
-      })
-  }
+      () => {}
+    );
+  };
 
   const getJob = async () => {
-    const docRef = doc(db, `Jobs/${id}`)
+    const docRef = doc(db, `Jobs/${id}`);
     await getDoc(docRef)
       .then((snapshot) => {
-        if(snapshot.exists()) {
+        if (snapshot.exists()) {
           // @ts-ignore
-          setJob(snapshot.data())
-          getImage(snapshot.data().HirerUid)
+          setJob(snapshot.data());
+          getImage(snapshot.data().HirerUid);
+          setIsLoading(false)
         }
       })
-      .catch(e => console.error(e))
-  }
+      .catch((e) => console.error(e));
+  };
 
-  const renderPage = (page:number) =>{
-    if(page === 0) { return (
-      <FlatList style={styles.flatList}
-              data={[
-                {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
-                {key: 'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
-                {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'},
-                {key:  'A Google é feita por pessoas especializadas em desemvolver experiencias de front-end para produtos digitais.'}
-              ]}
-              
-           renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
-      )
-}
-      else if(page === 1) {  
-      return(
-      <FlatList style={styles.flatList}
-              data={[
-                {key: 'Escrever código limpo, de fácil manutenção, utilizando as melhores práticas de desenvolvimento de software;'},
-                {key: 'Procurar sempre criar para os produtos Goggle a melhor experiencia de uso para o usuário final, trabalhando de perto com os especialistas em UX;'},
-                {key: 'Atuar como um team-player, comprometendo-se em harmonia com todos;'}
-              ]}
-              
-           renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
-      )
-  }
-     if(page === 2) { 
-      setPage(2)
-      return(
-      <FlatList style={styles.flatList}
-              data={[
-                {key: 'Um problema não é realmente resolvido até que seja resolvido para todos.'},
-                {key: 'Os Googlers criam produtos que ajudam a criar oportunidades para todos, seja na rua ou em todo o mundo'},
-                {key: 'Traga sua visão, imaginação e um saudável desrespeito pelo impossivel'},
-                {key: 'Traga tudo o que o torna único, juntos, podemos construir para'}
-              ]}
-              
-           renderItem={({item, index}) => <Text key={index} style={styles.textFlat}>● {item.key}</Text>} />
-     )
-    } else if(page) {
-      return true
+  const renderPage = (page: number) => {
+    if (page === 0) return (
+      <View>
+        {
+          job && job.Description.map((desc, index) => (
+            <Unorderedlist style={{fontSize: 16}} key={index}>
+              <Text style={{fontSize: 16, textAlign: 'justify'}}>{desc}</Text>
+            </Unorderedlist>
+          )) 
+        }
+      </View>
+    )
+    else if (page === 1) return (
+      <Unorderedlist>
+        <Text>Teste</Text>
+      </Unorderedlist>
+    )
+    if (page === 2) return (
+      <Unorderedlist>
+        <Text>Teste</Text>
+      </Unorderedlist>
+    )
+    else if (page) {
+      return true;
     }
-  }
+  };
 
   useEffect(() => {
-    getJob()
-  }, [])
+    getJob();
+  }, []);
 
   const testButton = () => {
-    alert('Enviado')
-  }
+    alert("Enviado");
+  };
   const modalActive = () => {
-    if(modal) {
+    if (modal) {
       return (
-          <Modal
-            animationType='none'
-            transparent={true}
-            visible={modal}
-            style={{maxHeight:50, backgroundColor:'transparent'}}
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={modal}
+          style={{ maxHeight: 50, backgroundColor: "transparent" }}
+        >
+          <View
+            style={{ width: "100%", maxHeight: 100, backgroundColor: "gray" }}
+          >
+            <TouchableOpacity
+              style={{
+                width: "100%",
+                height: 50,
+                padding: 3,
+                alignItems: "center",
+                justifyContent: "center",
+                borderBottomWidth: 1,
+                flexDirection: "row",
+              }}
             >
-            <View style={{width:'100%', maxHeight:100, backgroundColor:'gray'}}>
-              <TouchableOpacity style={{width:'100%', height:50, padding:3, alignItems:'center', justifyContent:'center', borderBottomWidth:1, flexDirection:'row'}}>
-                <Entypo name="heart" size={21} color="black" />
-                <Text style={{marginHorizontal:10, fontSize:19, fontFamily:'Poppins_600SemiBold'}}>Salvar vaga</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => onShare()}style={{width:'100%', height:50, padding:3, alignItems:'center', justifyContent:'center', borderBottomWidth:1, flexDirection:'row'}}>
-               <Entypo name="share" size={21} color="black" />
-                <Text style={{marginHorizontal:10, fontSize:19, fontFamily:'Poppins_600SemiBold'}}>Compartilhar</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{height:'80%', width:'100%'}}>
-              <TouchableOpacity onPress={() => setModal(false)} style={{height:'100%', width:'100%'}}/>
-            </View>
-          </Modal>
-      )
-    }else {
-      return false
+              <Entypo name="heart" size={21} color="black" />
+              <Text
+                style={{
+                  marginHorizontal: 10,
+                  fontSize: 19,
+                  fontFamily: "Poppins_600SemiBold",
+                }}
+              >
+                Salvar vaga
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => onShare()}
+              style={{
+                width: "100%",
+                height: 50,
+                padding: 3,
+                alignItems: "center",
+                justifyContent: "center",
+                borderBottomWidth: 1,
+                flexDirection: "row",
+              }}
+            >
+              <Entypo name="share" size={21} color="black" />
+              <Text
+                style={{
+                  marginHorizontal: 10,
+                  fontSize: 19,
+                  fontFamily: "Poppins_600SemiBold",
+                }}
+              >
+                Compartilhar
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ height: "80%", width: "100%" }}>
+            <TouchableOpacity
+              onPress={() => setModal(false)}
+              style={{ height: "100%", width: "100%" }}
+            />
+          </View>
+        </Modal>
+      );
+    } else {
+      return false;
     }
-  } 
+  };
   const onShare = async () => {
     try {
       const result = await Share.share({
-        title:'Won diz: ',
-        message:'Compartilhe vagas de empregos para seus amigos'
+        title: "Won diz: ",
+        message: "Compartilhe vagas de empregos para seus amigos",
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -142,12 +181,12 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
     }
   };
 
-  return (
+  if(!isLoading) return (
     <View style={styles.content}>
-      <ExpoStatusBar.StatusBar translucent={true}/>
+      <ExpoStatusBar.StatusBar translucent={true} />
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <ArrowLeft set={'light'} color={'black'} size={36}/>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <ArrowLeft set={"light"} color={"black"} size={36} />
         </TouchableOpacity>
         <Text style={styles.title}>Detalhes da vaga</Text>
         <TouchableOpacity onPress={() => setModal(true)}>
@@ -156,145 +195,158 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<'Job'>) => {
       </View>
       <View style={styles.info}>
         <View style={styles.section1}>
-          <Image 
-            source={{uri: imageUrl}}
-            style={styles.image}
-          />
-          <Text style={[styles.title, {fontSize: 28, textAlign: 'center'}]}>
-            {job?.Title + '\n'}
+          <Image source={{ uri: imageUrl }} style={styles.image} />
+          <Text style={[styles.title, { fontSize: 28, textAlign: "center" }]}>
+            {job?.Title + "\n"}
             <Text style={styles.text}>{`${job?.Hirer}, ${job?.Place}`}</Text>
           </Text>
         </View>
-        <View style={styles.divider}/>
+        <View style={styles.divider} />
         <View style={styles.section2}>
           <View style={styles.pages}>
-            <TouchableOpacity 
-              style={[styles.pageButton, page === 0 && {backgroundColor: 'black'}]}
+            <TouchableOpacity
+              style={[
+                styles.pageButton,
+                page === 0 && { backgroundColor: "black" },
+              ]}
               onPress={() => setPage(0)}
             >
-              <Text style={[styles.pageText, page === 0 && {color: 'white'}]}>Descrição da vaga</Text>
+              <Text style={[styles.pageText, page === 0 && { color: "white" }]}>
+                Descrição da vaga
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.pageButton, page === 1 && {backgroundColor: 'black'}]}
-              onPress={() => setPage(1)}  
+            <TouchableOpacity
+              style={[
+                styles.pageButton,
+                page === 1 && { backgroundColor: "black" },
+              ]}
+              onPress={() => setPage(1)}
             >
-              <Text style={[styles.pageText, page === 1 && {color: 'white'}]}>Requisitos</Text>
+              <Text style={[styles.pageText, page === 1 && { color: "white" }]}>
+                Requisitos
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.pageButton, page === 2 && {backgroundColor: 'black'}]}
+            <TouchableOpacity
+              style={[
+                styles.pageButton,
+                page === 2 && { backgroundColor: "black" },
+              ]}
               onPress={() => setPage(2)}
             >
-              <Text style={[styles.pageText, page === 2 && {color: 'white'}]}>Empresa</Text>
+              <Text style={[styles.pageText, page === 2 && { color: "white" }]}>
+                Empresa
+              </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.page}>
-            {
-              renderPage(page)
-            }
-          </ScrollView>
-          <View style={styles.viewConfirmar}>
-            <TouchableOpacity style={styles.buttonConfirmar} onPress={() => testButton()}>
-              <Text style={{fontSize:20,  color: 'white' }}>Enviar curriculo</Text>
-            </TouchableOpacity>
-          </View>
+          <ScrollView style={styles.page}>{renderPage(page)}</ScrollView>
+          
+          
         </View>
       </View>
-        {
-          modalActive()
-        }
+      <TouchableOpacity
+        style={styles.buttonConfirmar}
+        onPress={() => testButton()}
+      >
+        <Text style={{ fontSize: 24, color: "white", fontFamily: 'WorkSans_500Medium' }}>
+          Enviar curriculo
+        </Text>
+      </TouchableOpacity>
+      {modalActive()}
     </View>
   )
-}
+  else return (
+    <Text>Loading</Text>
+  )
+};
 
 const styles = StyleSheet.create({
   content: {
     marginTop: StatusBar.currentHeight,
-    alignItems: 'center'
+    alignItems: "center",
+    height: '90%'
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginVertical: 10,
-    width: '90%',
+    width: "90%",
   },
   info: {
-    width: '100%',
-    alignItems: 'center'
+    width: "100%",
+    alignItems: "center",
   },
   section1: {
-    alignItems: 'center'
+    alignItems: "center",
   },
   section2: {
-    width: '100%',
-    alignItems: 'center'
+    width: "100%",
+    alignItems: "center",
   },
   buttonConfirmar: {
-    width:'80%',
-    padding:8,
-    height:50,
-    position:'absolute',
-    backgroundColor: '#FF0356',
-    borderRadius:25,
+    width: "90%",
+    padding: 15,
+    alignItems: 'center',
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: "#FF0356",
+    borderRadius: 30,
   },
   viewConfirmar: {
-    width:'100%',
-    padding:5,
-    height:110,
-    textAlign:'center',
-    justifyContent:'center',
-    alignItems:'center'
+    width: "100%",
+    padding: 5,
+    height: 110,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     height: 100,
     aspectRatio: 1,
-    borderRadius: 10
+    borderRadius: 10,
   },
   title: {
-    fontFamily: 'Poppins_700Bold',
+    fontFamily: "Poppins_700Bold",
     fontSize: 24,
   },
   text: {
-    fontFamily: 'Poppins_400Regular',
-    fontSize: 16
+    fontFamily: "Poppins_400Regular",
+    fontSize: 16,
   },
   divider: {
-    width: '90%',
-    height: .5,
-    backgroundColor: 'black',
-    marginTop:8
+    width: "90%",
+    height: 0.5,
+    backgroundColor: "black",
+    marginTop: 8,
   },
   pages: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '90%',
-    marginTop:10
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "90%",
+    marginTop: 10,
   },
   pageButton: {
-    backgroundColor: 'rgba(0, 0, 0, .05)',
+    backgroundColor: "rgba(0, 0, 0, .05)",
     paddingVertical: 8,
     paddingHorizontal: 10,
     borderRadius: 20,
   },
   pageText: {
-    fontFamily: 'Poppins_300Light',
-
+    fontFamily: "Poppins_300Light",
   },
   flatList: {
-    paddingHorizontal:8,
-   
+    paddingHorizontal: 8,
   },
   textFlat: {
-    fontSize:16,
-    marginVertical:6,
-    textAlign:"justify"
+    fontSize: 16,
+    marginVertical: 6,
+    textAlign: "justify",
   },
   page: {
-    width: '100%',
-    padding:20
-  }
-})
+    width: "90%",
+    padding: 20,
+  },
+});
 
-
-export default JobDetail
+export default JobDetail;

@@ -23,11 +23,12 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
   const getUserData = async () => {
     try {
       const data = await getData('user_data')
+      console.log(data)
       if(typeof data == 'string') {
         const dataJson = JSON.parse(data)
         setUserData(dataJson)
+        setIsLoading(false)
       }
-
     } catch (e) {
       console.error(e)
     }
@@ -41,11 +42,9 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
   }
 
   useEffect(() => {
-    setIsLoading(true)
     if(auth.currentUser) {
       // @ts-ignore
       getUserData()
-      console.log(userData)
       if(auth.currentUser.photoURL) setProfileImage(auth.currentUser?.photoURL)
       setIsLoading(false)
     } else setIsLoading(true)
@@ -72,7 +71,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
           />
         </TouchableOpacity>
         <Text style={style.name}>{user?.displayName}</Text>
-        <Text style={[style.infoText, {fontSize: 20}]}>{userData?.formacao.qualificacao}</Text>
+        <Text style={[style.infoText, {fontSize: 20}]}>{userData.isUser && userData?.formacao.qualificacao}</Text>
         <View
           style={{flexDirection: 'row', width: '100%', justifyContent: 'space-evenly', alignItems: 'center'}}
         >
@@ -86,16 +85,72 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
             style={{flexDirection: 'row'}}
           >
             <MaterialCommunityIcons name="certificate" size={24} color="white" />
-            <Text style={style.infoText}>{userData?.formacao.instituicao}</Text>
+            <Text style={style.infoText}>{userData.isUser && userData?.formacao.instituicao}</Text>
           </View>
         </View>
       </ImageBackground>
-      <View style={style.mainSection}>
+      {
+        userData.isUser ? 
+        <View style={style.mainSection}>
+          <View style={style.aboutSection}>
+            <Text style={[style.title, {alignSelf: 'flex-start', marginBottom: 15}]}>Sobre</Text>
+            <ScrollView contentContainerStyle={{alignItems: 'center', width: '90%'}}>
+              {
+                userData.informacoes.length === 0 ?
+                <Text>Nada aqui</Text>
+                :
+                userData.informacoes.map((item, index) => (
+                  <Unorderedlist key={index} style={{fontSize: 18}}>
+                    <Text 
+                      style={{fontSize: 18, fontFamily: 'Poppins_300Light', textAlign: 'justify'}}
+                    >
+                      {item}
+                    </Text>
+                  </Unorderedlist>
+                ))
+              }
+            </ScrollView>
+          </View>
+          <View style={style.infos}>
+            <View style={style.infoRow}>
+              <AntDesign name="download" size={30} color="rgba(0, 0, 0, .5)" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={style.infoRowTitle}>Currículo</Text>
+                <Text style={style.infoRowText}>PDF</Text>
+              </View>
+            </View>
+            <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`https://github.com/${userData.github}`)}>
+              <AntDesign name="github" size={30} color="rgba(0, 0, 0, .5)" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={style.infoRowTitle}>Github</Text>
+                <Text style={style.infoRowText}>{userData.github ? userData.github : 'Não informado'}</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`whatsapp://send?phone=+55${userData.numero_cel}`)}>
+              <FontAwesome name="whatsapp" size={30} color="rgba(0, 0, 0, .5)" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={style.infoRowTitle}>WhatsApp</Text>
+                <Text style={style.infoRowText}>{userData.numero_cel ? mascaraNumero(userData.numero_cel) : 'Não Informado'}</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={style.infoRow} onPress={() => Linking.openURL(`mailto:${userData.email}`)}>
+              <MaterialCommunityIcons name="email" size={30} color="rgba(0, 0, 0, .5)" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={style.infoRowTitle}>Email</Text>
+                <Text style={style.infoRowText}>{userData.email}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+        :
+        <Text>Empresa</Text>
+      }
+      {/* <View style={style.mainSection}>
         <View style={style.aboutSection}>
           <Text style={[style.title, {alignSelf: 'flex-start', marginBottom: 15}]}>Sobre</Text>
           <ScrollView contentContainerStyle={{alignItems: 'center', width: '90%'}}>
             {
-              
+              userData.isUser &&
               userData.informacoes.length === 0 ?
               <Text>Nada aqui</Text>
               :
@@ -141,7 +196,7 @@ const DetalhesDaConta = ({ navigation }: ConfigStackScreenProps<'DetailScreen'>)
             </View>
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
     </View>
   )
   else return(

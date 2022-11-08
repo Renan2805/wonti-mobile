@@ -112,7 +112,6 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   const [logged, setLogged] = useState(false)
-  const [userData, setUserData] = useState<User>()
 
   const Stack = createNativeStackNavigator<RootStackParamList>()
   const BottomTab = createBottomTabNavigator<RootTabParamList>()
@@ -123,7 +122,7 @@ export default function App() {
       onSnapshot(docRef, (doc) => {
         if(doc.exists()) {
           // @ts-ignore
-          setUserData(doc.data())
+          storeData('user_data', JSON.stringify(doc.data()))
         }
       })
     } catch (e) {
@@ -136,7 +135,6 @@ export default function App() {
       if (user) {
         // @ts-ignore
         getUserData(user.uid)
-        storeData('user_data', JSON.stringify(userData))
         setLogged(true)
         setIsLoading(false)
       } else {

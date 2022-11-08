@@ -4,7 +4,7 @@ import { Bookmark, People, Location, TimeCircle, Wallet } from 'react-native-ico
 import { useNavigation } from '@react-navigation/native'
 import Loader from '../Loader/Loader'
 import { db, storage, auth } from '../../config/firebase'
-import { arrayRemove, arrayUnion, doc, DocumentData, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, doc, DocumentData, getDoc, onSnapshot, Timestamp, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 
 type Props = {
@@ -41,6 +41,7 @@ const CardRecommended = ({
   const [image, setImage] = useState<string>()
   const [data, setData] = useState<Job>()
   const [vagas, setVagas] = useState<string[]>()
+  const [diasPostado, setDiasPostado] = useState<number>()
   const [id, setId] = useState<string>()
   const [isLoading, setIsLoading] = useState(true)
 
@@ -57,6 +58,7 @@ const CardRecommended = ({
           setData(doc.data())
           getImage(doc.data().HirerUid)
           setId(doc.id)
+          getDaysPosted(doc.data().Posted)
           getVagas()
           
 
@@ -99,6 +101,26 @@ const CardRecommended = ({
   const checkSaved = async (id: string | undefined) => {
     if(id && vagas?.includes(id)) setSaved(true)
     else setSaved(false)
+  }
+
+  const getDaysPosted = (posted: Timestamp) => {
+    let postedDate = posted.toDate()
+    let today = Timestamp.now().toDate()
+
+    const postedDateMili = postedDate.getTime()
+    const todayMili = today.getTime()
+
+    const diff = todayMili - postedDateMili
+
+    setDiasPostado(Math.floor(diff/(1000*60*60*24)))
+
+    console.log('Hoje: ', Math.floor(diff/(1000*60*60*24)))
+  }
+
+  const renderDaysPosted = () => {
+    if(diasPostado == 0) return 'Hoje'
+    else if(diasPostado == 1) return diasPostado + ' Dia'
+    else return diasPostado + ' Dias'
   }
 
   useEffect(() => {
@@ -187,7 +209,7 @@ const CardRecommended = ({
         
          <View style={{ width: '27.5%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
            <TimeCircle set={'light'} primaryColor={theme ? '#C4C4C4':'#000'}/>
-           <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{data.Posted + ' Dias'}</Text>
+           <Text style={{fontFamily: 'Poppins_400Regular', fontSize: 14, color: theme ? '#C4C4C4':'#000'}}>{renderDaysPosted()}</Text>
          </View> 
        </View>
     </TouchableOpacity>

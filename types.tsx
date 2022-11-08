@@ -142,14 +142,15 @@ export type User = {
     nivel: string,
     qualificacao: string
   },
-  informacoes: string[]
+  informacoes: string[],
+  isUser: boolean
 }
 
 export type Job = {
   Hirer: string,
   HirerUid: string,
   Title: string,
-  Description: string,
+  Description: string[],
   Time: string,
   Type: string,
   Competitors: number,
