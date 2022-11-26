@@ -7,10 +7,14 @@ import { auth, db } from '../config/firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import Loader from '../components/Loader/Loader'
 import { Search, Filter } from "react-native-iconly"
+import { getData } from '../hooks/useAsyncStorage'
+import VagasEmpresa from './VagasEmpresa'
+import { User } from '../types'
 
 const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
 
   const [user, setUser] = useState(auth.currentUser)
+  const [userData, setUserData] = useState<User>()
   const [vagas, setVagas] = useState<string[]>()
   const [isLoading, setIsLoading] = useState(true)
 
@@ -26,19 +30,27 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
       })
       .catch(e => console.error('getJobs Error: ', e))
       .finally(() => {
-        console.log('Jobs: ', jobs)
         setVagas(jobs)
       })
     
   }
 
+  const getUserData = async () => {
+    const data = await getData('user-data')
+    if(data) {
+      const json = await JSON.parse(data)
+      setUserData(json)
+      console.log(userData)
+    }
+  }
+
   useEffect(() => {
     if(user === null) {
       setIsLoading(true)
-    }
+    } 
+    getUserData()
     getJobs().then(() => setIsLoading(false)).catch(e => console.error(e)).finally(() => {
       setCount(count + 1)
-      console.log('Loops: ', count)
     })
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault()
@@ -90,9 +102,10 @@ const VagasScreen = ({ navigation }: RootStackScreenProps<'Vagas'>) => {
         </View>
       </ScrollView>
     </SafeAreaView>
+    
   )
   else return (
-    <Loader />
+    <VagasEmpresa />
   )
 }
 

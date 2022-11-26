@@ -113,8 +113,6 @@ const CardRecommended = ({
     const diff = todayMili - postedDateMili
 
     setDiasPostado(Math.floor(diff/(1000*60*60*24)))
-
-    console.log('Hoje: ', Math.floor(diff/(1000*60*60*24)))
   }
 
   const renderDaysPosted = () => {

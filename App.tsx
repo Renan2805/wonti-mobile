@@ -176,7 +176,7 @@ export default function App() {
             })}
           />
           <BottomTab.Screen
-            name="Vagas"
+            name="VagasTab"
             component={VagasStack}
             options={() => ({
               tabBarIcon: ({ color, focused }) => focused ? <Work primaryColor={color} set="bold" size={'large'}/> : <Work primaryColor={color} size={'large'}/>,

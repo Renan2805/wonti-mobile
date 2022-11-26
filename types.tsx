@@ -103,7 +103,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 
 export type RootTabParamList = {
   HomeTab: undefined;
-  Vagas: undefined;
+  VagasTab: undefined;
   Chat: undefined;
   Config: undefined;
   CardRecom: undefined
@@ -151,6 +151,7 @@ export type Job = {
   HirerUid: string,
   Title: string,
   Description: string[],
+  Requirements: string[],
   Time: string,
   Type: string,
   Competitors: number,

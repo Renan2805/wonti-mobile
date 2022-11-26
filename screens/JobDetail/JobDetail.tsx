@@ -27,7 +27,7 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<"Job">) => {
   const [job, setJob] = useState<Job>();
   const [imageUrl, setImageUrl] = useState<string>();
 
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<0 | 1| 2>(0);
   const [isLoading, setIsLoading] = useState(true)
 
   const [modal, setModal] = useState(false);
@@ -49,6 +49,7 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<"Job">) => {
         if (snapshot.exists()) {
           // @ts-ignore
           setJob(snapshot.data());
+          pagination(snapshot.data().Requirements)
           getImage(snapshot.data().HirerUid);
           setIsLoading(false)
         }
@@ -56,30 +57,62 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<"Job">) => {
       .catch((e) => console.error(e));
   };
 
-  const renderPage = (page: number) => {
-    if (page === 0) return (
+  const pagination = (data: string[]) => {
+    var numberOfPages = 0
+
+    if(data.length % 3 !== 0) numberOfPages = Math.floor((data.length / 3) + 1)
+    else  numberOfPages = data.length / 3
+    
+
+    return (
       <View>
         {
-          job && job.Description.map((desc, index) => (
-            <Unorderedlist style={{fontSize: 16}} key={index}>
-              <Text style={{fontSize: 16, textAlign: 'justify'}}>{desc}</Text>
-            </Unorderedlist>
-          )) 
+          data.map((item, index) => {
+            if(index + 1 % 3 == 0) {
+
+            }
+          })
         }
       </View>
     )
-    else if (page === 1) return (
-      <Unorderedlist>
-        <Text>Teste</Text>
-      </Unorderedlist>
-    )
-    if (page === 2) return (
-      <Unorderedlist>
-        <Text>Teste</Text>
-      </Unorderedlist>
-    )
-    else if (page) {
-      return true;
+  }
+
+  const renderPage = (page: 0 | 1 | 2) => {
+    switch(page) {
+      case 0:
+        return (
+          <ScrollView>
+            {
+              job && job.Description.map((desc, index) => (
+                <View style={{marginVertical: 10}} key={index}>
+                  <Unorderedlist style={{fontSize: 16}}>
+                    <Text style={{fontSize: 16, textAlign: 'justify'}}>{desc}</Text>
+                  </Unorderedlist>
+                </View>
+              )) 
+            }
+          </ScrollView>
+        )
+      case 1:
+        return (
+          <ScrollView style={{backgroundColor: 'transparent'}}>
+            {
+              job && job.Requirements.map((req, index) => (
+                <View style={{marginVertical: 5}} key={index}>
+                  <Unorderedlist style={{fontSize: 16}}>
+                    <Text style={{fontSize: 16, textAlign: 'justify'}}>{req}</Text>
+                  </Unorderedlist>
+                </View>
+              )) 
+            }
+          </ScrollView>
+        )
+      case 2:
+        return (
+          <Unorderedlist>
+            <Text>Teste</Text>
+          </Unorderedlist>
+        )
     }
   };
 
@@ -94,66 +127,64 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<"Job">) => {
     if (modal) {
       return (
         <Modal
-          animationType="none"
+          animationType="fade"
           transparent={true}
           visible={modal}
           style={{ maxHeight: 50, backgroundColor: "transparent" }}
         >
-          <View
-            style={{ width: "100%", maxHeight: 100, backgroundColor: "gray" }}
+          <TouchableOpacity 
+            onPress={() => setModal(false)}
+            style={{flex: 1}}
           >
-            <TouchableOpacity
-              style={{
-                width: "100%",
-                height: 50,
-                padding: 3,
-                alignItems: "center",
-                justifyContent: "center",
-                borderBottomWidth: 1,
-                flexDirection: "row",
-              }}
+
+            <View
+              style={{ width: "50%", position: 'absolute', right: 10, top: 50, backgroundColor: 'white', borderRadius: 10}}
             >
-              <Entypo name="heart" size={21} color="black" />
-              <Text
+              <TouchableOpacity
                 style={{
-                  marginHorizontal: 10,
-                  fontSize: 19,
-                  fontFamily: "Poppins_600SemiBold",
+                  width: "100%",
+                  height: 50,
+                  borderBottomWidth: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: "row",
                 }}
               >
-                Salvar vaga
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => onShare()}
-              style={{
-                width: "100%",
-                height: 50,
-                padding: 3,
-                alignItems: "center",
-                justifyContent: "center",
-                borderBottomWidth: 1,
-                flexDirection: "row",
-              }}
-            >
-              <Entypo name="share" size={21} color="black" />
-              <Text
+                <Entypo name="heart" size={21} color="black" style={{position: 'absolute', left: 15}}/>
+                <Text
+                  style={{
+                    marginHorizontal: 10,
+                    fontSize: 19,
+                    fontFamily: "Poppins_600SemiBold",
+                  }}
+                >
+                  Salvar vaga
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onShare()}
                 style={{
-                  marginHorizontal: 10,
-                  fontSize: 19,
-                  fontFamily: "Poppins_600SemiBold",
+                  width: "100%",
+                  height: 50,
+                  padding: 3,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "row",
                 }}
               >
-                Compartilhar
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ height: "80%", width: "100%" }}>
-            <TouchableOpacity
-              onPress={() => setModal(false)}
-              style={{ height: "100%", width: "100%" }}
-            />
-          </View>
+                <Entypo name="share" size={21} color="black" style={{position: 'absolute', left: 15}}/>
+                <Text
+                  style={{
+                    marginHorizontal: 10,
+                    fontSize: 19,
+                    fontFamily: "Poppins_600SemiBold",
+                  }}
+                >
+                  Compartilhar
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
         </Modal>
       );
     } else {
@@ -238,7 +269,7 @@ const JobDetail = ({ navigation, route }: VagasStackScreenProps<"Job">) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.page}>{renderPage(page)}</ScrollView>
+          <View style={[styles.page]}>{renderPage(page)}</View>
           
           
         </View>
