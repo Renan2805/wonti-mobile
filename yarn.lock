@@ -6511,6 +6511,11 @@ flow-parser@^0.121.0:
   resolved "https://registry.npmjs.org/flow-parser/-/flow-parser-0.121.0.tgz"
   integrity sha512-1gIBiWJNR0tKUNv8gZuk7l9rVX06OuLzY9AoGio7y/JT4V1IZErEMEq2TJS+PFcw/y0RshZ1J/27VfK1UQzYVg==
 
+fluent-icons-react@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/fluent-icons-react/-/fluent-icons-react-1.0.1.tgz#f15c796275d8cc2ad61a38bc0d3a8eda34891b2f"
+  integrity sha512-WWv743GHZeLB3tSOtocFi5w15WfwvkHor7pw3sOeiekMiIMi+IzTQyzI8IjnoTZVhRW3G6JgA1PNuWtQIHwUvw==
+
 flush-write-stream@^1.0.0:
   version "1.1.1"
   resolved "https://registry.npmjs.org/flush-write-stream/-/flush-write-stream-1.1.1.tgz"

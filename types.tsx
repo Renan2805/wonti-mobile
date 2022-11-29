@@ -74,7 +74,8 @@ export type VagasStackParamList = {
   Vagas: undefined;
   Job: {
     id: string
-  }
+  };
+  Criar: undefined;
 }
 
 export type VagasStackScreenProps<Screen extends keyof VagasStackParamList> = NativeStackScreenProps<
@@ -143,6 +144,28 @@ export type User = {
     qualificacao: string
   },
   informacoes: string[],
+  isUser: boolean
+}
+
+export type Empresa = {
+  dados_empresariais: {
+    nome: string,
+    cnpj: string,
+    desc: string,
+    setor: string,
+    wpp: string
+  },
+  endereco: {
+    bairro: string,
+    cep: string,
+    cidade: string,
+    complemento: string,
+    numero: string,
+    rua: string,
+    uf: string,
+  },
+  email: string,
+  Vagas_Salvas: string[],
   isUser: boolean
 }
 

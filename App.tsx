@@ -69,6 +69,7 @@ import SignIn_3 from './screens/SignInScreens/Hirer/SignIn_3';
 import SignIn_4 from './screens/SignInScreens/Hirer/SignIn_4';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { storeData } from './hooks/useAsyncStorage';
+import Criar from './screens/Criar/Criar';
 
 // import Suporte from './screens/Suporte/Suporte';
 // import Seguranca from './screens/Seguranca/Seguranca';
@@ -257,6 +258,7 @@ const VagasStack = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name={'Vagas'} component={VagasScreen}/>
       <Stack.Screen name={'Job'} component={JobDetail}/>
+      <Stack.Screen name={'Criar'} component={Criar}/>
     </Stack.Navigator>
   )
 }
