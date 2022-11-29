@@ -76,6 +76,9 @@ export type VagasStackParamList = {
     id: string
   };
   Criar: undefined;
+  Criar_2: {
+    dados: Object
+  }
 }
 
 export type VagasStackScreenProps<Screen extends keyof VagasStackParamList> = NativeStackScreenProps<
